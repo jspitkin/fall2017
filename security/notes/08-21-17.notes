@@ -1,0 +1,65 @@
+logistics
+---
+everything will be located on Canvas
+first two programming assignments will be smaller - final two larger
+graduate course - extra questions in HW & exams
+office hours Tuesdays 10-11 AM
+typical exam is ~25 short answer or multiple choice questions
+on homeworks - extra paper to read and respond to
+programming assignments will be the same as undergrad
+*** read chapter 8 from Kurose and Ross 4th edition (on network security)
+86% for an A
+no final exam
+homework 0 (programming) and written homework 1 posted
+
+networked systems overview
+---
+sensor network = internet of things (IoT)
+identify your adversary when designing a security system
+adversaries:
+    Eave - eavesdropper
+    Trudy - generic intruder
+    Person-in-the-middle
+    Sam - Uncle Sam
+        governments
+    Sal - phishing attacks
+
+course overview
+---
+part 1: cryptography
+    secret key cryptography
+    modes of operation
+    hashes and message digests
+    public key cryptography
+    two programming assignments
+
+part 2: authentication
+    overview
+    authentication
+    security handshake pitfalls
+    strong password protocols
+    one programming assignment
+    
+part 3: standards
+    SSL
+    IPsec
+    wireless security
+    one programming assignment
+
+part 4: topics in security
+    denial-of-service
+    new internet architectures
+    IP traceback
+    privacy
+    digital pests: viruses, buffer overflow, worms
+    anonymity
+    software defined networks
+    finite fields
+    no programming assignment (rather a final project)
+
+course project:
+    team of 3 students
+    new idea (rare in a semester) or a new evaluation (more likely)
+    should have an implementation component
+    graded - effort, presentation, report (less focus on final product - progress and effort based)
+    can be cross-topic (machine learning, vis, etc)

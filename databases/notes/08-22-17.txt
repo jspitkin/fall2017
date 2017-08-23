@@ -1,0 +1,19 @@
+logistics
+---
+NoSQL stands for 'not only sql'
+start by understanding the kernel of SQL systems
+explore other systems like NoSQL, HBase, MapReduce, Spark, etc
+written assignments will not be graded - solutions will be released
+midterm and final exam are open note - computers are allowed
+midterm and final exam questions are similar to written assignments
+final will not be comprehensive (will not be during finals week)
+will work on final project during finals week instead
+will have fall break to prepare for midterm
+first project will be released in a week or two
+the project will be done in modules that build on each other (equal weight)
+solution code will be posted as we progress
+using bitbucket repo to hand in code
+
+relational model
+---
+DBMS - database management system
