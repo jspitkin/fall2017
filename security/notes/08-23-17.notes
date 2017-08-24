@@ -1,0 +1,49 @@
+introduce cryptography
+---
+plain text ---> encryption ---> ciphertext ---> decrypt ---> plain text
+knowing the key to the encryption method is needed
+a system can still be vunerable even with a perfect encryption method
+secret key functions
+    a message is encrypted and decrypted with a shared secret key
+    use: encrypt files on hard drive
+    use: authentication
+        nonce - a number used only once choosen from a large space of number to avoid repeats
+        alice chooses a nonce and sends it to bob
+        bob encrypts the nonce and sents it to alice
+        alice decrypts and verifies it is the original nonce
+        problem: sharing the initial key
+        use different keys in different directions to prevent reflection attacks (to encrypt messages)
+hash key functions
+    hash function = message digest
+    properties
+        fixed length output regardless of input length
+        many-to-one mapping
+        should be computationally infeasible to find h(m1) = h(m2) (for a hash to be secure)
+        if you know h(m) it's computationally infeasible to find m
+    use
+        integrity protection
+            send m and h(m) to insure that the message isn't changed in the middle
+            must compute the hash of the message and the key h(m, k_ab)
+            comcast cannot compute h(m', k_ab) as k_ab is a secret key between alice and bob 
+            or sign the hash with your private key send m and k_apriv{h(m)} as comcast doesn't know k_apriv
+public key functions
+    alice and bob each have a public key (+) and a private key (-)
+    if alice wants to send a message to bob, she needs to know his public key
+    bob will get a message that has been encrypted with bob's public key
+    bob can decrypt using his private key b_private{b_public{message}}
+    alice "signs" the message with her private key
+    bob can use alice's public key to verify the message came from alice a_public{a_private{message}}
+    you can't encrypt a very large message with a public key
+    primarily used to communicate a secret key (k_ab) and use k_ab going forward
+
+secret key based systems
+---
+stream cipher
+    encrypt a small block of data at a time
+block cipher
+    work with larger blocks of data at a time (64 bit - 124 bit scale)
+    we have a secret key with k bits and a block with b bits
+    k must be a large number - in 2002 64-bits was large enough - which is no longer enough (128-bit minimum)
+    what should be the block size?
+        a small block size - an enemy could maintain a table of plain text to cipher text
+    
