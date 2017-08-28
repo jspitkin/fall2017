@@ -1,0 +1,115 @@
+/*
+    CS-5630 / CS-6630 Homework 1 
+    name: Jake Pitkin
+    uID: u0891770
+    e-mail: jakepitkin@gmail.com
+/*
+
+/* chart data stylings */
+
+#bar-chart-x rect {
+    fill: #A07178;
+}
+
+#bar-chart-y rect {
+    fill: #776274;
+}
+
+#line-chart-x path {
+    fill: none;
+    stroke: #A07178;
+    stroke-width: 3px;
+}
+
+#line-chart-y line {
+    stroke: #776274;
+    stroke-width: 3px;
+}
+
+#area-chart-x path {
+    fill: #A07178;
+}
+
+#area-chart-y path {
+    fill: #776274;
+}
+
+#scatterplot {
+    border: 3px solid #776274;
+}
+
+#scatterplot circle {
+    fill: #A07178;
+}
+
+/* page styling */
+
+body {
+    margin: 0;
+    text-align: center;
+    background-color: #fcf7f8;
+}
+
+svg {
+    display: block;
+}
+
+header {
+    background-color: #5A5353;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: white;
+    font-size: 24px;
+}
+
+/* chart divs styling */
+
+.chart-container {
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+#charts {
+    display: inline-block;
+    color: #5A5353;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 40px;
+    background-color: #ffffff;
+}
+
+
+/* display x and y charts next to each other */
+#bar-chart-x-container {
+    width: 360px;
+    float: left;
+    margin-right: 30px;
+}
+
+#bar-chart-y-container {
+    float: left;
+}
+
+#line-chart-x-container {
+    width: 360px;
+    float: left;
+    margin-right: 30px;
+}
+
+#line-chart-y-container {
+    float: left;
+}
+
+#area-chart-x-container {
+    width: 360px;
+    float: left;
+    margin-right: 30px;
+}
+
+#area-chart-y-container {
+    float: left;
+}
+
+#scatterplot-container {
+    display: inline-block;
+}

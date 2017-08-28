@@ -4,5 +4,16 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
+SERVER_NAME	../security/PA0/client.py	/^SERVER_NAME = ''$/;"	kind:variable	line:3
+SERVER_PORT	../security/PA0/client.py	/^SERVER_PORT = 12000$/;"	kind:variable	line:4
+SERVER_PORT	../security/PA0/server.py	/^SERVER_PORT = 12000$/;"	kind:variable	line:3
+capitalized_sentence	../security/PA0/server.py	/^    capitalized_sentence = sentence.upper()$/;"	kind:variable	line:13
 client.py	../security/PA0/client.py	1;"	kind:file	line:1
+client_socket	../security/PA0/client.py	/^client_socket = socket(AF_INET, SOCK_STREAM)$/;"	kind:variable	line:6
+main	../nlp/HW1/ngrams.py	/^def main():$/;"	kind:function	line:3
+modified_sentence	../security/PA0/client.py	/^modified_sentence = client_socket.recv(1024)$/;"	kind:variable	line:11
+ngrams.py	../nlp/HW1/ngrams.py	1;"	kind:file	line:1
+sentence	../security/PA0/client.py	/^sentence = input('Input lowercase sentence:')$/;"	kind:variable	line:9
+sentence	../security/PA0/server.py	/^    sentence = connection_socket.recv(1024)$/;"	kind:variable	line:12
 server.py	../security/PA0/server.py	1;"	kind:file	line:1
+server_socket	../security/PA0/server.py	/^server_socket = socket(AF_INET, SOCK_STREAM)$/;"	kind:variable	line:5

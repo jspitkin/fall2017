@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  24 AUG 2017 10:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  27 AUG 2017 21:23
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -828,15 +828,15 @@ LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <10> not available
 (Font)              Font shape `OT1/phv/b/n' tried instead on input line 53.
 [2] (/Users/jsp/Documents/fall2017/security/HW1/.texpadtmp/hw1.aux) ) 
 Here is how much of TeX's memory you used:
- 8790 strings out of 493014
- 128128 string characters out of 6133351
+ 8796 strings out of 493014
+ 128179 string characters out of 6133351
  340671 words of memory out of 5000000
  12028 multiletter control sequences out of 15000+600000
- 50999 words of font info for 182 fonts, out of 8000000 for 9000
+ 51319 words of font info for 186 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  43i,11n,45p,703b,295s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on /Users/jsp/Documents/fall2017/security/HW1/.texpadtmp/hw1.pdf (2 pages, 51744 bytes).
+Output written on /Users/jsp/Documents/fall2017/security/HW1/.texpadtmp/hw1.pdf (2 pages, 51819 bytes).
 PDF statistics:
  28 PDF objects out of 1000 (max. 8388607)
  19 compressed objects within 1 object stream

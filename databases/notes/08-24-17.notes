@@ -1,0 +1,64 @@
+why use a DBMS?
+    concurrency
+    recovery
+        crash recovery (system bug, power failure)
+    abstraction, data independence
+    query languages
+    efficiency
+    security
+    data integrity
+
+relational model
+---
+the dominate model is the relation model (understand the data as tables)
+schema is the structure of the tables
+with a schema you can imply the structure of your data
+    this is structured data
+you know the structure of your data ahead of time
+cardinality - number of records
+CHAR(20) - 20 character array 1-byte per char
+alias - a nickname for the table you are working with
+    FROM Students S - where S is an alias
+    optional when the name of a field is unique (can be needed when working with multiple table schemas)
+keys - a way to associate tuples in different relations
+    one form of integrity constraint (IC)
+    a key used to link one record to another record in another table - the key must be unique
+    similar to the roles of pointers to memory addresses
+tuple - row entry in the db
+primary keys
+    a set of fields is a superkey if
+        no two distinct tuples can have same values in ALL key fields (some can be identical)
+    a set of fields is a key for a relation if
+        it is a superkey
+        no proper subset of the fields is a superkey
+    >1 key for a relation?
+        one of the keys is chosen (by DBA) to be the primary key
+        the rest of the keys are candidate keys
+        DBA = database admin
+foreign keys
+    a field whose values are keys in another relation (think about them as "pointers")
+integrity constraints (ICs)
+    condition that must be true for any instance of the DB
+    when making an entry with a foreign key, foreign key must exist in related table
+    when deleting a tuple, also delete all tuples that refer to it in other tables
+    disallow deleation of tuple that is referred to
+    keep record around with a default foreign key field for later data analysis
+
+unstructured data
+---
+you don't know the structure of your data
+key-value pair for example
+advantage: flexible, doesn't need to be predefined
+you don't know the structure of your data ahead of time (process on a program level)
+
+SQL
+---
+the most widely used relational query language
+* - all attributes for all matched records
+    SELECT * vs SELECT S.name, S.login
+FROM   
+    compute cross-product of Students and Enrolled n(n(S) * n(E))
+    inefficient - O(n^x) in size where x is the number of tables and n is the size of the tables
+    not actually how the join query does
+
+Feifei out of town next week - TM's will be lecturing

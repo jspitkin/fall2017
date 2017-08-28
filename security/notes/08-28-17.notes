@@ -1,0 +1,83 @@
+programming assignment 1 will be posted today
+DES = data encrypton standard
+don't use DES, outdated
+3DES has good reasons to use
+
+DES
+---
+input: 64 bits
+output: 64 bits
+key: 64 bits
+key
+    7 bits of key material - 1 parity bits
+    repeated 8 times - giving a key of 56 bits
+process
+    64 bit input permutated
+    16 rounds of encryption using the key
+    final permutation
+    output
+    this process is reversible which is why it isn't used
+    chapter 3 has more information
+    the initial and final perm add no security value
+    how do you generate these per round keys?
+        details in the book
+each round 
+    64 bit input is divided into left most and right most 32 bits
+    right bits are fed to a mangler function along with the round key
+    left bits and mangled right bits are XOR'ed
+    unmangled right bits become left bits for next round
+    output of XOR function are the right bits for next round
+decrypt
+    similar but in reverse
+XOR
+    x XOR y = z
+    y XOR z = x
+    x XOR z = y
+mangler
+    take 32-bit input and divide into 8 parts with 4-bits each
+    take the 3rd 4-bit chunk and append the two neighboring bits to form a 6-bit chunk (wrap around for the first and final bit)
+    now you have 48 bits (8 6-bit chunks)
+    from the main key - we generate 16 48-bit keys, one for each round
+    perform XOR on each 6-bit chunk with 6-bits from the key
+    create a table for each 6-bit XOR'ed chunk
+        1st bit and last bit - create a table with 4 entries
+        each entry in the table tell you how sub out the internal 4 bits
+        a different table for each of the 8 chunks
+    the output of the mangler is the 8 4-bit blocks produced from the tables
+
+AES
+---
+proposed in 2001 and still used - no known problems
+Joan Daemon and Vincent Rijmen propose the Rijndael algorithm
+based on the theory of finite fields
+block sizes: 128, 160, 192, 224, 256 (mult of 32)
+key sizes: the same
+AES has a fixed block size of 128
+key size can be different (AES-256 is a key size of 256 for example)
+AES uses three parameters
+    block size in term of number of words is four
+    key size in words is 8
+    number of rounds is equal to 6 + max of block words or key words (14 for AES)
+    we won't be implementing AES - so don't need to use the gritty details
+    more how and why to use AES
+
+RC4
+---
+stream cipher - one time pad
+you generate a key but you don't use it again (one time use - one time pad)
+Alice and Bob want to share a secret
+8 bits to 256 byte message size
+pick a key which is the seed for a RNG - give to both Alice and Bob
+Alice and Bob generate a 1 byte long random number
+XOR each byte in the message with a 1 byte random number which produces ciphered message.
+Bob can XOR the cipher with the random number to get the message (Alice and Bob generate the same random numbers as they use the same seed)
+
+CBC
+---
+commonly used approach for encrypting large data
+only have to produce one random number the IV
+the cipher text for the previous block can be used as the random number to be XOR'ed against with the current block
+
+readings
+    read about RC4 and cipher block chain
+    chapter 4 in security book
