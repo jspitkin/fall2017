@@ -1,0 +1,41 @@
+Encryption Begins
+Initial Message:		['k', 'e', 'r', 'p', 'l', 'u', 'n', 'k']		        6b 65 72 70 6c 75 6e 6b
+
+Encryption Round 1: 	['·', '\x08', 'Ï', '±', 'ê', 'ý', ' ', '¦']		        b7 8 cf b1 ea fd 20 a6
+Encryption Round 2: 	['À', '\x7f', 'i', 'Û', '5', 'u', 'ü', 'u']		        c0 7f 69 db 35 75 fc 75
+Encryption Round 3: 	['¿', 'ç', 'Í', '*', '\x8c', 'ü', 'b', 'á']		        bf e7 cd 2a 8c fc 62 e1
+Encryption Round 4: 	['®', 'g', 'q', '¬', 'ý', '»', ',', '\x91']		        ae 67 71 ac fd bb 2c 91
+Encryption Round 5: 	['X', 'Ä', 'þ', 'Ô', '\x81', 'í', 't', 'r']		        58 c4 fe d4 81 ed 74 72
+Encryption Round 6: 	['_', '\x0f', 'À', "'", '\x85', 'ã', '_', '7']		    5f f c0 27 85 e3 5f 37
+Encryption Round 7: 	['\x8d', 'n', '`', '3', '\\', 'e', 'ð', 'z']		    8d 6e 60 33 5c 65 f0 7a
+Encryption Round 8: 	['P', '}', '\x80', '\x9c', '³', '\x0e', '\x17', 's']	50 7d 80 9c b3 e 17 73
+Encryption Round 9: 	['ú', '3', 'Ð', '1', '§', 'J', '`', '¾']		        fa 33 d0 31 a7 4a 60 be
+Encryption Round 10: 	['.', 'à', '_', '®', '\x88', '7', '\x8f', '(']		    2e e0 5f ae 88 37 8f 28
+Encryption Round 11: 	['6', '\x1d', 'N', '°', '\x05', 'Ë', ']', '\x99']		36 1d 4e b0 5 cb 5d 99
+Encryption Round 12: 	['\x11', '\x97', 'c', '¡', '\x9f', 'T', 'Ö', 'õ']		11 97 63 a1 9f 54 d6 f5
+Encryption Round 13: 	['O', '¸', '\x82', 'j', 'Y', 'y', 'à', 'e']		        4f b8 82 6a 59 79 e0 65
+Encryption Round 14: 	['\x00', '½', 'Ý', 'I', '!', '?', 'Ë', '*']		        0 bd dd 49 21 3f cb 2a
+Encryption Round 15: 	['´', 'Í', 'ù', ',', 'Î', 'J', ';', 'V']		        b4 cd f9 2c ce 4a 3b 56
+Encryption Round 16: 	['¥', '`', 'á', '"', 'ä', '7', 'z', 'g']		        a5 60 e1 22 e4 37 7a 67
+
+Decryption Begins
+Cipher Text:			['¥', '`', 'á', '"', 'ä', '7', 'z', 'g']		        a5 60 e1 22 e4 37 7a 67
+
+Decryption Round 1: 	['´', 'Í', 'ù', ',', 'Î', 'J', ';', 'V']		        b4 cd f9 2c ce 4a 3b 56
+Decryption Round 2: 	['\x00', '½', 'Ý', 'I', '!', '?', 'Ë', '*']		        0 bd dd 49 21 3f cb 2a
+Decryption Round 3: 	['O', '¸', '\x82', 'j', 'Y', 'y', 'à', 'e']		        4f b8 82 6a 59 79 e0 65
+Decryption Round 4: 	['\x11', '\x97', 'c', '¡', '\x9f', 'T', 'Ö', 'õ']		11 97 63 a1 9f 54 d6 f5
+Decryption Round 5: 	['6', '\x1d', 'N', '°', '\x05', 'Ë', ']', '\x99']		36 1d 4e b0 5 cb 5d 99
+Decryption Round 6: 	['.', 'à', '_', '®', '\x88', '7', '\x8f', '(']		    2e e0 5f ae 88 37 8f 28
+Decryption Round 7: 	['ú', '3', 'Ð', '1', '§', 'J', '`', '¾']		        fa 33 d0 31 a7 4a 60 be
+Decryption Round 8: 	['P', '}', '\x80', '\x9c', '³', '\x0e', '\x17', 's']	50 7d 80 9c b3 e 17 73
+Decryption Round 9: 	['\x8d', 'n', '`', '3', '\\', 'e', 'ð', 'z']		    8d 6e 60 33 5c 65 f0 7a
+Decryption Round 10: 	['_', '\x0f', 'À', "'", '\x85', 'ã', '_', '7']		    5f f c0 27 85 e3 5f 37
+Decryption Round 11: 	['X', 'Ä', 'þ', 'Ô', '\x81', 'í', 't', 'r']		        58 c4 fe d4 81 ed 74 72
+Decryption Round 12: 	['®', 'g', 'q', '¬', 'ý', '»', ',', '\x91']		        ae 67 71 ac fd bb 2c 91
+Decryption Round 13: 	['¿', 'ç', 'Í', '*', '\x8c', 'ü', 'b', 'á']		        bf e7 cd 2a 8c fc 62 e1
+Decryption Round 14: 	['À', '\x7f', 'i', 'Û', '5', 'u', 'ü', 'u']		        c0 7f 69 db 35 75 fc 75
+Decryption Round 15: 	['·', '\x08', 'Ï', '±', 'ê', 'ý', ' ', '¦']		        b7 8 cf b1 ea fd 20 a6
+Decryption Round 16: 	['k', 'e', 'r', 'p', 'l', 'u', 'n', 'k']		        6b 65 72 70 6c 75 6e 6b
+
+Recovered Message:	    ['k', 'e', 'r', 'p', 'l', 'u', 'n', 'k']		        6b 65 72 70 6c 75 6e 6b

@@ -174,8 +174,7 @@ def print_test_results(results):
 
 def print_gen_results(generated_sentences):
     for sentence in generated_sentences:
-        print('Seed =', sentence['seed'], ':', 
-                sentence['gen_sentence'])
+        print('Seed =', sentence['seed'], ':', sentence['gen_sentence'])
 
 
 if __name__ == "__main__":
