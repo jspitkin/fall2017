@@ -3,10 +3,6 @@
     Jake Pitkin -- u0891770 -- jakepitkin@gmail.com
     RC4 implementation based off text by Kaufman, Perlman and Speciner */
 
-#include <iostream>
-
-using namespace std;
-
 typedef unsigned char uns8;
 typedef unsigned short uns16;
 
@@ -19,7 +15,7 @@ void rc4init(uns8 *key, uns16 length);
 uns8 rec4step();
 
 int main() {
-    string msg = "This class is not hard at all.";
+    //string msg = "This class is not hard at all.";
     uns8 key = "mnbvc";
 }
 
