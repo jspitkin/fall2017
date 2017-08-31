@@ -29,15 +29,17 @@ int main() {
     rc4init(key, 5);
 
     // ignore the first 512 generated octets
-    for (int i = 0; i < skip_count; i++) {
+    int i;
+    for (i = 0; i < skip_count; i++) {
         rc4step();
     }
 
     // encrypt message
     printf("Cipher text: ");
-    for (int i = 0; i < msg_len; i++) {
-        cipher[i] = msg[i] ^ rc4step();
-        printf("%u", cipher[i]);
+    int j;
+    for (j = 0; j < msg_len; j++) {
+        cipher[j] = msg[j] ^ rc4step();
+        printf("%u", cipher[j]);
     }
     printf("\n");
 
@@ -45,15 +47,17 @@ int main() {
     rc4init(key, 5);
 
     // ignore the first 512 generated octets
-    for (int i = 0; i < skip_count; i++) {
+    int k;
+    for (k = 0; k < skip_count; k++) {
         rc4step();
     }
 
     // decrypt message
     printf("Decrypted message: ");
-    for (int i = 0; i < 30; i++) {
-        decrypted_msg[i] = cipher[i] ^ rc4step();
-        printf("%c", decrypted_msg[i]);
+    int m;
+    for (m = 0; m < 30; m++) {
+        decrypted_msg[m] = cipher[m] ^ rc4step();
+        printf("%c", decrypted_msg[m]);
     }
     printf("\n");
 
