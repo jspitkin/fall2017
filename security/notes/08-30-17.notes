@@ -1,0 +1,10 @@
+birthday problem
+---
+n people
+P(two people the same birthday)
+= 1 - P(no two people having the same birthday)
+= 1 - 365! / 365^n
+this relates to hashes
+
+P(two messages having the same MD)
+= 1 - P(no two messages having the same MD)

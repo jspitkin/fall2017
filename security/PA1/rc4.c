@@ -2,6 +2,7 @@
     Programming Assignment 1
     Jake Pitkin -- u0891770 -- jakepitkin@gmail.com
     RC4 implementation based off text by Kaufman, Perlman and Speciner */
+#include <stdio.h>
 
 typedef unsigned char uns8;
 typedef unsigned short uns16;
@@ -12,11 +13,50 @@ static uns8 x;
 static uns8 y;
 
 void rc4init(uns8 *key, uns16 length);
-uns8 rec4step();
+uns8 rc4step();
 
 int main() {
-    //string msg = "This class is not hard at all.";
-    uns8 key = "mnbvc";
+    int msg_len = 30;
+    int skip_count = 512;
+    uns8 key[] = "mnbvc";
+    uns8 msg[] = "This class is not hard at all.";
+    uns8 cipher[msg_len];
+    uns8 decrypted_msg[msg_len];
+
+    // initialize
+    printf("Key: %s\n", key);
+    printf("Original message: %s\n", msg);
+    rc4init(key, 5);
+
+    // ignore the first 512 generated octets
+    for (int i = 0; i < skip_count; i++) {
+        rc4step();
+    }
+
+    // encrypt message
+    printf("Cipher text: ");
+    for (int i = 0; i < msg_len; i++) {
+        cipher[i] = msg[i] ^ rc4step();
+        printf("%u", cipher[i]);
+    }
+    printf("\n");
+
+    // initialize
+    rc4init(key, 5);
+
+    // ignore the first 512 generated octets
+    for (int i = 0; i < skip_count; i++) {
+        rc4step();
+    }
+
+    // decrypt message
+    printf("Decrypted message: ");
+    for (int i = 0; i < 30; i++) {
+        decrypted_msg[i] = cipher[i] ^ rc4step();
+        printf("%c", decrypted_msg[i]);
+    }
+    printf("\n");
+
 }
 
 void rc4init(uns8 *key, uns16 length) {   /* initialize for encryption / decrytion */
@@ -46,5 +86,6 @@ uns8 rc4step() {    /* return next pseudo-random octet */
     state[y] = state[x];
     state[x] = t;
 
-    return (state[state[x] + state[y]]);
+    // Code fix: mod the index by the state size
+    return (state[(state[x] + state[y]) % 256]);
 }
