@@ -10,15 +10,122 @@
     <head>
         <title>Homework 1</title>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="./css/styles.css">
+        <style>
+            /* chart data stylings */
+
+            #bar-chart-x rect {
+                fill: #A07178;
+            }
+
+            #bar-chart-y rect {
+                fill: #776274;
+            }
+
+            #line-chart-x path {
+                fill: none;
+                stroke: #A07178;
+                stroke-width: 3px;
+            }
+
+            #line-chart-y line {
+                stroke: #776274;
+                stroke-width: 3px;
+            }
+
+            #area-chart-x path {
+                fill: #A07178;
+            }
+
+            #area-chart-y path {
+                fill: #776274;
+            }
+
+            #scatterplot {
+                border: 3px solid #776274;
+            }
+
+            #scatterplot circle {
+                fill: #A07178;
+            }
+
+            /* page styling */
+
+            body {
+                margin: 0;
+                text-align: center;
+                background-color: #fcf7f8;
+            }
+
+            svg {
+                display: block;
+            }
+
+            header {
+                background-color: #5A5353;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                color: white;
+                font-size: 24px;
+            }
+
+            /* chart divs styling */
+
+            .chart-container {
+                margin-top: 10px;
+                margin-bottom: 40px;
+            }
+
+            #charts {
+                display: inline-block;
+                color: #5A5353;
+                padding-left: 40px;
+                padding-right: 40px;
+                padding-bottom: 40px;
+                background-color: #ffffff;
+            }
+
+            /* display x and y charts next to each other */
+
+            #bar-chart-x-container {
+                width: 360px;
+                float: left;
+                margin-right: 30px;
+            }
+
+            #bar-chart-y-container {
+                float: left;
+            }
+        
+            #line-chart-x-container {
+                width: 360px;
+                float: left;
+                margin-right: 30px;
+            }
+
+            #line-chart-y-container {
+                float: left;
+            }
+
+            #area-chart-x-container {
+                width: 360px;
+                float: left;
+                margin-right: 30px;
+            }
+
+            #area-chart-y-container {
+                float: left;
+            }
+
+            #scatterplot-container {
+                display: inline-block;
+            }
+        </style>
     </head>            
     <body>
-    <header>
-        Jake Pitkin - u0891770 <br> CS-6630 Homework 1
-    </header>
-    <div id="charts">
-
-        <div>
+        <header>
+            Jake Pitkin - u0891770 <br> CS-6630 Homework 1
+        </header>
+        <div id="charts">
             <div class= "chart-container" id="bar-chart-x-container">
                 <h2>Bar Chart - X</h2>
                 <svg id="bar-chart-x" width="360" height="150">
@@ -51,105 +158,103 @@
                     <rect x=330 y=92.7 width=30 height=57.3 />
                 </svg>
             </div>
-        </div>
-
-        <div>
-            <div class= "chart-container" id="line-chart-x-container">
-                <h2>Line Chart - X</h2>
-                <svg id="line-chart-x" width="360" height="150">
-                    <path d="
-                        M 0 50
-                        L 33 70
-                        L 66 20
-                        L 99 60
-                        L 132 50
-                        L 165 10
-                        L 198 90
-                        L 231 110
-                        L 264 30
-                        L 297 80
-                        L 330 100
-                        " />
-                </svg>
+            <div>
+                <div class= "chart-container" id="line-chart-x-container">
+                    <h2>Line Chart - X</h2>
+                    <svg id="line-chart-x" width="360" height="150">
+                        <path d="
+                            M 0 50
+                            L 33 70
+                            L 66 20
+                            L 99 60
+                            L 132 50
+                            L 165 10
+                            L 198 90
+                            L 231 110
+                            L 264 30
+                            L 297 80
+                            L 330 100
+                            " />
+                    </svg>
+                </div>
+                <div class= "chart-container" id="line-chart-y-container">
+                    <h2>Line Chart - Y</h2>
+                    <svg id="line-chart-y" width="360" height="150">
+                        <line x1=0 y1=75.4 x2=33 y2=82.3 />
+                        <line x1=33 y1=82.3 x2=66 y2=22.6 />
+                        <line x1=66 y1=22.6 x2=99 y2=78.9 />
+                        <line x1=99 y1=78.9 x2=132 y2=71.9 />
+                        <line x1=132 y1=71.9 x2=165 y2=61.6 />
+                        <line x1=165 y1=61.6 x2=198 y2=89.2 />
+                        <line x1=198 y1=89.2 x2=231 y2=96.1 />
+                        <line x1=231 y1=96.1 x2=264 y2=68.5 />
+                        <line x1=264 y1=68.5 x2=297 y2=85.8 />
+                        <line x1=297 y1=85.8 x2=330 y2=92.7 />
+                    </svg>
+                </div>
             </div>
-            <div class= "chart-container" id="line-chart-y-container">
-                <h2>Line Chart - Y</h2>
-                <svg id="line-chart-y" width="360" height="150">
-                    <line x1=0 y1=75.4 x2=33 y2=82.3 />
-                    <line x1=33 y1=82.3 x2=66 y2=22.6 />
-                    <line x1=66 y1=22.6 x2=99 y2=78.9 />
-                    <line x1=99 y1=78.9 x2=132 y2=71.9 />
-                    <line x1=132 y1=71.9 x2=165 y2=61.6 />
-                    <line x1=165 y1=61.6 x2=198 y2=89.2 />
-                    <line x1=198 y1=89.2 x2=231 y2=96.1 />
-                    <line x1=231 y1=96.1 x2=264 y2=68.5 />
-                    <line x1=264 y1=68.5 x2=297 y2=85.8 />
-                    <line x1=297 y1=85.8 x2=330 y2=92.7 />
-                </svg>
-            </div>
-        </div>
         
-        <div>
-            <div class= "chart-container" id="area-chart-x-container">
-                <h2>Area Chart - X</h2>
-                <svg id="area-chart-x" width="360" height="150">
-                    <path d="
-                        M 0 150
-                        L 0 50
-                        L 33 70
-                        L 66 20
-                        L 99 60
-                        L 132 50
-                        L 165 10
-                        L 198 90
-                        L 231 110
-                        L 264 30
-                        L 297 80
-                        L 330 100
-                        L 330 150
-                        Z
-                        " />
-                </svg>
+            <div>
+                <div class= "chart-container" id="area-chart-x-container">
+                    <h2>Area Chart - X</h2>
+                    <svg id="area-chart-x" width="360" height="150">
+                        <path d="
+                            M 0 150
+                            L 0 50
+                            L 33 70
+                            L 66 20
+                            L 99 60
+                            L 132 50
+                            L 165 10
+                            L 198 90
+                            L 231 110
+                            L 264 30
+                            L 297 80
+                            L 330 100
+                            L 330 150
+                            Z
+                            " />
+                    </svg>
+                </div>
+                <div class= "chart-container" id="area-chart-y-container">
+                    <h2>Area Chart - Y</h2>
+                    <svg id="area-chart-y" width="360" height="150">
+                        <path d="
+                            M 0 150
+                            L 0 75.4
+                            L 33 82.3
+                            L 66 22.6
+                            L 99 78.9
+                            L 132 71.9
+                            L 165 61.6
+                            L 198 89.2
+                            L 231 96.1
+                            L 264 68.5
+                            L 297 85.8
+                            L 330 92.7
+                            L 330 150
+                            Z
+                            " />
+                    </svg>
+                </div>
             </div>
-            <div class= "chart-container" id="area-chart-y-container">
-                <h2>Area Chart - Y</h2>
-                <svg id="area-chart-y" width="360" height="150">
-                    <path d="
-                        M 0 150
-                        L 0 75.4
-                        L 33 82.3
-                        L 66 22.6
-                        L 99 78.9
-                        L 132 71.9
-                        L 165 61.6
-                        L 198 89.2
-                        L 231 96.1
-                        L 264 68.5
-                        L 297 85.8
-                        L 330 92.7
-                        L 330 150
-                        Z
-                        " />
-                </svg>
-            </div>
-        </div>
 
-        <div class= "chart-container" id="scatterplot-container">
-            <h2>Scatterplot</h2>
-            <svg id="scatterplot" width="180" height="180">
-                <circle cx=100 cy=105.4 r=3 />
-                <circle cx=80 cy=112.3 r=3 />
-                <circle cx=130 cy=52.6 r=3 />
-                <circle cx=90 cy=108.9 r=3 />
-                <circle cx=110 cy=101.9 r=3 />
-                <circle cx=140 cy=91.6 r=3 />
-                <circle cx=60 cy=119.2 r=3 />
-                <circle cx=40 cy=126.1 r=3 />
-                <circle cx=120 cy=98.5 r=3 />
-                <circle cx=70 cy=115.8 r=3 />
-                <circle cx=50 cy=122.7 r=3 />
-            </svg>
+            <div class= "chart-container" id="scatterplot-container">
+                <h2>Scatterplot</h2>
+                <svg id="scatterplot" width="180" height="180">
+                    <circle cx=100 cy=105.4 r=3 />
+                    <circle cx=80 cy=112.3 r=3 />
+                    <circle cx=130 cy=52.6 r=3 />
+                    <circle cx=90 cy=108.9 r=3 />
+                    <circle cx=110 cy=101.9 r=3 />
+                    <circle cx=140 cy=91.6 r=3 />
+                    <circle cx=60 cy=119.2 r=3 />
+                    <circle cx=40 cy=126.1 r=3 />
+                    <circle cx=120 cy=98.5 r=3 />
+                    <circle cx=70 cy=115.8 r=3 />
+                    <circle cx=50 cy=122.7 r=3 />
+                </svg>
+            </div>
         </div>
-    </div>
     </body>
 </html>
