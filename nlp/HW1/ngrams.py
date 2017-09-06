@@ -1,6 +1,7 @@
 """ jsp 08/25/17 - programming assignment 1 for CS-5340/6340 """
 import math
 import argparse
+import random
 
 
 def main():
@@ -27,13 +28,14 @@ def main():
         return 1
     elif args.gen:
         seeds = read_test_file(args.gen)
-        gen_results = generate_sentences(seeds, unigram_freq, bigram_freq)
-        print_gen_results(gen_results)
+        for seed in seeds:
+            gen_results = generate_sentences(seed, unigram_freq, bigram_freq)
+            print_gen_results(seed, gen_results)
         return 1
 
-def generate_sentences(seeds, unigram_freq, bigram_freq):
+def generate_sentences(seed, unigram_freq, bigram_freq):
     gen_sentences = []
-    for seed in seeds:
+    for _ in range(10):
         gen_word_count = 0
         gen_sentence = ""
         prev_word = seed.lower()
@@ -44,7 +46,7 @@ def generate_sentences(seeds, unigram_freq, bigram_freq):
             gen_sentence = gen_sentence + " " + next_word
             prev_word = next_word
             gen_word_count += 1
-        gen_sentences.append({ 'seed' : seed, 'gen_sentence' : gen_sentence})
+        gen_sentences.append({ 'seed' : seed, 'gen_sentence' : gen_sentence.lstrip()})
     return gen_sentences
 
 
@@ -61,19 +63,19 @@ def test_sentences(sentences, unigram_freq, bigram_freq, token_count):
 
 
 def get_next_gen_word(prev_word, unigram_freq, bigram_freq):
-    next_word = ""
-    next_word_prob = -math.inf
+    candidates = []
+    # collect all the candidate next words
     for bigram, freq in bigram_freq.items():
         if bigram.split()[0] != prev_word:
             continue
-        bigram_prob = math.log(bigram_freq[bigram] / unigram_freq[prev_word], 2)
-        if bigram_prob > next_word_prob:
-            next_word = bigram.split()[1]
-            next_word_prob = bigram_prob
-        elif bigram_prob == next_word_prob and  bigram.split()[1] > next_word:
-            next_word = bigram.split()[1]
-            next_word_prob = bigram_prob
-    return next_word
+        bigram_prob = bigram_freq[bigram] / unigram_freq[prev_word]
+        candidates.append({ 'word' : bigram.split()[1], 'prob' : bigram_prob});
+    rand_num = random.uniform(0, 1)
+    for cand in candidates:
+        rand_num = rand_num - cand['prob']
+        if rand_num <= 0:
+            return cand['word']
+    return ""
 
 
 def read_test_file(path):
@@ -146,7 +148,7 @@ def sentence_bigram_prob(sentence, bigram_freq, unigram_freq):
 
 
 def sentence_bigram_prob_smoothing(sentence, bigram_freq, unigram_freq):
-    vocab_size = len(unigram_freq) - 1
+    vocab_size = len(unigram_freq)
     tokens = sentence.split()
     bigram_prob = 0
     previous_token = 'phi'
@@ -162,19 +164,23 @@ def sentence_bigram_prob_smoothing(sentence, bigram_freq, unigram_freq):
 
 def print_test_results(results):
     for result in results:
-        print('S =', result['sentence'])
-        print('Unigrams: logprob(S) =', result['unigram'])
+        print('S =', result['sentence'], '\n')
+        print('Unsmoothed Unigrams, logprob(S) =', result['unigram'])
         if result['bigram'] == 0:
-            print('Bigrams: logprob(S) = undefined')
+            print('Unsmoothed Bigrams, logprob(S) = undefined')
         else:
-            print('Bigrams: logprob(S) =', result['bigram'])
-        print('Smoothed Bigrams: logprob(S) =', result['smooth'])
+            print('Unsmoothed Bigrams, logprob(S) =', result['bigram'])
+        print('Smoothed Bigrams, logprob(S) =', result['smooth'])
         print()
 
 
-def print_gen_results(generated_sentences):
-    for sentence in generated_sentences:
-        print('Seed =', sentence['seed'], ':', sentence['gen_sentence'])
+def print_gen_results(seed, generated_sentences):
+    print('Seed =', seed)
+    print('')
+    for index, sentence in enumerate(generated_sentences):
+        ind = "{}:".format(index + 1)
+        print('Sentence', ind, sentence['seed'], sentence['gen_sentence'])
+    print('')
 
 
 if __name__ == "__main__":
