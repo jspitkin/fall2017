@@ -4,52 +4,54 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-DECRYPT_SUB_TABLE	../security/PA1/secret_key.py	/^DECRYPT_SUB_TABLE = {}$/;"	kind:variable	line:11
-ENCRYPT_SUB_TABLE	../security/PA1/secret_key.py	/^ENCRYPT_SUB_TABLE = {}$/;"	kind:variable	line:10
-KEY	../security/PA1/secret_key.py	/^KEY = None$/;"	kind:variable	line:9
+DECRYPT_SUB_TABLES	../security/PA1/secret_key.py	/^DECRYPT_SUB_TABLES = []$/;"	kind:variable	line:14
+ENCRYPT_SUB_TABLES	../security/PA1/secret_key.py	/^ENCRYPT_SUB_TABLES = []$/;"	kind:variable	line:13
+KEY	../security/PA1/secret_key.py	/^KEY = None$/;"	kind:variable	line:12
+LOG	../security/PA1/secret_key.py	/^LOG = []$/;"	kind:variable	line:15
+MSG_LENGTH	../security/PA1/secret_key.py	/^MSG_LENGTH = 8$/;"	kind:variable	line:11
+ROUNDS	../security/PA1/secret_key.py	/^ROUNDS = 16$/;"	kind:variable	line:10
 SERVER_NAME	../security/PA0/client.py	/^SERVER_NAME = ''$/;"	kind:variable	line:3
 SERVER_PORT	../security/PA0/client.py	/^SERVER_PORT = 12000$/;"	kind:variable	line:4
 SERVER_PORT	../security/PA0/server.py	/^SERVER_PORT = 12000$/;"	kind:variable	line:3
 argparse	../nlp/HW1/ngrams.py	/^import argparse$/;"	kind:namespace	line:3
 array	../security/PA1/secret_key.py	/^import array$/;"	kind:namespace	line:6
-byte_to_binary	../security/PA1/secret_key.py	/^def byte_to_binary(byte):$/;"	kind:function	line:68
+byte_array_to_hex	../security/PA1/secret_key.py	/^def byte_array_to_hex(bytes):$/;"	kind:function	line:149
+byte_array_to_string	../security/PA1/secret_key.py	/^def byte_array_to_string(bytes):$/;"	kind:function	line:145
+byte_to_binary	../security/PA1/secret_key.py	/^def byte_to_binary(byte):$/;"	kind:function	line:141
+byte_to_char	../security/PA1/secret_key.py	/^def byte_to_char(bytes):$/;"	kind:function	line:156
 capitalized_sentence	../security/PA0/server.py	/^    capitalized_sentence = sentence.upper()$/;"	kind:variable	line:13
 client.py	../security/PA0/client.py	1;"	kind:file	line:1
 client_socket	../security/PA0/client.py	/^client_socket = socket(AF_INET, SOCK_STREAM)$/;"	kind:variable	line:6
-create_substitution_tables	../security/PA1/secret_key.py	/^def create_substitution_tables(message):$/;"	kind:function	line:34
-decrypt	../security/PA1/secret_key.py	/^def decrypt(cipher_text):$/;"	kind:function	line:30
-encrypt	../security/PA1/secret_key.py	/^def encrypt(message):$/;"	kind:function	line:26
-file	../nlp/HW1/format_suess.py	/^file = open ('corpora\/suess_fixed.txt', 'w')$/;"	kind:variable	line:13
-file	../nlp/HW1/format_suess.py	/^file = open('corpora\/suess.txt', 'r')$/;"	kind:variable	line:2
-format_suess.py	../nlp/HW1/format_suess.py	1;"	kind:file	line:1
-generate_sentences	../nlp/HW1/ngrams.py	/^def generate_sentences(seeds, unigram_freq, bigram_freq):$/;"	kind:function	line:34
-get_bigram_freq	../nlp/HW1/ngrams.py	/^def get_bigram_freq(tokens):$/;"	kind:function	line:115
-get_next_gen_word	../nlp/HW1/ngrams.py	/^def get_next_gen_word(prev_word, unigram_freq, bigram_freq):$/;"	kind:function	line:63
-get_unigram_freq	../nlp/HW1/ngrams.py	/^def get_unigram_freq(tokens):$/;"	kind:function	line:104
-invalid_input	../security/PA1/secret_key.py	/^def invalid_input(args):$/;"	kind:function	line:47
-line	../nlp/HW1/format_suess.py	/^        line = line[:-1] + ' ' +line[-1]$/;"	kind:variable	line:9
-line	../nlp/HW1/format_suess.py	/^    line = line + '\\n'$/;"	kind:variable	line:10
-line	../nlp/HW1/format_suess.py	/^    line = line.rstrip()$/;"	kind:variable	line:4
-lines	../nlp/HW1/format_suess.py	/^lines = []$/;"	kind:variable	line:1
-main	../nlp/HW1/ngrams.py	/^def main():$/;"	kind:function	line:6
-main	../security/PA1/secret_key.py	/^def main():$/;"	kind:function	line:13
+create_substitution_table_decrypt	../security/PA1/secret_key.py	/^def create_substitution_table_decrypt():$/;"	kind:function	line:104
+create_substitution_table_encrypt	../security/PA1/secret_key.py	/^def create_substitution_table_encrypt():$/;"	kind:function	line:95
+decrypt	../security/PA1/secret_key.py	/^def decrypt(msg):$/;"	kind:function	line:66
+encrypt	../security/PA1/secret_key.py	/^def encrypt(msg):$/;"	kind:function	line:39
+generate_sentences	../nlp/HW1/ngrams.py	/^def generate_sentences(seed, unigram_freq, bigram_freq):$/;"	kind:function	line:36
+get_bigram_freq	../nlp/HW1/ngrams.py	/^def get_bigram_freq(tokens):$/;"	kind:function	line:117
+get_next_gen_word	../nlp/HW1/ngrams.py	/^def get_next_gen_word(prev_word, unigram_freq, bigram_freq):$/;"	kind:function	line:65
+get_seed	../security/PA1/secret_key.py	/^def get_seed():$/;"	kind:function	line:167
+get_unigram_freq	../nlp/HW1/ngrams.py	/^def get_unigram_freq(tokens):$/;"	kind:function	line:106
+invalid_input	../security/PA1/secret_key.py	/^def invalid_input(args):$/;"	kind:function	line:120
+main	../nlp/HW1/ngrams.py	/^def main():$/;"	kind:function	line:7
+main	../security/PA1/secret_key.py	/^def main():$/;"	kind:function	line:18
 math	../nlp/HW1/ngrams.py	/^import math$/;"	kind:namespace	line:2
 modified_sentence	../security/PA0/client.py	/^modified_sentence = client_socket.recv(1024)$/;"	kind:variable	line:11
 ngrams.py	../nlp/HW1/ngrams.py	1;"	kind:file	line:1
-print_gen_results	../nlp/HW1/ngrams.py	/^def print_gen_results(generated_sentences):$/;"	kind:function	line:175
-print_test_results	../nlp/HW1/ngrams.py	/^def print_test_results(results):$/;"	kind:function	line:163
-punct	../nlp/HW1/format_suess.py	/^        punct = line[-1]$/;"	kind:variable	line:8
-randint	../security/PA1/secret_key.py	/^from random import randint$/;"	kind:namespace	line:7
-read_test_file	../nlp/HW1/ngrams.py	/^def read_test_file(path):$/;"	kind:function	line:79
-read_training_file	../nlp/HW1/ngrams.py	/^def read_training_file(path):$/;"	kind:function	line:87
+print_gen_results	../nlp/HW1/ngrams.py	/^def print_gen_results(seed, generated_sentences):$/;"	kind:function	line:177
+print_test_results	../nlp/HW1/ngrams.py	/^def print_test_results(results):$/;"	kind:function	line:165
+random	../nlp/HW1/ngrams.py	/^import random$/;"	kind:namespace	line:4
+random	../security/PA1/secret_key.py	/^import random$/;"	kind:namespace	line:7
+read_test_file	../nlp/HW1/ngrams.py	/^def read_test_file(path):$/;"	kind:function	line:81
+read_training_file	../nlp/HW1/ngrams.py	/^def read_training_file(path):$/;"	kind:function	line:89
 secret_key.py	../security/PA1/secret_key.py	1;"	kind:file	line:1
 sentence	../security/PA0/client.py	/^sentence = input('Input lowercase sentence:')$/;"	kind:variable	line:9
 sentence	../security/PA0/server.py	/^    sentence = connection_socket.recv(1024)$/;"	kind:variable	line:12
-sentence_bigram_prob	../nlp/HW1/ngrams.py	/^def sentence_bigram_prob(sentence, bigram_freq, unigram_freq):$/;"	kind:function	line:134
-sentence_bigram_prob_smoothing	../nlp/HW1/ngrams.py	/^def sentence_bigram_prob_smoothing(sentence, bigram_freq, unigram_freq):$/;"	kind:function	line:148
-sentence_unigram_prob	../nlp/HW1/ngrams.py	/^def sentence_unigram_prob(sentence, unigram_freq, token_count):$/;"	kind:function	line:126
+sentence_bigram_prob	../nlp/HW1/ngrams.py	/^def sentence_bigram_prob(sentence, bigram_freq, unigram_freq):$/;"	kind:function	line:136
+sentence_bigram_prob_smoothing	../nlp/HW1/ngrams.py	/^def sentence_bigram_prob_smoothing(sentence, bigram_freq, unigram_freq):$/;"	kind:function	line:150
+sentence_unigram_prob	../nlp/HW1/ngrams.py	/^def sentence_unigram_prob(sentence, unigram_freq, token_count):$/;"	kind:function	line:128
 server.py	../security/PA0/server.py	1;"	kind:file	line:1
 server_socket	../security/PA0/server.py	/^server_socket = socket(AF_INET, SOCK_STREAM)$/;"	kind:variable	line:5
 sys	../security/PA1/secret_key.py	/^import sys$/;"	kind:namespace	line:5
-test_sentences	../nlp/HW1/ngrams.py	/^def test_sentences(sentences, unigram_freq, bigram_freq, token_count):$/;"	kind:function	line:51
-xor_byte_arrays	../security/PA1/secret_key.py	/^def xor_byte_arrays(a1, a2):$/;"	kind:function	line:60
+test_sentences	../nlp/HW1/ngrams.py	/^def test_sentences(sentences, unigram_freq, bigram_freq, token_count):$/;"	kind:function	line:53
+write_log	../security/PA1/secret_key.py	/^def write_log():$/;"	kind:function	line:161
+xor_byte_arrays	../security/PA1/secret_key.py	/^def xor_byte_arrays(a1, a2):$/;"	kind:function	line:133

@@ -1,0 +1,21 @@
+connecting to georgia.eng.utah.edu
+---
+off-campus
+    use a vpn or ssh into georgia.eng.utah.edu 
+    local socket is used if you are on the box
+
+    mySQL
+    ---
+        mysql -u cs6530user -p
+        password: 6530fall17
+        'show databases;' - show databases
+
+    postgresSQL
+    ---
+        psql -U cs6530user dvdrental; (sample database connection)
+        password: 6530fall17
+        '\dt;' - show database tables
+        schema available online for dvdrental database
+
+'distinct' - remove duplicates in a SELECT query
+select count(*) from student; - count of student records

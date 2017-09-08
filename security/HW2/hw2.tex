@@ -106,11 +106,11 @@ and finally expand $m_{n}$
 
 $$m_{n+2} = D(c_{n+2}) \oplus c_{n + 1} \oplus D(c_{n+1}) \oplus c_{n} \oplus D(c_n) \oplus c_{n-1} \oplus m_{n-1}$$
 
-We know that all $c_i$ and $m_i$ are valid for $i < n$. We also know that $\oplus$ is a communicative operation. Thus, switching $c_n$ and $c_{n+1}$ will have no result on decrypting $m_{n+2}$ and forward. 
+We know that all $c_i$ and $m_i$ are valid for $i < n$. We also know that $\oplus$ is a communicative operation. Thus, switching $c_n$ and $c_{n+1}$ will have \textbf{no result} on decrypting $m_{n+2}$ and forward. 
 
 \part{c} \textbf{How about if a ciphertext block is lost?} \newline
 
-If ciphertext block $c_n$ is lost, then we will be unable to decrypt ciphertext blocks $c_i$ for all $i \geq n$. That is, message block $n$ and all following message blocks will be lost.
+If ciphertext block $c_n$ is lost, then we will be unable to decrypt ciphertext blocks $c_i$ for all $i \geq n$. That is, \textbf{message block $n$ and all following message blocks will be lost.}
 
 This is a result of requiring $D(c_n)$ to decrypt $m_n$. If we can't recover $m_n$, we can't recover $m_{n+1}$ as $m_{n+1} = D(c_{n+1}) \oplus c_n \oplus m_n$ (it requires $m_n$ to decrypt).
 
@@ -133,25 +133,51 @@ particular value, $d$, for the message digest and you would like to find a messa
 that has a message digest of $d$. Given that there are many more 2000-bit messages
 that map to a particular 256-bit message digest than 1000-bit messages, would
 you theoretically have to test fewer 2000-bit messages to find one that has a
-message digest of $d$ than if you were to test 1000-bit messages? Explain briefly.}
+message digest of $d$ than if you were to test 1000-bit messages? Explain briefly.} \newline
+
+Yes, in theory if you knew there are many more 2000-bit messages that hash to $d$ than 1000-bit messages, you should search over the 2000-bit messages. Assuming a good message digest function, regardless of the input each bit in the output should be on about half the time. The search space for a collision isn't determined by the size of the input, but the size of the message digest. According to to famous \textit{Birthday Problem}, we would have to search over $2^{128}$ messages to find two that have the same digest.
 
 \part{b} \textbf{ Find the approximate number of messages ($n$) that need to be tried
 before finding two that had the same message digest (size $k$) with probability 0.8.
-You need to find $n$ as a function of $k$. What is n when $k$ = $2^{256}$?}
+You need to find $n$ as a function of $k$. What is n when $k$ = $2^{256}$?} \newline
+
+From \textit{The Birthday Problem} in the text we know that given a message digest of size $k$, there is a $1/k$ probability of two inputs producing the same output. Finding the approximate number of messages $n$ required to try to have a probability of 0.8 of two digests matching
+
+$$\frac{1}{k} * n = 0.8$$
+
+$$\frac{1}{k} * \frac{4k}{5} = 0.8$$
+
+We will need to try $4k/5$ messages to have a 0.8 chance of finding two that share a message digest.
+
+When $k = 2^{256}$, we will have to try a very large number of messages to find a collision
+
+$$\frac{4 * 2^{256}}{5} \approx 9.263 * 10^{76} \ messages$$
 
 \part{c} \textbf{ Consider a simple authentication protocol using hash functions where
 Bob sends a random number $r_A$ to Alice and Alice responds with SHA512($K_{AB}$
 AND $r_A$). Could Trudy, impersonating Bob, send Alice a sequence of challenges
-$r_A$ that will reveal $K_{AB}$?}
+$r_A$ that will reveal $K_{AB}$?} \newline
+
+Trudy can pick any message $r_A$ and send it to Alice. Alice will respond with SHA512($K_{AB}$ AND $r_A$). Now Trudy knows the hash of $K_{AB}$ and a number she knows concatenated. She can now on her machine start to brute force guess $K_{AB}$. This can be done by taking each guess for $K_{AB}$, concatenating it with her chosen $r_A$, hashing the result with SHA512, and checking it against the hash from Alice. If $K_{AB}$ is of reasonable size like 32-bits, Trudy will be able to discover it. Finally, she can now pose as Bob and communicate with Alice.
 
 \question{Question 4}
 
-\part{1} \textbf{Contrast IP forwarding model with Content Centric Networking (CCN) model.}
+\part{1} \textbf{Contrast IP forwarding model with Content Centric Networking (CCN) model.} \newline
 
-\part{2} \textbf{How does CCN prevent a distributed attack where an attacker requests the same context name from many different networks?}
+The internet has evolved greatly in the last 50 years in the type and volume of content being delivered by the underlaying architecture (IP forwarding model) has remained largely unchanged. The IP model has a focus on \textit{where} a host is that has a desired resource. The Content Centric Networking (CCN) model shifts the focus to the \textit{what}, using named content has its central abstraction. Using IP's engineering principles that provide robustness, CCN replaces the host a packet address names with the content.
+
+\part{2} \textbf{How does CCN prevent a distributed attack where an attacker requests the same content name from many different networks?} \newline
+
+If a malicious user sends out a spam of identical \textit{interest} packets to multiple networks, a provider cannot experience a DDoS attack and become overloaded. Regardless of the number of found matching \textit{Data}, at each aggregation point only one \textit{Data} packet is allowed to be forwarded to the content consumer.
 
 \part{3} \textbf{How does a CCN publisher control where its content travels?}
 
+All content is available to anyone on the network. The caveat is all content on the network is encrypted. CCN content publishers control who they grant decryption keys to access the encrypted content. This runs in tandem with the philosophy of CCN: remove the focus of authenticating hosts (\textit{where}) and focus on the content (\textit{what}).
+
 \part{4} \textbf{Could CCN prevent spamming (e.g., email spamming)? Explain briefly.}
+
+CCN has a number of mechanisms in place to prevent unwanted traffic at arriving to a user's machine. A key one for e-mail span is: only the number of \textit{Data} packets requested by downstream \textit{Interests} will be forwarded to a user. As such, as a user you could broadcast an interest in important e-mail (a white list of colleagues, newsletters you enjoy, bills, etc) and not accept anything not on this whitelist.
+
+
 
 \end{document}
