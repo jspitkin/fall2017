@@ -1,0 +1,157 @@
+% HW Template for CS 6150, taken from https://www.cs.cmu.edu/~ckingsf/class/02-714/hw-template.tex
+%
+% You don't need to use LaTeX or this template, but you must turn your homework in as
+% a typeset PDF somehow.
+%
+% How to use:
+%    1. Update your information in section "A" below
+%    2. Write your answers in section "B" below. Precede answers for all 
+%       parts of a question with the command "\question{n}{desc}" where n is
+%       the question number and "desc" is a short, one-line description of 
+%       the problem. There is no need to restate the problem.
+%    3. If a question has multiple parts, precede the answer to part x with the
+%       command "\part{x}".
+%    4. If a problem asks you to design an algorithm, use the commands
+%       \algorithm, \correctness, \runtime to precede your discussion of the 
+%       description of the algorithm, its correctness, and its running time, respectively.
+%    5. You can include graphics by using the command \includegraphics{FILENAME}
+%
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{framed}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{pifont}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setlength{\headheight}{13.6pt}
+\newcommand\question[2]{\vspace{.25in}\hrule\textbf{#1}\vspace{.5em}\hrule\vspace{.10in}}
+\renewcommand\part[1]{\vspace{.10in}\textbf{(#1)}}
+\newcommand\algorith{\vspace{.10in}\textbf{Algorithm: }}
+\newcommand\correctness{\vspace{.10in}\textbf{Correctness: }}
+\newcommand\runtime{\vspace{.10in}\textbf{Running time: }}
+\pagestyle{fancyplain}
+\lhead{\textbf{\NAME\ (\UID)}}
+\chead{\textbf{HW\HWNUM}}
+\rhead{CS 6490, \today}
+\begin{document}\raggedright
+%Section A==============Change the values below to match your information==================
+\newcommand\NAME{Jake Pitkin}  % your name
+\newcommand\UID{u0891770}     % your utah UID
+\newcommand\HWNUM{2}              % the homework number
+%Section B==============Put your answers to the questions below here=======================
+
+\question{Question 1}
+
+\part{a} \textbf{Give two examples where even the use of strong encryption algorithms
+can result in significant vulnerabilities?}
+\begin{enumerate}
+  \item A reflection attack. A secret key is required for encryption. If the same secret key is used in both directions of communication, an attacker is able to create a channel of communication that is authenticated. This is accomplished by the attacker using the targets own challenge as a means to authenticate the connection. This is done by forming two connections with the target, using the challenge they sent on channel one to authenticate on channel two (since the challenge is bidirectional).
+  \item Person in the middle attack of a Diffie-Hellman key exchange. Trudy can sit in the middle of a key exchanges between Alice and Bob. When Alice sends her key to Bob, Trudy can instead insert her key. Likewise, when Bob responds Trudy inserts her key. Now Trudy knows both the agreed upon keys. She can sit between the communication between Alice and Bob, reading their messages and even modifying them.
+  \end{enumerate}
+
+\part{b} \textbf{A one-time pad must never repeat. Yet, in a series of fixed-length numbers, for example 8-bit bytes in RC4, some number must ultimately repeat, because there are only 256 8-bit numbers (0-255). Why are these two statements not contradictory?} \newline
+
+A one-time pad is a pseudorandom stream of bits or called a keystream. The keystream must be the same length as the message to be encrypted as a $\oplus$ operation is performed on the plaintext and the keystream. Given the keystream is a pseudorandom stream of 8-bit numbers, numbers will repeat as there are only 256 choices. This is fine and not a security threat. What is a security threat is \textbf{reusing the keystream} to encrypt multiple messages.
+
+One scenario is an attacker knows your plaintext message and intercepts the ciphertext. The attacker can easily recover the keystream and use it to decrypt future messages. This can be accomplished using the fact that $x \oplus x = 0$ and $0 \oplus y = y$. 
+
+$$m_n \oplus c_n$$
+$$m_n \oplus (m_n \oplus KEY)$$
+$$0 \oplus KEY$$
+$$KEY$$
+
+Alternatively, an attacker can perform a statistical analysis on a large group of intercepted ciphertext that was generated with a fixed key. Eventually figuring out the key which can be used to decrypt future intercepted ciphertext.
+
+\part{c} \textbf{Suppose a router between Alice and Bob can intercept Alice's messages sent to Bob and insert it's own messages. Which one of the encryption methods, a block cipher (e.g., AES) or a stream cipher (e.g., RC4), should Alice use if she suspects the adversarial router to know the plaintext corresponding to some of the ciphertext she sends to Bob? Explain your answer.} \newline
+
+Alice should use a block cipher encryption method. A stream cipher such as RC4 uses a one-time pad and a $\oplus$ operation to encrypt a message $m$. Suppose Alice wants to send a messages $m_A$ to Bob. Trudy, knowing the contents of $m_A$, can replace this with her own message $m_T$. RC4 encrypts Alice's message into cipher text as such $c_A = m_A \oplus KEY$. All Trudy has to do is $\oplus$ her message $m_T$ with $m_A$ and place the result, $c_T$, where $m_A$ was.
+
+	$$c_T = (m_T \oplus m_A) \oplus (KEY \oplus m_A)$$
+
+We know $\oplus$ is associative and $x \oplus x = 0$ as well as $0 \oplus y = y$. 
+
+$$c_T = m_T \oplus KEY \oplus m_A \oplus m_A$$
+$$c_T = m_T \oplus KEY \oplus 0$$
+$$c_T = m_T \oplus KEY$$
+
+Trudy has encrypted her plaintext message, without even knowing the one-time pad, and Bob will decrypt it as normal.
+
+\question{Question 2}
+
+\part{a} \textbf{With regular CBC, if one ciphertext block is lost, how many plaintext blocks are lost?} \newline
+
+When performing regular cipher block chaining (CBC), if one ciphertext block is lost then \textbf{two} plaintext blocks will be lost.
+
+Consider $c_{n}$ getting lost. During decryption, $m_{n}$ is produced by decrypting $c_{n}$ and $\oplus$ the result with $c_{n-1}$. As such, if $c_{n}$ is lost then $m_{n}$ will not be recoverable. Additionally, $m_{n+1}$ is produced by decrypting $c_{n+1}$ and $\oplus$ the result with $c_{n}$. So $m_{n+1}$ is lost as well. But, since $m_{n+1}$ or $c_{n}$. is not required to recover $m_{n+2}$, the rest of the message will be recoverable.
+
+\part{b} \textbf{With NCBC, why do things get back in sync if $c_n$ and $c_{n+1}$ are switched?} \newline
+
+To decrypt a message block we perform the following operation where $D$ is the decryption algorithm
+
+$$m_n = D(c_n) \oplus c_{n-1} \oplus m_{n - 1}$$
+
+We will see switching $c_n$ and $c_{n+1}$ will have no effect on messages $m_{n+2}$ and forward. First consider what $m_{n+2}$ is composed of without switching $c_n$ and $c_{n+1}$.
+
+$$m_{n+2} = D(c_{n+2}) \oplus c_{n + 1} \oplus m_{n + 1}$$
+
+We can expand $m_{n + 1}$
+
+$$m_{n+2} = D(c_{n+2}) \oplus c_{n + 1} \oplus D(c_{n+1}) \oplus c_{n} \oplus m_{n}$$
+
+and finally expand $m_{n}$
+
+$$m_{n+2} = D(c_{n+2}) \oplus c_{n + 1} \oplus D(c_{n+1}) \oplus c_{n} \oplus D(c_n) \oplus c_{n-1} \oplus m_{n-1}$$
+
+We know that all $c_i$ and $m_i$ are valid for $i < n$. We also know that $\oplus$ is a communicative operation. Thus, switching $c_n$ and $c_{n+1}$ will have no result on decrypting $m_{n+2}$ and forward. 
+
+\part{c} \textbf{How about if a ciphertext block is lost?} \newline
+
+If ciphertext block $c_n$ is lost, then we will be unable to decrypt ciphertext blocks $c_i$ for all $i \geq n$. That is, message block $n$ and all following message blocks will be lost.
+
+This is a result of requiring $D(c_n)$ to decrypt $m_n$. If we can't recover $m_n$, we can't recover $m_{n+1}$ as $m_{n+1} = D(c_{n+1}) \oplus c_n \oplus m_n$ (it requires $m_n$ to decrypt).
+
+\part{d} \textbf{How about if ciphertext block n is switched with ciphertext block $n + 2$?} \newline
+
+In this case, we will still be able to get back in sync for $m_{n+3}$ and forward. Following the same logic as in part \textbf{(b)}, we can expand $m_{n+3}$ out as such
+
+$$m_{n+3} = D(c_{n+3}) \oplus c_{n + 2} \oplus D(c_{n+2}) \oplus c_{n+1} \oplus D(c_{n+1}) \oplus c_{n} \oplus D(c_n) \oplus c_{n-1} \oplus m_{n-1}$$
+
+As $\oplus$ is communicative, we can observe that swapping $c_n$ and $c_{n+2}$ has no effect on $m_{n+3}$ and forward.
+
+\part{e} \textbf{How about any permutation of the first $n$ blocks?} \newline
+
+Following the logic laid out in parts \textbf{(b)} and \textbf{(d)}, we can see that this won't affect message blocks $m_{n+1}$ and forward. We can recursively expand a message block $m_i$ for $i > n$ and see that since $\oplus$ has a commutative property, the message will be decrypted properly.
+
+\question{Question 3}
+
+\part{a} \textbf{Assume a good 256-bit message digest function. Assume there is a
+particular value, $d$, for the message digest and you would like to find a message
+that has a message digest of $d$. Given that there are many more 2000-bit messages
+that map to a particular 256-bit message digest than 1000-bit messages, would
+you theoretically have to test fewer 2000-bit messages to find one that has a
+message digest of $d$ than if you were to test 1000-bit messages? Explain briefly.}
+
+\part{b} \textbf{ Find the approximate number of messages ($n$) that need to be tried
+before finding two that had the same message digest (size $k$) with probability 0.8.
+You need to find $n$ as a function of $k$. What is n when $k$ = $2^{256}$?}
+
+\part{c} \textbf{ Consider a simple authentication protocol using hash functions where
+Bob sends a random number $r_A$ to Alice and Alice responds with SHA512($K_{AB}$
+AND $r_A$). Could Trudy, impersonating Bob, send Alice a sequence of challenges
+$r_A$ that will reveal $K_{AB}$?}
+
+\question{Question 4}
+
+\part{1} \textbf{Contrast IP forwarding model with Content Centric Networking (CCN) model.}
+
+\part{2} \textbf{How does CCN prevent a distributed attack where an attacker requests the same context name from many different networks?}
+
+\part{3} \textbf{How does a CCN publisher control where its content travels?}
+
+\part{4} \textbf{Could CCN prevent spamming (e.g., email spamming)? Explain briefly.}
+
+\end{document}

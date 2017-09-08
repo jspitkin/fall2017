@@ -159,7 +159,7 @@ def byte_to_char(bytes):
 
 
 def write_log():
-    file = open("kerplunj.trace", 'w')
+    file = open("test.trace", 'w')
     for i in range(len(LOG)):
         file.write(LOG[i] + "\n")
 

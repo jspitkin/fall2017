@@ -1,0 +1,86 @@
+MD(k_AB | MD(k_AB | M)) - convince myself this is secure against m' getting appended
+MD5 - 128 bits (collisions found)
+SHA1 - 160 bits (collisions found)
+SHA256|384|512 - suggested to use
+(look up how SHA256 works)
+
+public key cryptography
+---
+x mod n = a is the same as (x - a) = kn is the same as x = a + kn
+cryptography deals with integers because it has to be perfect and this avoids floating point error
+
+PHI(n) - count of positive integers less than 'n' that are relativly prime to 'n'.
+if n is prime, PHI(n) = n - 1
+
+n = pq where p and q are prime numbers
+PHI(n) = pq - 1 - all mult of p - all mult of q
+PHI(n) = (pq - 1) - (p - 1) - (q - 1)
+PHI(n) = (p - 1)(q - 1)
+
+x^y mod n = x^(y mod PHI(n)) mod n
+if y mod PHI(n) = 1, x^y mod n = x mod n
+
+RSA
+---
+public key - <e, n>
+private key - <d, n>
+n is known in both
+n = pq - product of two very large prime numbers
+PHI(n) = (p - 1)(q - 1)
+find an 'e' that is relativly prime to PHI(n) (likely a small number)
+find an 'd' that is a multiplicative inverse of e mod PHI(n)
+    which means ed mod PHI(n) = 1
+
+encrypting m - c = m^e mod n
+decrypting c - m = c^d mod n
+
+why it works
+    c^d mod n = (m^e mod n)^d mod number
+              = (m^e - kn)^d mod n
+              = (m^(ed) . . . . some mult of n) mod n
+              = m^(ed) mod n
+              = m^(ed * PHI(n)) mod n
+              = m mod n 
+              = m (m must be less than n)
+
+use case - sharing a key between Alice and Bob
+    m length - 256 bits
+    n length - 3000 bits
+    all is good
+
+why is RSA secure?
+    <e, n> is public and everyone knows it
+    you should not be able to find 'd'
+    what is the relationship between 'e' and 'd'?
+        ed mod PHI(n) = 1
+        if PHI(n) is known, they can solve for 'd'
+        the adv does not know PHI(n)
+        recall PHI(n) = (p - 1)(q - 1)
+        to find p and q, they have to factor n
+        we don't have comp sound algs to factor large numbers
+
+use RSA to share the private key, then use secret key encryption for communication
+
+Diffie Hellman key exchange
+---
+SA and SB are secrets only known to Alice and Bob
+g and p - widely known
+p is a large prime number
+g is less than p (and some other properties)
+Alice takes TA = g^SA mod p
+Alice sends TA to Bob
+Bob computes TB = g^SB mod p
+sends this to Alice
+Bob gets TA (does not know SA)
+Bob takes (TA)^SB mod p = g^(SA * SB) mod p
+Alice gets TB
+Alice takes TB^SA mod p = g^(SA * SB) mod p
+Now Alice and Bob have the same secret they only know
+Since g and p have the correct properties, even with g^(SA * SB) mod p you can't find SA or SB
+
+problem - person in the middle attack
+    Trudy can sit in the middle and send her public key to Alice and Bob
+    now the secret keys are g^(SA * ST) mod p and g^(SB * ST) mod p
+    so Trudy can now sit in the middle and read encrypted messages
+    Trudy can also change the messages
+    

@@ -35,7 +35,7 @@ I coupled encryption and decryption into one program to make grading easier.
 ---
 How to use
 ---
-The command to run the program is "python3 secret_key.py <message> <key>".
+The command to run the program is "python secret_key.py <message> <key>".
 For example to run my program with the word 'kerplunk' and key 'wizardly' you would
 use 'python3 secret_key.py kerplunk wizardly'.
 
