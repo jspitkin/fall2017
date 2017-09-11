@@ -55,24 +55,53 @@ function update(error, data) {
         .domain([0, data.length])
         .range([0, 110]);
 
-
-    // ****** TODO: PART III (you will also edit in PART V) ******
+    // ****** PART III (you will also edit in PART V) ******
 
     // Select and update the 'a' bar chart bars
     let barChartA = d3.select('#a-bar');
-    barChartA.selectAll('rect')
-        .data(data)
+    let barsA = barChartA.selectAll('rect').data(data);
+    // Remove old bar elements 
+    barsA.exit()
+        .transition()
+        .duration(1000)
+        .attr('height', 0)
+        .remove();
+    // Add the 'enter' elements and merge 'update' elements
+    barsA = barsA.enter().append('rect').merge(barsA);
+    // Set attributes of new elements 
+    barsA.transition()
+        .duration(1000)
         .attr('height', function(d) {
             return aScale(d.a);
         });
+    barsA.attr('x', function(d, i) {
+            return (i + 1) * 10;
+        })
+        .attr('y', 0)
+        .attr('width', 10);
 
     // Select and update the 'b' bar chart bars
     let barChartB = d3.select('#b-bar');
-    barChartB.selectAll('rect')
-        .data(data)
+    let barsB = barChartB.selectAll('rect').data(data);
+    // Remove old bar elements
+    barsB.exit()
+        .transition()
+        .duration(1000)
+        .attr('height', 0)
+        .remove();
+    // Add the 'enter' elements and merge 'update' elements
+    barsB = barsB.enter().append('rect').merge(barsB);
+    // Set attributes of new elements
+    barsB.transition()
+        .duration(1000)
         .attr('height', function(d) {
             return bScale(d.b);
-        });
+        })
+    barsB.attr('x', function(d, i) {
+            return (i + 1) * 10;
+        })
+        .attr('y', 0)
+        .attr('width', 10);
 
     // Select and update the 'a' line chart path using this line generator
     let aLineGenerator = d3.line()
@@ -81,8 +110,7 @@ function update(error, data) {
     
     let lineChartA = d3.select('#a-line');
     lineChartA.select('path')
-        .attr('d', aLineGenerator(data));
-
+        .attr('d', aLineGenerator(data))
 
     // Select and update the 'b' line chart path (create your own generator)
     let bLineGenerator = d3.line()
@@ -93,7 +121,7 @@ function update(error, data) {
     lineChartB.select('path')
         .attr('d', bLineGenerator(data));
 
-    // Select and update the 'a' area chart path using this area generator
+    // Select and update the 'a' area chart path
     let aAreaGenerator = d3.area()
         .x((d, i) => iScale(i))
         .y0(0)
@@ -103,7 +131,7 @@ function update(error, data) {
     areaChartA.select('path')
         .attr('d', aAreaGenerator(data));
 
-    // TODO: Select and update the 'b' area chart path (create your own generator)
+    // Select and update the 'b' area chart path
     let bAreaGenerator = d3.area()
         .x((d, i) => iScale(i))
         .y0(0)
@@ -113,19 +141,48 @@ function update(error, data) {
     areaChartB.select('path')
         .attr('d', bAreaGenerator(data));
 
-    // Select and update the scatterplot points
+    // Select the scatterplot points
     let scatterplot = d3.select('#scatterplot');
-    scatterplot.selectAll('circle')
-        .data(data)
+    let points = scatterplot.selectAll('circle').data(data);
+    // Remove old points
+    points.exit().remove();
+    // Add the 'enter' points and merge with 'update' points
+    points = points.enter().append('circle').merge(points)
+    // Set attributes of each point
+    points.attr('r', 5)
         .attr('cx', function(d) {
             return aScale(d.a);
         })
         .attr('cy', function(d) {
             return bScale(d.b);
-        }); 
+        })
+        .append('svg:title')
+        .text(function(d) {
+            let x = parseFloat(d.a.toFixed(2));
+            let y = parseFloat(d.b.toFixed(2));
+            return '(' + x + ', ' + y + ')';
+        });
+   
+    // ****** PART IV ******
+    let barA = document.getElementById('a-bar');
+    for (let bar of barA.children) {
+        bar.addEventListener('mouseenter', function(event) {
+           bar.style.fill = "lightsteelblue"; 
+        });
+        bar.addEventListener('mouseleave', function(event) {
+            bar.style.fill = "steelblue";
+        });
+    }
 
-    // ****** TODO: PART IV ******
-
+    let barB = document.getElementById('b-bar');
+    for (let bar of barB.children) {
+        bar.addEventListener('mouseenter', function(event) {
+            bar.style.fill = "lightsteelblue";
+        });
+        bar.addEventListener('mouseleave', function(event) {
+            bar.style.fill = "steelblue";
+        });
+    }
 }
 
 /**
