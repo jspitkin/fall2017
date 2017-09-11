@@ -1,7 +1,12 @@
-""" jsp sept 8 2017 """
+""" 
+    Jake Pitkin - u0891770
+    CS - 6490 Fall 2017
+    Programming Assignment #2
+"""
 
-def exponentiate(m: int, d: int, n: int) -> int:
-    """ Exponentiates big numbers modulo n
+def exponentiate(m, d, n):
+    """ 
+        Exponentiates big numbers modulo n
 
         Args:
             m - base
@@ -10,6 +15,7 @@ def exponentiate(m: int, d: int, n: int) -> int:
     """
     result = 1
     exponent_binary = "{0:b}".format(d)
+    # Traverse from high-bit to low-bit
     for bit in exponent_binary:
         result = result * result
         if bit == '1':
