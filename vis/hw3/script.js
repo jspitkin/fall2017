@@ -5,11 +5,8 @@
  */
 function staircase() {
     let barChart = document.getElementById('a-bar');
-    let bars = Array.from(barChart.children);
-    let barHeights = bars.map(b => +b.getAttribute('height'));
-    barHeights.sort((b1, b2) => b1 - b2);
-    for (let i = 0; i < barHeights.length; i++) {
-        barChart.children[i].setAttribute('height', barHeights[i]);
+    for (let i = 0; i < barChart.children.length; i++) {
+        barChart.children[i].setAttribute('height', i * 10);
     }
 }
 
@@ -110,7 +107,17 @@ function update(error, data) {
     
     let lineChartA = d3.select('#a-line');
     lineChartA.select('path')
-        .attr('d', aLineGenerator(data))
+        .style('opacity', 1)
+        .transition()
+        .duration(500)
+        .style('opacity', 0)
+        .on('end', function() {
+            lineChartA.select('path')
+                .attr('d', aLineGenerator(data))
+                .transition()
+                .duration(500)
+                .style('opacity', 1)
+        })
 
     // Select and update the 'b' line chart path (create your own generator)
     let bLineGenerator = d3.line()
@@ -119,7 +126,17 @@ function update(error, data) {
 
     let lineChartB = d3.select('#b-line');
     lineChartB.select('path')
-        .attr('d', bLineGenerator(data));
+        .style('opacity', 1)
+        .transition()
+        .duration(500)
+        .style('opacity', 0)
+        .on('end', function() {
+            lineChartB.select('path')
+                .attr('d', bLineGenerator(data))
+                .transition()
+                .duration(500)
+                .style('opacity', 1)
+        })
 
     // Select and update the 'a' area chart path
     let aAreaGenerator = d3.area()
@@ -129,8 +146,18 @@ function update(error, data) {
     
     let areaChartA = d3.select('#a-area');
     areaChartA.select('path')
-        .attr('d', aAreaGenerator(data));
-
+        .style('opacity', 1)
+        .transition()
+        .duration(500)
+        .style('opacity', 0)
+        .on('end', function() {
+            areaChartA.select('path')
+                .attr('d', aAreaGenerator(data))
+                .transition()
+                .duration(500)
+                .style('opacity', 1)
+        });
+        
     // Select and update the 'b' area chart path
     let bAreaGenerator = d3.area()
         .x((d, i) => iScale(i))
@@ -139,7 +166,17 @@ function update(error, data) {
     
     let areaChartB = d3.select('#b-area');
     areaChartB.select('path')
-        .attr('d', bAreaGenerator(data));
+        .style('opacity', 1)
+        .transition()
+        .duration(500)
+        .style('opacity', 0)
+        .on('end', function() {
+            areaChartB.select('path')
+                .attr('d', bAreaGenerator(data))
+                .transition()
+                .duration(500)
+                .style('opacity', 1)
+        })
 
     // Select the scatterplot points
     let scatterplot = d3.select('#scatterplot');
@@ -147,42 +184,49 @@ function update(error, data) {
     // Remove old points
     points.exit().remove();
     // Add the 'enter' points and merge with 'update' points
-    points = points.enter().append('circle').merge(points)
+    points = points.enter().append('circle').merge(points);
     // Set attributes of each point
-    points.attr('r', 5)
-        .attr('cx', function(d) {
-            return aScale(d.a);
-        })
-        .attr('cy', function(d) {
-            return bScale(d.b);
-        })
-        .append('svg:title')
-        .text(function(d) {
-            let x = parseFloat(d.a.toFixed(2));
-            let y = parseFloat(d.b.toFixed(2));
-            return '(' + x + ', ' + y + ')';
-        });
-   
-    // ****** PART IV ******
-    let barA = document.getElementById('a-bar');
-    for (let bar of barA.children) {
-        bar.addEventListener('mouseenter', function(event) {
-           bar.style.fill = "lightsteelblue"; 
-        });
-        bar.addEventListener('mouseleave', function(event) {
-            bar.style.fill = "steelblue";
-        });
-    }
+    points.attr('r', 0)
+        .transition()
+        .duration(1000)
+        .attr('r', 5);
+    points.attr('cx', function(d) {
+        return aScale(d.a);
+    })
+    .attr('cy', function(d) {
+        return bScale(d.b);
+    })
+    // Add title elements to each point for hover information
+    points.selectAll('title').remove();
+    points.append('svg:title')
+    .text(function(d) {
+        return '(' + d.a + ', ' + d.b + ')';
+    });
 
-    let barB = document.getElementById('b-bar');
-    for (let bar of barB.children) {
-        bar.addEventListener('mouseenter', function(event) {
-            bar.style.fill = "lightsteelblue";
-        });
-        bar.addEventListener('mouseleave', function(event) {
-            bar.style.fill = "steelblue";
-        });
-    }
+    // ****** PART IV ******
+
+    // Add hover effect to the first bar chart
+    barChartA.selectAll('rect')
+        .on('mouseover', function() {
+           d3.event.target.style.fill = "lightsteelblue"; 
+        })
+        .on('mouseout', function() {
+            d3.event.target.style.fill = "steelblue";
+        })
+
+    // Add hover effect to the second bar chart
+    barChartB.selectAll('rect')
+        .on('mouseover', function() {
+            d3.event.target.style.fill = "lightsteelblue"; 
+        })
+        .on('mouseout', function() {
+            d3.event.target.style.fill = "steelblue";
+        })
+
+    // Log scatterplot point coordinates when clicked
+    points.on('click', function(d) {
+        console.log('(' + d.a + ', ' + d.b + ')');
+    })
 }
 
 /**

@@ -159,7 +159,7 @@ def sentence_bigram_prob_smoothing(sentence, bigram_freq, unigram_freq):
         else:
            bigram_prob += math.log(1 / (unigram_freq[previous_token] + vocab_size), 2)
         previous_token = token.lower()
-    return bigram_prob
+    return round(bigram_prob, 4) 
 
 
 def print_test_results(results):

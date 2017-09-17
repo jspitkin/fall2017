@@ -1,0 +1,102 @@
+% HW Template for CS 6150, taken from https://www.cs.cmu.edu/~ckingsf/class/02-714/hw-template.tex
+%
+% You don't need to use LaTeX or this template, but you must turn your homework in as
+% a typeset PDF somehow.
+%
+% How to use:
+%    1. Update your information in section "A" below
+%    2. Write your answers in section "B" below. Precede answers for all 
+%       parts of a question with the command "\question{n}{desc}" where n is
+%       the question number and "desc" is a short, one-line description of 
+%       the problem. There is no need to restate the problem.
+%    3. If a question has multiple parts, precede the answer to part x with the
+%       command "\part{x}".
+%    4. If a problem asks you to design an algorithm, use the commands
+%       \algorithm, \correctness, \runtime to precede your discussion of the 
+%       description of the algorithm, its correctness, and its running time, respectively.
+%    5. You can include graphics by using the command \includegraphics{FILENAME}
+%
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{framed}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{pifont}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setlength{\headheight}{13.6pt}
+\newcommand\question[2]{\vspace{.25in}\hrule\textbf{#1}\vspace{.5em}\hrule\vspace{.10in}}
+\renewcommand\part[1]{\vspace{.10in}\textbf{(#1)}}
+\newcommand\algorith{\vspace{.10in}\textbf{Algorithm: }}
+\newcommand\correctness{\vspace{.10in}\textbf{Correctness: }}
+\newcommand\runtime{\vspace{.10in}\textbf{Running time: }}
+\pagestyle{fancyplain}
+\lhead{\textbf{\NAME\ (\UID)}}
+\chead{\textbf{HW\HWNUM}}
+\rhead{CS 6490, \today}
+\begin{document}\raggedright
+%Section A==============Change the values below to match your information==================
+\newcommand\NAME{Jake Pitkin}  % your name
+\newcommand\UID{u0891770}     % your utah UID
+\newcommand\HWNUM{3}              % the homework number
+%Section B==============Put your answers to the questions below here=======================
+
+\question{Question 1}
+
+\part{a} \textbf{Doing a signature with RSA alone on a long message would be too slow (presumably using cipher block chaining). Suppose we could do division quickly. Would it be reasonable to compute an RSA signature on a long messages by first finding what the message equals, mod $n$, and signing that?}
+
+
+
+\part{b} \textbf{Suppose Alice sends a message to Bob by representing each alphabetic character as an integer between $0$ and $25$ (A $->$ $0$, B $->$ $1$, ... , Z $->$ $25$) and then encrypting each number separately using RSA with a large $e$ and a large $n$. Describe an efficient attack against this encryption method.}
+
+Alice's public key ${<}e, n{>}$ is known by everyone including the attacker. Since the attacker knows Alice's public key, they can create a ciphertext $c$ of a message $m$ by calculating $m^e$ mod $n$. The attacker can create a table with 26 entires, mapping each of the 26 ciphertexts to the corresponding message (0, 1, ... , 25). 
+
+Now the attacker can listen between Alice and Bob, intercept Alice's ciphertext for each character of the message, decode it using the table, map digits back to characters, and generate Alice's message.
+
+This is assuming the messages are not padded before encryption.
+
+\part{c} \textbf{Show that ($x^c$ mod $n$)$^d$ mod $n$ = $x^{cd}$ mod $n$.}
+
+\question{Question 2}
+
+\part{a} \textbf{Encrypting the Diffie-Hellman value with the other side's public key prevents the person-in-the-middle attack. Why is this the case, given the attacker can encrypt whatever it wants with the other side's public key?}
+
+During a Diffie-Hellman key exchange, two parties (Alice and Bob) arrive at a shared private key that no one else knows. A person-in-the-middle attack is possible by an intruder (Trudy) sitting between Alice and Bob. Trudy maintains a shared public key with Alice $K_{AT}$ and a shared public key with $K_{BT}$ as outlined in the textbook on page $168$.
+
+This attack can be prevented by encrypting the Diffie-Hellman values $T_A = g^{S_A} \ mod \ p$ and $T_B = g^{S_B} \ mod \ p$ with the other side's public key. This disrupts Trudy's plan as she needs $T_A$ to compute $K_{AT}$ and she needs $T_B$ to compute $K_{BT}$.
+
+$$K_{AT} = T_A^{S_T} \ mod \ p$$
+$$K_{BT} = T_B^{S_T} \ mod \ p$$
+
+Where $S_T$ is a number of Trudy's choosing. Trudy can't recover $T_A$ because it's encrypted with Bob's public key (she would need Bob's private key) and likewise $T_B$ is encrypted with Alice's public key.
+
+\part{b} \textbf{Suppose the public Diffie-Hellman key of Bob is $TB = g^{SB}$ mod $p$. How does Alice send a secret message $m$ using the Diffie-Hellman scheme to Bob? [Assume that (g, p) are known to Alice and Bob ahead of time.]}
+
+
+
+\part{c} \textbf{Let there be $n$ people in a group. Each person in the group wishes to establish a secret with every other person in the group. Let us assume that each person can send broadcast messages to reach all the other members of the group. Show an efficient Diffie-Hellman exchanges that allows each member of the group to establish a secret with every other member of the group. How many broadcast messages does your scheme use?}
+
+The public prime base $g$ and public prime modulus $p$ are known to all $n$ people in the group. Each person generates their own random number $S_n$ to use as a private key. Using this private key, they generate a public key $T_n = g^{S_n} \ mod \ p$. Each person in the group takes turns broadcasting their $T_n$ for every other person in the group to hear. Each person computes $n-1$ shared keys (one for each other person in the group) using the other person's public key and their own private key $secret_n \ = T_n^{S_{self}} \ mod \ p$.
+
+Now each member of the group has $n - 1$ secrets, one with each other member of the group. This was accomplished by sending out $n$ broadcast messages.
+
+\question{Question 3}
+
+\part{a} \textbf{Design your own zero knowledge proof system for interactive authentication using the ideas presented in Section 6.8 of the textbook. You must present arguments to show that your scheme is secure. (You can find a long list of NP-complete problems in the book by Michael Garey and David Johnson.}
+
+\part{b} \textbf{Transform your scheme into a zero knowledge signature scheme and also show that your signature scheme is secure.}
+
+\question{Question 4}
+
+\part{a} \textbf{Briefly describe the properties of the wireless channel between a pair of wireless nodes that enable these nodes to extract a symmetric/secret bit sequence?}
+
+\part{b} \textbf{What is the similarity between a secret key extraction presented in this paper and the Diffie-Hellman cryptosystem?}
+
+\part{c} \textbf{Does this method of secret key extraction from the wireless channel between Alice and Bob provide perfect forward secrecy? Explain briefly.}
+
+\part{d} \textbf{Why is it not useful to extract secret bits from wireless channels in static environments? How can an adversary make Alice and Bob agree upon a predictable key pattern?}
+
+\end{document}

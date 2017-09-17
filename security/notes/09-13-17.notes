@@ -1,0 +1,48 @@
+ZKPS - zero knowledge proof system
+--
+v = s^2 mod n
+    s is a secret known to Alice
+    n is a product of two large prime numbers
+Alice makes <v, n> public information
+    you can't find s knowing this (NP-hard)
+Alice wants to authenticate to Bob
+Alice chooses k random numbers
+Alice does r_i mod n for i up to k
+Bob gets these k numbers
+Bob divides the k numbers into two sub-sets
+Bob sends the sets back to Alice
+Alice responds with (s * r_i) mod n for each r_i in set 1
+and responds with r_i mod n for eah r_i in set 2
+Bob will verify each set to authenticate Alice
+Trudy does not know the r_i's and Trudy does not know s
+Bob does not know s
+
+ZKPS - signature
+---
+MD(m, <v, n>, r_i^2 mod n)
+= 10110111001010001 . . . . 
+indices = bit position
+sr_1 mod n, r_2 mod n, sr_3 mod n, sr_4 mod n, and r_5 mod n
+This collection is Alice's signature for message m
+If Trudy changes m to m', then the MD changes and the 1's and 0's will be different
+So Trudy will have to produce the sr_i mod n etc to fix the signature
+HW - Take your favorite NP-hard problem and turn it into a ZKPS
+    don't use any existing proofs that are online (closely watched)
+    hint: use this idea of two sets
+HW - Diffie-Hellman between n people, what does efficient mean?
+    Less than O(n^2)
+
+Authentication
+---
+three types of authentications
+    what you know?
+        you are able to prove to someone you know something that only you are supposed to know (i.e. password)
+    what you have?
+        your credit card, RSA key (encryption of current time based on your key stored in the system)
+    what you are?
+        your fingerprint, retina scan, face scan, etc
+        if someone can replicate your bio information, you can't really change your auth
+
+password
+---
+
