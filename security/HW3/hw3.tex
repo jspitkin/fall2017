@@ -60,6 +60,25 @@ This is assuming the messages are not padded before encryption.
 
 \part{c} \textbf{Show that ($x^c$ mod $n$)$^d$ mod $n$ = $x^{cd}$ mod $n$.}
 
+We will start with the left hand side and show that it is equivalent to the right hand side
+
+$$(x^c \ mod \ n)^d \ mod \ n$$
+
+Modular arithmetic produces the remainder of some integer $x$ when divided by $n$. This is similar to subtracting $Kn$ from $x$ for some integer $K$. For example $15 \ mod \ 4 \ = 3$ and $15 - (3 * 4) = 3$. With this we can rewrite the LHS of our original equation
+
+$$(x^c - Kn)^d \ mod \ n$$
+
+Next we will expand the expression
+
+$$(x^{cd} - ....) \ mod \ n$$
+
+Where we will have $x^{cd}$ and each other term in the expanded expression will be some multiple of $n$ as a result of the $Kn$. Since each of these terms is a multiple of $n$, they will have no result on the $mod \ n$ operation.
+
+$$x^{cd} \ mod \ n$$
+
+We have arrived at the RHS side of the original equation, show their equality.
+
+
 \question{Question 2}
 
 \part{a} \textbf{Encrypting the Diffie-Hellman value with the other side's public key prevents the person-in-the-middle attack. Why is this the case, given the attacker can encrypt whatever it wants with the other side's public key?}
@@ -73,9 +92,11 @@ $$K_{BT} = T_B^{S_T} \ mod \ p$$
 
 Where $S_T$ is a number of Trudy's choosing. Trudy can't recover $T_A$ because it's encrypted with Bob's public key (she would need Bob's private key) and likewise $T_B$ is encrypted with Alice's public key.
 
-\part{b} \textbf{Suppose the public Diffie-Hellman key of Bob is $TB = g^{SB}$ mod $p$. How does Alice send a secret message $m$ using the Diffie-Hellman scheme to Bob? [Assume that (g, p) are known to Alice and Bob ahead of time.]}
+\part{b} \textbf{Suppose the public Diffie-Hellman key of Bob is $T_B = g^{S_B}$ mod $p$. How does Alice send a secret message $m$ using the Diffie-Hellman scheme to Bob? [Assume that (g, p) are known to Alice and Bob ahead of time.]}
 
+Using the known and shared $g$ and $p$, Alice first chooses a random number $S_A$ and computes her public Diffie-Hellman key $T_A = g^{S_A}$ mod $p$. Next using Bob's public key $T_B$, Alice computes the shared key $K_{AB} = T_B^{S_A}$ mod $p$. This key is only obtainable by Alice and Bob, so Alice uses it to encrypt $m$ using a secret key encryption technique. Alice sends $K_{AB}\{m\}$ and $T_A$ to Bob.
 
+To recover the message, Bob computes the shared key himself $K_{AB} = T_A^{S_B}$ mod $p$. With this, Bob can decrypt $K_{AB}\{m\}$ using the same cryptographic algorithm Alice used and recover the message $m$.
 
 \part{c} \textbf{Let there be $n$ people in a group. Each person in the group wishes to establish a secret with every other person in the group. Let us assume that each person can send broadcast messages to reach all the other members of the group. Show an efficient Diffie-Hellman exchanges that allows each member of the group to establish a secret with every other member of the group. How many broadcast messages does your scheme use?}
 
