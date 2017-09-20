@@ -1,0 +1,16 @@
+ZKPS
+---
+graph isomorphism
+fiat-shamir
+    v = s^2 mod n 'v' is public
+    s is private
+
+public key and private key
+
+creating your own
+---
+locate the public and private information
+challenge repsonse
+divide into two sets
+
+MD = hash(m <GA, GB> , G1, G2, G3, ... G30)

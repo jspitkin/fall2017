@@ -1,0 +1,8 @@
+Eavsedropping and server database reading attacks
+---
+
+Chapter 11 - security handshake pitfalls
+---
+don't use one-way authentication protocols
+
+Third programming assignment is the Needham-Schroeder protocol

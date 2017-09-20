@@ -48,6 +48,18 @@
 
 \part{a} \textbf{Doing a signature with RSA alone on a long message would be too slow (presumably using cipher block chaining). Suppose we could do division quickly. Would it be reasonable to compute an RSA signature on a long messages by first finding what the message equals, mod $n$, and signing that?}
 
+A message $m$ can be signed by a private key ${<}d,n{>}$ by computing a signature $s$
+
+$$s = m^d \ mod \ n$$
+
+When performing a signature on a message, the size of $m$ must be smaller than $n$. As such, $m \ mod \ n$ will simply be $m$. So first computing $m \ mod \ n$ will have no effect.
+
+We saw in lecture that an adversary is able to change $m$ and still have it appear to be signed by the authentic party (even if $m^\prime$ is a message that makes no sense). This can be done as follows
+
+$$(m^d \ mod \ n)^2 \ mod \ n = (m^2)^d \ mod \ n$$
+
+For these reasons this approach is \textbf{not reasonable}. An alternative approach to dealing with large messages is to pad and hash the message. With this approach, regardless of message size (can be larger than $n$) we sign a constant size message $H(m)$. This also prevents the attack discussed above of changing the message. How exactly to pad and hash messages is defined by the Public-Key Cryptography Standard (PKCS) as discussed in the text.
+
 
 
 \part{b} \textbf{Suppose Alice sends a message to Bob by representing each alphabetic character as an integer between $0$ and $25$ (A $->$ $0$, B $->$ $1$, ... , Z $->$ $25$) and then encrypting each number separately using RSA with a large $e$ and a large $n$. Describe an efficient attack against this encryption method.}
@@ -106,7 +118,21 @@ Now each member of the group has $n - 1$ secrets, one with each other member of 
 
 \question{Question 3}
 
-\part{a} \textbf{Design your own zero knowledge proof system for interactive authentication using the ideas presented in Section 6.8 of the textbook. You must present arguments to show that your scheme is secure. (You can find a long list of NP-complete problems in the book by Michael Garey and David Johnson.}
+\part{a} \textbf{Design your own zero knowledge proof system for interactive authentication using the ideas presented in Section 6.8 of the textbook. You must present arguments to show that your scheme is secure. (You can find a long list of NP-complete problems in the book by Michael Garey and David Johnson.)}
+
+I will base my zero knowledge proof system off the vertex cover problem which is NP-Complete. The vertex cover problem is the task of given a graph $G = \{V, E\}$, does there exist a subset $U \subset V$ of size $k$ or less such that each edge of $G$ is incident to at least one vertex in $U$.
+
+First, Alice will create a graph $G = \{V, E\}$ and select a $k$. Alice also knows a vertex cover $U \subset V$ for $G$ of size $k$. This can be done by first creating the vertex cover $U$ and adding a sufficient number of vertices and edges to form a complex $G$.
+
+The graph $G$ will be \textit{public} information and the vertex cover $U$ will be \textit{private} to Alice.
+
+When Alice wants to prove to Bob she is indeed Alice, she will generate graphs $G_1, G_2, ..., G_{30}$ which are isomorphic to $G$. Alice will have the mappings from $G \rightarrow G_i$ as well as the vertex covers $U_i$ for each $G_i$.
+
+Bob sorts the $G_i$ into two sets. For set one Bob requests $G \rightarrow G_i$. For set two Bob requests the vertex cover $U_i$ for each $G_i$. Bob can confirm the isomorphic in poly time. Bob can also confirm the vertex cover in poly time (iterate over the vertices in $U_i$ and mark which edges are incident to them. At the end of the iteration all edges should be marked.)
+
+Bob now knows he is talking to Alice and Alice has revealed no information about her secret (the vertex cover of the original graph).
+
+As with the isomorphic example in class, an adversary Trudy will respond to Bob incorrectly half the time. Say Trudy generates $G_1, G_2, ..., G_{30}$ and presents them to Bob. Trudy has two choices when constructing these graphs. She can either construct a $G_i$ that is isomorphic to Alice's public $G$. Or Trudy can construct a graph $G_i$ which she knows a vertex cover for. But, she doesn't know how Bob will partition the graphs into two sets. Thus Trudy has a $(1/2)^{30}$ chance to correctly construct $G_1, G_2, ..., G_{30}$ and fool Bob.
 
 \part{b} \textbf{Transform your scheme into a zero knowledge signature scheme and also show that your signature scheme is secure.}
 
@@ -114,10 +140,25 @@ Now each member of the group has $n - 1$ secrets, one with each other member of 
 
 \part{a} \textbf{Briefly describe the properties of the wireless channel between a pair of wireless nodes that enable these nodes to extract a symmetric/secret bit sequence?}
 
-\part{b} \textbf{What is the similarity between a secret key extraction presented in this paper and the Diffie-Hellman cryptosystem?}
+For Alice and Bob to generate a shared secret, bits are extracted from the wireless channel between them using a statistic called Received signal strength (RSS). The key extraction uses both spatial and temporal variations in the channel that both Alice and Bob can detect "identically" (similarities are found using the authors algorithms and protocols). A secret key bit pattern is extracted using a quantizer. An example RSS quantizer can set upper and lower thresholds for the signal. A signal above the upper threshold for a given frame of time would produce a 1 bit and similarly a signal under the lower threshold produces 0 bit. 
+
+There exists complications with Alice and Bob extracting identical information from a channel. Typical wireless transceivers are half duplex and they can't recieve and transmit a signal simultaneously. Additional complications such as noise, interference, and manufacturing variations will cause differences in bit streams. The authors use the Cascade protocol to agree on shared bits. Due to the spatial element of the channel, if an adversary Eve is attempting to eavesdrop she must be physically very close to Alice or Bob.
+
+\part{b} \textbf{What is the similarity between the secret key extraction presented in this paper and the Diffie-Hellman cryptosystem?}
+
+The secret key extraction presented and the Diffie-Hellman cryptosystem are similar in that there is no authentication. Both systems provide a means for two parties to agree upon a shared secret key using publicly broadcasted information (RSS and the Diffie-Hellman values). 
+
+The weakness in both of these models is they are vulnerable to person-in-the-middle attacks. Diffie-Hellman copes with this by encrypting values with the other side's public key. The secret key extraction presented in the paper makes the assumption in their adversary model that Eve can't perform a person-in-the-middle attack.
 
 \part{c} \textbf{Does this method of secret key extraction from the wireless channel between Alice and Bob provide perfect forward secrecy? Explain briefly.}
 
+This method of secret key extraction does provide perfect forward secrecy. Each time Alice and Bob want to communicate, a new shared secret key is generated for use with the current session only. The secret extracted bits depend on the spatial variation between Alice and Bob as well as a variety of other factors that affect the channel such as noise and manufacturing variations. There are no long-term secret keys that can become comprised and used to reveal information about the current session secret key.
+
+
 \part{d} \textbf{Why is it not useful to extract secret bits from wireless channels in static environments? How can an adversary make Alice and Bob agree upon a predictable key pattern?}
+
+For Alice and Bob to establish a shared secret key, they send each other probes and measure the RSS values of these probes. In a static environment, the channel has a low reciprocity. That is, the channel curves for Alice and Bob do not follow each other as well as they do in \textit{mobile} and \textit{intermediate} settings (defined in the paper). The reasoning is the variations in the channel is generated by hardware imperfections and thermal effects. These variations are not shared by Alice and Bob. This makes it difficult for the extraction algorithm to extract shared bits and it takes 7-8 minutes to generate a key in a \textit{static} environment.
+
+In a \textit{static} environment, it's also possible for an adversary Eve to make Alice and Bob agree upon a predictable key pattern. By doing this, Eve is aware of this predictable pattern and can generate a session key for herself. This is done by intermittently obstructing the path between the sender and receiver in a pattern. As shown in the paper, the path can be physically manipulated by Eve leaning in and out of the path of the signal. This "predictable channel" attack can be done without precise machinery, the rough movements of Eve is enough.
 
 \end{document}
