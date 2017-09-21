@@ -62,9 +62,9 @@ For these reasons this approach is \textbf{not reasonable}. An alternative appro
 
 
 
-\part{b} \textbf{Suppose Alice sends a message to Bob by representing each alphabetic character as an integer between $0$ and $25$ (A $->$ $0$, B $->$ $1$, ... , Z $->$ $25$) and then encrypting each number separately using RSA with a large $e$ and a large $n$. Describe an efficient attack against this encryption method.}
+\part{b} \textbf{Suppose Alice sends a message to Bob by representing each alphabetic character as an integer between $0$ and $25$ (A $\rightarrow$ $0$, B $\rightarrow$ $1$, ... , Z $\rightarrow$ $25$) and then encrypting each number separately using RSA with a large $e$ and a large $n$. Describe an efficient attack against this encryption method.}
 
-Alice's public key ${<}e, n{>}$ is known by everyone including the attacker. Since the attacker knows Alice's public key, they can create a ciphertext $c$ of a message $m$ by calculating $m^e$ mod $n$. The attacker can create a table with 26 entires, mapping each of the 26 ciphertexts to the corresponding message (0, 1, ... , 25). 
+Alice's public key ${<}e, n{>}$ is known by everyone including the attacker. Since the attacker knows Alice's public key, they can create a ciphertext $c$ of a message $m$ by calculating $m^e$ mod $n$. The attacker can create a table with 26 entires, mapping each of the 26 ciphertexts to the corresponding message (0, 1, ... , 25). The attacker then can easily look at a few messages and notice the pattern of $0$ $\rightarrow$ A, $1$ $\rightarrow$ B, etc. as this is a very simple cryptogram.
 
 Now the attacker can listen between Alice and Bob, intercept Alice's ciphertext for each character of the message, decode it using the table, map digits back to characters, and generate Alice's message.
 
@@ -122,19 +122,31 @@ Now each member of the group has $n - 1$ secrets, one with each other member of 
 
 I will base my zero knowledge proof system off the vertex cover problem which is NP-Complete. The vertex cover problem is the task of given a graph $G = \{V, E\}$, does there exist a subset $U \subset V$ of size $k$ or less such that each edge of $G$ is incident to at least one vertex in $U$.
 
-First, Alice will create a graph $G = \{V, E\}$ and select a $k$. Alice also knows a vertex cover $U \subset V$ for $G$ of size $k$. This can be done by first creating the vertex cover $U$ and adding a sufficient number of vertices and edges to form a complex $G$.
+First, Alice will create a graph $G = \{V, E\}$ and select a $k$. Alice also knows a vertex cover $U \subset V$ for $G$ of size $k$. This can be done by first creating the vertex cover $U$ and adding a sufficient number of vertices and edges to form a complex $G$ while maintaining the vertex cover.
 
 The graph $G$ will be \textit{public} information and the vertex cover $U$ will be \textit{private} to Alice.
 
 When Alice wants to prove to Bob she is indeed Alice, she will generate graphs $G_1, G_2, ..., G_{30}$ which are isomorphic to $G$. Alice will have the mappings from $G \rightarrow G_i$ as well as the vertex covers $U_i$ for each $G_i$.
 
-Bob sorts the $G_i$ into two sets. For set one Bob requests $G \rightarrow G_i$. For set two Bob requests the vertex cover $U_i$ for each $G_i$. Bob can confirm the isomorphic in poly time. Bob can also confirm the vertex cover in poly time (iterate over the vertices in $U_i$ and mark which edges are incident to them. At the end of the iteration all edges should be marked.)
+Bob sorts the $G_i$ into two sets. For set one Bob requests $G \rightarrow G_i$. For set two Bob requests the vertex cover $U_i$ for each $G_i$. Bob can confirm the isomorphic mapping in poly time. Bob can also confirm the vertex cover in poly time (iterate over the vertices in $U_i$ and mark which edges are incident to them. At the end of the iteration all edges should be marked.)
 
 Bob now knows he is talking to Alice and Alice has revealed no information about her secret (the vertex cover of the original graph).
 
-As with the isomorphic example in class, an adversary Trudy will respond to Bob incorrectly half the time. Say Trudy generates $G_1, G_2, ..., G_{30}$ and presents them to Bob. Trudy has two choices when constructing these graphs. She can either construct a $G_i$ that is isomorphic to Alice's public $G$. Or Trudy can construct a graph $G_i$ which she knows a vertex cover for. But, she doesn't know how Bob will partition the graphs into two sets. Thus Trudy has a $(1/2)^{30}$ chance to correctly construct $G_1, G_2, ..., G_{30}$ and fool Bob.
+As with the isomorphic example in class, an adversary Trudy will respond to Bob incorrectly on average half the time. Say Trudy generates $G_1, G_2, ..., G_{30}$ and presents them to Bob. Trudy has two choices when constructing these graphs. She can either construct a $G_i$ that is isomorphic to Alice's public $G$. Or Trudy can construct a graph $G_i$ which she knows a vertex cover for. A graph $G_i$ can't be both as she doesn't know Alice's secret $U$. But, she doesn't know how Bob will partition the graphs into two sets. Thus Trudy has a $(1/2)^{30}$ chance to correctly construct $G_1, G_2, ..., G_{30}$ and fool Bob.
 
 \part{b} \textbf{Transform your scheme into a zero knowledge signature scheme and also show that your signature scheme is secure.}
+
+We can transform the system from part (a) into a signature scheme for a message $m$. Alice wants to sign a message without another person (Bob) in the loop, she wants to sign it in general. To remove Bob we will instead use a random bit pattern to determine how to separate $G_1, G_2, ..., G_{30}$ into two groups. Using a message digest, Alice can produce a hash of $m$, the public graph $G$, the private vertex cover $U$, and $G_1, G_2, ..., G_{30}$.
+
+$$MD(m, G, U, G_1, G_2, ..., G_{30}) = 1010111001101010100111011....$$
+
+This message digest will serve as our "random" bit pattern. At index $i$, if the bit is 1 we will produce the mapping $G \rightarrow G_i$ and if the bit is a 0 we will produce the vertex cover $U_i$. The final signature of the message $m$ will be the $30$ $G_i$ along with the two sets of responses, one for each $G_i$:
+
+$$sign(m) = \{G_1, G_2, ..., G_{30}\}, \{G \rightarrow G_1, ..., G \rightarrow G_x\}, \{U_2, ...., U_y\}$$
+
+Recall from part (a) that if Trudy is to produce $G_1, G_2, ..., G_{30}$ she must decide if she is going to construct a graph she knows $G \rightarrow G_i$ or $U_i$ for. But, the graphs $G_i$ must be computed before the message digest is computed (which reveals the challenge required for each $G_i$). 
+
+Thus, if Alice's $U$ is truly a secret, there is a very high probability that she will be the only person able to compute MD and produce the correct challenges relating to the bit pattern. And similar to authentication, Alice doesn't "leak" any information about her secret in the process of signing a message.
 
 \question{Question 4}
 
