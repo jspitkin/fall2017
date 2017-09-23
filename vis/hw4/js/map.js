@@ -5,22 +5,20 @@ class Map {
      */
     constructor() {
         this.projection = d3.geoConicConformal().scale(150).translate([400, 350]);
-
+        this.map = d3.select("#map");
     }
 
     /**
      * Function that clears the map
      */
     clearMap() {
-
-        // ******* TODO: PART V*******
-        // Clear the map of any colors/markers; You can do this with inline styling or by
-        // defining a class style in styles.css
-
-        // Hint: If you followed our suggestion of using classes to style
-        // the colors and markers for hosts/teams/winners, you can use
-        // d3 selection and .classed to set these classes on and off here.
-
+        // Clear the styling for the hosting and participating teams
+        this.map.selectAll("path")
+            .classed("host", false)
+            .classed("team", false)
+        
+        // Clear the gold and silver metal winner markers
+        d3.select("#points").selectAll("circle").remove();
     }
 
     /**
@@ -29,26 +27,49 @@ class Map {
      */
     updateMap(worldcupData) {
 
-        //Clear any previous selections;
+        // Clear any previous selections;
         this.clearMap();
 
-        // ******* TODO: PART V *******
-
-        // Add a marker for the winner and runner up to the map.
-
-        // Hint: remember we have a conveniently labeled class called .winner
-        // as well as a .silver. These have styling attributes for the two
-        // markers.
-
-
         // Select the host country and change it's color accordingly.
+        this.map.select("#" + worldcupData['host_country_code']).classed("host", true);
 
         // Iterate through all participating teams and change their color as well.
+        let teamList = worldcupData['TEAM_LIST'].split(',');
+        for (let i = 0; i < teamList.length; i++) {
+            this.map.select("#" + teamList[i]).classed("team", true);
+        }
 
-        // We strongly suggest using CSS classes to style the selected countries.
+        // Add gold metal winner marker
+        d3.select("#points")
+            .append("circle")
+            .attr("cx", function() {
+                let lon = worldcupData["WIN_LON"];
+                let lat = worldcupData["WIN_LAT"];
+                return this.projection([lon, lat])[0];
+            }.bind(this))
+            .attr("cy", function() {
+                let lon = worldcupData["WIN_LON"];
+                let lat = worldcupData["WIN_LAT"];
+                return this.projection([lon, lat])[1];
+            }.bind(this))
+            .attr("r", 10)
+            .classed("gold", true);
 
-
-        // Add a marker for gold/silver medalists
+        // Add silver metal winner marker
+        d3.select("#points")
+            .append("circle")
+            .attr("cx", function() {
+                let lon = worldcupData["RUP_LON"];
+                let lat = worldcupData["RUP_LAT"];
+                return this.projection([lon, lat])[0];
+            }.bind(this))
+            .attr("cy", function() {
+                let lon = worldcupData["RUP_LON"];
+                let lat = worldcupData["RUP_LAT"];
+                return this.projection([lon, lat])[1];
+            }.bind(this))
+            .attr("r", 7)
+            .classed("silver", true);
     }
 
     /**
@@ -56,20 +77,27 @@ class Map {
      * @param the json data with the shape of all countries
      */
     drawMap(world) {
+        let data = topojson.feature(world, world.objects.countries);
+        let path = d3.geoPath().projection(this.projection);
 
-        //(note that projection is a class member
-        // updateMap() will need it to add the winner/runner_up markers.)
-
-        // ******* TODO: PART IV *******
-
-        // Draw the background (country outlines; hint: use #map)
-        // Make sure and add gridlines to the map
-
-        // Hint: assign an id to each country path to make it easier to select afterwards
-        // we suggest you use the variable in the data element's .id field to set the id
-
-        // Make sure and give your paths the appropriate class (see the .css selectors at
-        // the top of the provided html file)
+        // Draw countries
+        this.map.selectAll("path")
+            .data(data.features)
+            .enter()
+            .append("path")
+            .attr("d", path)
+            .attr("id", function(d) {
+                return d.id;
+            })
+            .classed("countries", true);
+        
+        // Draw gradicule
+        let graticule = d3.geoGraticule();
+        this.map.append("path")
+            .datum(graticule)
+            .attr("class", "grat")
+            .attr("d", path)
+            .attr("fill", "none");
 
     }
 

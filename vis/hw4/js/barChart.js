@@ -17,100 +17,118 @@ class BarChart {
      * Render and update the bar chart based on the selection of the data type in the drop-down box
      */
     updateBarChart(selectedDimension) {
+        // Select data and years for updated bar chart
+        let selectedData = this.allData.map(d => d[selectedDimension]).reverse();
+        this.yearData = this.allData.map(d => +d['YEAR']).reverse();
+        this.barChart = d3.select("#barChart");
+        this.currentWorldCup = null;
 
-
-
-        // ******* TODO: PART I *******
-        let selectedData = this.allData.map(d => d[selectedDimension]);
-        let yearData = this.allData.map(d => +d['YEAR']).reverse();
-        let barChart = d3.select("#barChart");
-        let colorScale = d3.scaleLinear()
-            .domain([d3.min(selectedData), d3.max(selectedData)])
-            .range(["lightsteelblue", "steelblue", "darksteelblue"]);
-        let barWidth = 20;
+        // Styling and positions for bar chart
+        let barWidth = 18;
         let padding = 10;
         let yAxisWidth = 60;
         let xAxisHeight = 60;
-        let yAxisHeight = barChart.attr("height") - xAxisHeight;
-        let xAxisYPos = barChart.attr("height") - xAxisHeight;
-        let barSpacing = (barChart.attr("width") - yAxisWidth) / selectedData.length;
-
-
-        //let bars = barChart.select('#bars')
-          //  .selectAll('.bars')
-            //.data(this.allData);
-
-//        bars.exit().remove();
-
-//        bars = bars.enter().append('rect').classed('.bars', true).merge(bars);
-
-//        bars.attr('height', function(d) {
-    //            return yScale(d[selectedDimension]);
-  //          })
-      //      .attr('x', function(d, i) {
-       //         return (i * barSpacing);
-        //    })
-         //   .attr('y', 0)
-          //  .attr('width', function(d, i) {
-          //      return barWidth;
-          //  })
-          //  .style('fill', function(d) {
-          //      return colorScale(d[selectedDimension]);
-          //  });
+        let yAxisHeight = this.barChart.attr("height") - xAxisHeight;
+        let xAxisYPos = this.barChart.attr("height") - xAxisHeight;
+        let barSpacing = (this.barChart.attr("width") - yAxisWidth - padding - 9) / selectedData.length;
+        let transitionTime = 1200;
         
         // Create y-axis
         let yAxisScale = d3.scaleLinear()
             .domain([d3.max(selectedData), 0])
-            .range([0, (barChart.attr("height") - (xAxisHeight + 12))])
+            .range([0, (this.barChart.attr("height") - (xAxisHeight + 12))])
             .nice();
         let yAxis = d3.axisLeft(yAxisScale);
         d3.select("#yAxis")
-            .attr("transform", "translate(" + (yAxisWidth+padding) + "," + padding + ")")
+            .attr("transform", function() {
+                return "translate(" + (yAxisWidth+padding) + "," + padding + ")";
+            })
+            .transition()
+            .duration(transitionTime*2)
             .call(yAxis);
 
+        
         // Create x-axis
         let xAxisScale = d3.scaleLinear()
-            .domain([0, yearData.length])
-            .range([padding, barChart.attr("width") - (yAxisWidth + padding)]);
+            .domain([0, this.yearData.length])
+            .range([0, this.barChart.attr("width") - (yAxisWidth + padding + padding - 2)]);
         let xAxis = d3.axisBottom(xAxisScale);
-        xAxis.ticks(yearData.length);
+        xAxis.ticks(this.yearData.length);
         d3.select("#xAxis")
             .attr("transform", function() {
-                return "translate(" + (yAxisWidth+padding) + "," + xAxisYPos + ")";
+                return "translate(" + (yAxisWidth+padding+barWidth) + "," + xAxisYPos + ")";
             })
             .call(xAxis)
             .selectAll("text")
             .text(function(d,i) {
-                return yearData[i];
-            })
+                return this.yearData[i];
+            }.bind(this))
             .attr("y", 0)
             .attr("x", 10)
             .attr("dy", 5)
             .attr("transform", "rotate(90)")
             .style("text-anchor", "start");
+
+        // Scales for bar chart
+        let yScale = d3.scaleLinear()
+            .domain([0, d3.max(selectedData)])
+            .range([0, this.barChart.attr("height") - (xAxisHeight + 12)])
+        let colorScale = d3.scaleLinear()
+            .domain([d3.min(selectedData), d3.max(selectedData)])
+            .range(["lightsteelblue", "steelblue", "darksteelblue"]);
         
 
-        // Create the x and y scales; make
-        // sure to leave room for the axes
+        // Create bars of bar chart
+        let bars = this.barChart.select("#bars")
+            .selectAll(".bars")
+            .data(selectedData)
 
-        // Create colorScale
+        bars.exit().remove();
 
-        // Create the axes (hint: use #xAxis and #yAxis)
+        bars = bars.enter().append("rect").merge(bars);
 
-        // Create the bars (hint: use #bars)
+        // Position and scale the bars
+        bars.transition()
+            .duration(transitionTime)
+            .attr("height", function(d) {
+                return yScale(d);
+            })
+            .style("fill", function(d) {
+                return colorScale(d);
+            });
 
+        bars.attr("x", function(d, i) {
+                return (i * barSpacing);
+            })
+           .attr("y", 0)
+           .attr("width", function(d, i) {
+               return barWidth;
+            })
+            .attr("id", function(d, i) {
+                return this.yearData[i];
+            }.bind(this))
+            .classed("bars", true);
 
-
+        
+        // Transform and scale the chart
+        this.barChart.select("#bars")
+            .attr("transform", function() {
+                return "translate(" + (yAxisWidth+padding*2) + "," + (xAxisYPos)+ ") scale(1, -1)";
+            })
 
         // ******* TODO: PART II *******
-
-        // Implement how the bars respond to click events
-        // Color the selected bar to indicate is has been selected.
-        // Make sure only the selected bar has this new color.
-
-        // Call the necessary update functions for when a user clicks on a bar.
-        // Note: think about what you want to update when a different bar is selected.
-
+        this.barChart.selectAll(".bars")
+            .on('click', function() {
+                this.barChart.selectAll(".bars")
+                    .style("fill", function(d) {
+                        return colorScale(d);
+                    })     
+                d3.event.target.style.fill = "red";
+                let worldCupYear = d3.event.target.id;
+                let worldCup = this.allData.filter(d => d['YEAR'] == worldCupYear)[0];
+                this.infoPanel.updateInfo(worldCup);
+                this.worldMap.updateMap(worldCup);
+            }.bind(this));
     }
 
     /**
