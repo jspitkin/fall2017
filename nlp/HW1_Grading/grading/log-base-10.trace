@@ -1,0 +1,36 @@
+S = King 
+
+Unsmoothed Unigrams, logprob(S) = -2.7758
+Unsmoothed Bigrams, logprob(S) = -3.7441
+Smoothed Bigrams, logprob(S) = -12.8261
+
+S = All the money 
+
+Unsmoothed Unigrams, logprob(S) = -7.2157
+Unsmoothed Bigrams, logprob(S) = -5.9592
+Smoothed Bigrams, logprob(S) = -24.4229
+
+S = Dancing in the grass . 
+
+Unsmoothed Unigrams, logprob(S) = -12.8829
+Unsmoothed Bigrams, logprob(S) = undefined
+Smoothed Bigrams, logprob(S) = -41.3839
+
+S = The Queen is here to stay . 
+
+Unsmoothed Unigrams, logprob(S) = -16.4541
+Unsmoothed Bigrams, logprob(S) = undefined
+Smoothed Bigrams, logprob(S) = -60.4607
+
+S = Mr. Toad called her ? 
+
+Unsmoothed Unigrams, logprob(S) = -13.7033
+Unsmoothed Bigrams, logprob(S) = -9.0094
+Smoothed Bigrams, logprob(S) = -48.2113
+
+S = Uncle Henry is a rich man ! 
+
+Unsmoothed Unigrams, logprob(S) = -21.5407
+Unsmoothed Bigrams, logprob(S) = undefined
+Smoothed Bigrams, logprob(S) = -70.0629
+
