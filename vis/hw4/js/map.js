@@ -39,36 +39,36 @@ class Map {
             this.map.select("#" + teamList[i]).classed("team", true);
         }
 
+        // long/lat for the gold and silver metal winners
+
+        let winLon = worldcupData["WIN_LON"];
+        let winLat = worldcupData["WIN_LAT"];
+        let rupLon = worldcupData["RUP_LON"];
+        let rupLat = worldcupData["RUP_LAT"];
+        let markerRadius = 7;
+
         // Add gold metal winner marker
         d3.select("#points")
             .append("circle")
             .attr("cx", function() {
-                let lon = worldcupData["WIN_LON"];
-                let lat = worldcupData["WIN_LAT"];
-                return this.projection([lon, lat])[0];
+                return this.projection([winLon, winLat])[0];
             }.bind(this))
             .attr("cy", function() {
-                let lon = worldcupData["WIN_LON"];
-                let lat = worldcupData["WIN_LAT"];
-                return this.projection([lon, lat])[1];
+                return this.projection([winLon, winLat])[1];
             }.bind(this))
-            .attr("r", 10)
+            .attr("r", markerRadius)
             .classed("gold", true);
 
         // Add silver metal winner marker
         d3.select("#points")
             .append("circle")
             .attr("cx", function() {
-                let lon = worldcupData["RUP_LON"];
-                let lat = worldcupData["RUP_LAT"];
-                return this.projection([lon, lat])[0];
+                return this.projection([rupLon, rupLat])[0];
             }.bind(this))
             .attr("cy", function() {
-                let lon = worldcupData["RUP_LON"];
-                let lat = worldcupData["RUP_LAT"];
-                return this.projection([lon, lat])[1];
+                return this.projection([rupLon, rupLat])[1];
             }.bind(this))
-            .attr("r", 7)
+            .attr("r", markerRadius)
             .classed("silver", true);
     }
 

@@ -75,7 +75,7 @@ class BarChart {
             .range([0, this.barChart.attr("height") - (xAxisHeight + 12)])
         let colorScale = d3.scaleLinear()
             .domain([d3.min(selectedData), d3.max(selectedData)])
-            .range(["lightsteelblue", "steelblue", "darksteelblue"]);
+            .range(["#417CA0", "#225777", "#082A3E"]);
         
 
         // Create bars of bar chart
@@ -83,8 +83,8 @@ class BarChart {
             .selectAll(".bars")
             .data(selectedData)
 
+        // Remove old bars and add the new ones
         bars.exit().remove();
-
         bars = bars.enter().append("rect").merge(bars);
 
         // Position and scale the bars
@@ -108,7 +108,6 @@ class BarChart {
                 return this.yearData[i];
             }.bind(this))
             .classed("bars", true);
-
         
         // Transform and scale the chart
         this.barChart.select("#bars")
@@ -116,31 +115,18 @@ class BarChart {
                 return "translate(" + (yAxisWidth+padding*2) + "," + (xAxisYPos)+ ") scale(1, -1)";
             })
 
-        // ******* TODO: PART II *******
+        // Color the selected bar on click and update the info panel and map
         this.barChart.selectAll(".bars")
             .on('click', function() {
                 this.barChart.selectAll(".bars")
                     .style("fill", function(d) {
                         return colorScale(d);
                     })     
-                d3.event.target.style.fill = "red";
+                d3.event.target.style.fill = "#D10000";
                 let worldCupYear = d3.event.target.id;
                 let worldCup = this.allData.filter(d => d['YEAR'] == worldCupYear)[0];
                 this.infoPanel.updateInfo(worldCup);
                 this.worldMap.updateMap(worldCup);
             }.bind(this));
-    }
-
-    /**
-     *  Check the drop-down box for the currently selected data type and update the bar chart accordingly.
-     *
-     *  There are 4 attributes that can be selected:
-     *  goals, matches, attendance and teams.
-     */
-    chooseData() {
-        // ******* TODO: PART I *******
-        //Changed the selected data when a user selects a different
-        // menu item from the drop down.
-
     }
 }
