@@ -1,0 +1,52 @@
+Endpoint Identifier Hiding
+---
+Alice and Bob want to communiciate but they don't want anyone in the middle to know that it is Alice and Bob communicating.
+
+protocol
+    g, p are well known and established
+    Alice: "I want to talk", g^a mod p (diffie hellman number)
+    Bob: "Ok", g^b mod p (dh number)
+    Alice: g^{ab} mod p {"Alice", k_a^-{g^a mod p}} // signing
+    Bob: g^{ab} mod p {"Bob", k_b^-{g^b mod p}} // signing
+
+Alice and Bob know each other's identity
+We are trying to prevent Trudy from knowing it's Alice talking to Bob
+In the above protocol: Alice's identity is revealed to Trudy
+
+Network stack overview
+---
+Application
+    Secure socket layer (SSL) runs on the Application level, protecting the transport level.
+    Every application must be changed to use SSL.
+        Use SSL or TLS library.
+        Nothing must be changed in the kernel.
+Transport
+    TCP
+Network
+    Link level security runs just above the Link layer in the Network layer.
+        WPA, WPA2, 3g, 4g, etc
+        Protect access to the Link
+        Not securing the data - securing access to the link
+Link
+Physical
+
+Midterm will not include SSL or later - Monday there will be a review
+
+SSL / TLS
+---
+HTTPS
+Runs on top of TCP
+    in-order delivery
+    reliable (ACKs)
+SSL v2 - Netscape 1995
+PCT - Microsoft
+SSL v3
+TLS - IETF
+
+SSL Handshake
+---
+Client-Server
+Alice: supported ciphers and a nonce R_Alice
+Bob: chooses a cipher, R_Bob, and certificate
+    certificate - Bob's public key
+
