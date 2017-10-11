@@ -35,7 +35,7 @@ tbody th{
 
 tbody td {
     padding-right: 5px;
-    padding-left: 5px;
+    padding-left: 0px;
     border-left: solid 1px #000;
     color:black
 }
@@ -45,7 +45,7 @@ tbody tr:hover {
 }
 
 tbody tr .game {
-    background-color: #f0f0f0;
+    /* background-color: #f0f0f0; */
 }
 
 /*tbody tr .game:hover {*/
