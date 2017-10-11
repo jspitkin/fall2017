@@ -93,8 +93,58 @@ class Table {
         // Set sorting callback for clicking on headers
 
         // Clicking on headers should also trigger collapseList() and updateTable(). 
+        d3.select("#matchTable")
+            .select("thead")
+            .select("tr")
+            .selectAll("td")
+            .classed("unsorted", true)
+            .on("click", function() {
+                this.tableElements = this.tableElements.filter(d => d.value.type == "aggregate");
+                this.sortByColumn(d3.event.target);
+                this.updateTable();
+            }.bind(this));
+        
+        d3.select("#matchTable")
+            .select("thead")
+            .select("tr")
+            .selectAll("th")
+            .classed("unsorted", true)
+            .on("click", function() {
+                this.tableElements = this.tableElements.filter(d => d.value.type == "aggregate");
+                this.sortByColumn(d3.event.target);
+                this.updateTable();
+            }.bind(this));
+    }
 
-       
+    sortByColumn(selectedColumn) {
+        let sortAscending = Boolean(selectedColumn.className == "unsorted" || selectedColumn.className == "descending");
+        switch (selectedColumn.id) {
+            case "team":
+                sortAscending ? this.tableElements.sort((a, b) => a.key.localeCompare(b.key)) 
+                    : this.tableElements.sort((a, b) => b.key.localeCompare(a.key));
+                break;
+            case "goals":
+                sortAscending ? this.tableElements.sort((a, b) => b.value['Goals Made'] - a.value['Goals Made']) 
+                    : this.tableElements.sort((a, b) => a.value['Goals Made'] - b.value['Goals Made']);
+                break;
+            case "results":
+                sortAscending ? this.tableElements.sort((a, b) => b.value['Result']['ranking'] - a.value['Result']['ranking']) 
+                    : this.tableElements.sort((a, b) => a.value['Result']['ranking'] - b.value['Result']['ranking']);
+                break;
+            case "wins":
+                sortAscending ? this.tableElements.sort((a, b) => b.value['Wins'] - a.value['Wins']) 
+                    : this.tableElements.sort((a, b) => a.value['Wins'] - b.value['Wins']);
+                break;
+            case "losses":
+                sortAscending ? this.tableElements.sort((a, b) => b.value['Losses'] - a.value['Losses']) 
+                    : this.tableElements.sort((a, b) => a.value['Losses'] - b.value['Losses']);
+                break;
+            case "total":
+                sortAscending ? this.tableElements.sort((a, b) => b.value['Total Games'] - a.value['Total Games']) 
+                    : this.tableElements.sort((a, b) => a.value['Total Games'] - b.value['Total Games']);
+                break;
+        }
+        selectedColumn.className = sortAscending ? "ascending" : "descending";
     }
 
 
@@ -102,7 +152,6 @@ class Table {
      * Updates the table contents with a row for each element in the global variable tableElements.
      */
     updateTable() {
-        console.log(this.tableElements);
         // clear previous rows
         d3.select("#matchTable").select("tbody").selectAll("tr").remove();
 
@@ -248,29 +297,23 @@ class Table {
      *
      */
     updateList(i) {
-        // ******* TODO: PART IV *******
         let clickedElement = this.tableElements[i];
-        console.log("clicked on: " + clickedElement.key);
+        // game clicked - do nothing
         if (clickedElement.value.type == "game") {
-            console.log("game clicked");
             return;
-        } else if (this.elementIsAggregateEntry(i + 1)) {
-            console.log("aggregate clicked and next is aggreate");
-            // sort by ranking
-            let games = clickedElement.value.games.sort(function(a, b) {
-                return b.value['Result']['ranking'] - a.value['Result']['ranking'];
-            });
-            for (let j = 0; j < games.length; j++) {
-                console.log("added: " + clickedElement.value.games[j].key);
+        } 
+        // team clicked - display game information
+
+        else if (this.elementIsAggregateEntry(i + 1)) {
+            for (let j = 0; j < clickedElement.value.games.length; j++) {
                 this.tableElements.splice((i + j + 1), 0, clickedElement.value.games[j]);
             }
             this.updateTable();
-        } else {
-            console.log("aggreate clicked and next is game, collapse list");
+        } 
+        // expanded team clicked - collpase game information
+        else {
             this.collapseList();
         }
-        //Only update list for aggregate clicks, not game clicks
-        
     }
 
     /**
@@ -289,9 +332,8 @@ class Table {
      *
      */
     collapseList() {
-        
-        // ******* TODO: PART IV *******
-
+        this.tableElements = this.tableElements.filter(d => d.value.type == "aggregate");
+        this.updateTable();
     }
 
 
