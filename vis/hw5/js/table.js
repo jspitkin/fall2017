@@ -76,10 +76,10 @@ class Table {
             .domain([0, 1])
             .range(["#034e7b", "#cb181d"]);
 
-        // Create the x axes for the goalScale.
+        // create the x axes for the goalScale.
         let goalAxis = d3.axisTop(this.goalScale);
 
-        //add GoalAxis to header of col 1.
+        // add GoalAxis to header of col 1.
         d3.select("#goalHeader")
             .append("svg")
             .attr("height", this.cell["height"] * 1.1)
@@ -88,11 +88,7 @@ class Table {
             .attr("transform", "translate(17.5,20)")
             .call(goalAxis);
 
-        // ******* TODO: PART V *******
-
-        // Set sorting callback for clicking on headers
-
-        // Clicking on headers should also trigger collapseList() and updateTable(). 
+        // add sorting when column labels are clicked
         d3.select("#matchTable")
             .select("thead")
             .select("tr")
@@ -103,7 +99,6 @@ class Table {
                 this.sortByColumn(d3.event.target);
                 this.updateTable();
             }.bind(this));
-        
         d3.select("#matchTable")
             .select("thead")
             .select("tr")
