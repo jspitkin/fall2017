@@ -13,12 +13,11 @@ class Tree {
      * @param treeData an array of objects that contain parent/child information.
      */
     createTree(treeData) {
-
-        // ******* TODO: PART VI *******
         console.log(treeData);
         const WIDTH = 800;
         const HEIGHT = 300;
         const PADDING_LEFT = 90;
+
         //Create a tree and give it a size() of 800 by 300. 
         let tree = d3.tree();
         tree.size([WIDTH, HEIGHT]);
@@ -31,45 +30,85 @@ class Tree {
             })
             (treeData);
 
-        // tree generation based off example from lecture notes (http://dataviscourse.net/tutorials/lectures/lecture-d3-layouts/)
         let treeGraphic = d3.select("#tree");
-        let treeInfo = tree(root);
-        let nodes = treeInfo.descendants();
-        let links = treeInfo.descendants().slice(1);
+        let nodes = tree(root).descendants();
 
+        // render edges
         nodes.forEach(function(d) {
             let g = treeGraphic.append("g");
-            g.classed("node", true);
+            if (d.children) {
+                let childOne = { "x" : d.children[0].x,
+                                 "y" : d.children[0].y  + PADDING_LEFT};
+                let childTwo = { "x" : d.children[1].x,
+                                 "y" : d.children[1].y + PADDING_LEFT };
+                let parent = { "x" : d.x, 
+                               "y" : d.y + PADDING_LEFT};
+                let childOneTeam = d.children[0].data['Team'];
+                let childTwoTeam = d.children[1].data['Team'];
+                g.append("path")
+                    .classed("link", true)
+                    .classed(childOneTeam + childTwoTeam, true)
+                    .attr("d", this.diagonal(childOne, parent));
+                g.append("path")
+                    .classed("link", true)
+                    .classed(childOneTeam + childTwoTeam, true)
+                    .attr("d", this.diagonal(childTwo, parent));
+                // add class for links with matching team nodes
+                if (d.data['Team'] == d.children[0].data['Team']) {
+                    g.select("path").classed(d.data['Team'], true);
+                } else if (d.data['Team'] == d.children[1].data['Team']) {
+                    g.select("path").classed(d.data['Team'], true);
+                }
+            }
+        }.bind(this));
+
+        // render nodes
+        nodes.forEach(function(d) {
+            let g = treeGraphic.append("g")
+                .classed("node", true);
             if (d.data['Wins'] == "1") {
                 g.classed("winner", true);
             }
-            // draw labels - leaf nodes on the right and the rest of on the left of the node
+            g.append("circle")
+                .attr("cx", d.y + PADDING_LEFT)
+                .attr("cy", d.x)
+                .attr("r", 7);
+        }.bind(this));
+
+        // render labels
+        nodes.forEach(function(d) {
+            // leaf nodes on the right and the rest of on the left of the node
+            let g = treeGraphic.append("g");
             if (d.children) {
                 g.append("text")
                     .attr("x", d.y + PADDING_LEFT - 10)
                     .attr("y", d.x + 5)
                     .attr("text-anchor", "end")
+                    .attr("id", d.id)
+                    .classed(d.data['Team'], true)
                     .text(d.data['Team']);
+            // set class to highlight label for a specific game
             } else {
                 g.append("text")
                     .attr("x", d.y + PADDING_LEFT + 10)
                     .attr("y", d.x + 5)
                     .attr("text-anchor", "start")
+                    .attr("id", d.id)
+                    .classed(d.data['Team'], true)
                     .text(d.data['Team']);
             }
-            // draw edge
-            if (d.parent != null) {
-                let child = { "x" : d.x, "y" : d.y  + PADDING_LEFT};
-                let parent = { "x" : d.parent.x, "y" : d.parent.y + PADDING_LEFT};
-                g.append("path")
-                    .classed("link", true)
-                    .attr("d", this.diagonal(child, parent));
+        }.bind(this));
+
+        // add classes to labels for single game highlighting
+        nodes.forEach(function(d) {
+            if (d.children) {
+                let childOneTeam = d.children[0].data['Team'];
+                let childTwoTeam = d.children[1].data['Team'];
+                let childOneLabel = d3.select("text#" + d.children[0].id);
+                let childTwoLabel = d3.select("text#" + d.children[1].id);
+                childOneLabel.classed(childOneTeam + childTwoTeam, true);
+                childTwoLabel.classed(childOneTeam + childTwoTeam, true);
             }
-            // draw node
-            g.append("circle")
-                .attr("cx", d.y + PADDING_LEFT)
-                .attr("cy", d.x)
-                .attr("r", 7);
         }.bind(this));
     }
 
@@ -90,15 +129,15 @@ class Tree {
      */
     updateTree(row) {
         // ******* TODO: PART VII *******
-    
+        d3.selectAll("path." + row).classed("selected", true);
+        d3.selectAll("text." + row).classed("selectedLabel", true);
     }
 
     /**
      * Removes all highlighting from the tree.
      */
     clearTree() {
-        // ******* TODO: PART VII *******
-
-        // You only need two lines of code for this! No loops! 
+        d3.selectAll(".selected").classed("selected", false);
+        d3.selectAll(".selectedLabel").classed("selectedLabel", false);
     }
 }

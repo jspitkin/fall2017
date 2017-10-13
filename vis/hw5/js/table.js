@@ -157,12 +157,24 @@ class Table {
             .enter()
             .append("tr");
         
+        rows.on("mouseenter", function(d) {
+            if (d.value.type == "game") {
+                this.tree.updateTree(d.value['Opponent'] + d.key);
+            } else {
+                this.tree.updateTree(d.key);
+            }
+        }.bind(this));
+
+        rows.on("mouseleave", function(d) {
+            this.tree.clearTree();
+        }.bind(this));
+        
         // append th elements for the Team Names
         let ths = rows.selectAll("th")
-            .data(d => [{ "name" : d["key"] , "type" : d.value["type"]}])
+            .data(d => [{ "name" : d.key, "type" : d.value['type']}])
             .enter()
             .append("th")
-            .classed("aggregate", true)
+            .attr("class", d => d.type)
             .html(function(d) {
                 return d.type == "game" ? "x" + d.name : d.name;
             });
