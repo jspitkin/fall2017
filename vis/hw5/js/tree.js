@@ -13,7 +13,6 @@ class Tree {
      * @param treeData an array of objects that contain parent/child information.
      */
     createTree(treeData) {
-        console.log(treeData);
         const WIDTH = 800;
         const HEIGHT = 300;
         const PADDING_LEFT = 90;

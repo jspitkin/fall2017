@@ -184,8 +184,13 @@ class Table {
         
         // click event to expand/collapse game information
         ths.on("click", function(d) {
+            // if the clicked row is a 'game' row do nothing
+            if (d.type == "game") {
+                return;
+            }
+            // find the corresponding entry in the table elements
             for (let i = 0; i < this.tableElements.length; i++) {
-                if (d.name == this.tableElements[i].key) {
+                if (this.tableElements[i].value.type == "aggregate" && d.name == this.tableElements[i].key) {
                     this.updateList(i);
                     return;
                 }
@@ -233,16 +238,15 @@ class Table {
         goalColumns.append("svg")
             .attr("width", this.cell['width'] * 2 + 35)
             .attr("height", this.cell['height'])
-            .attr("transform", "translate(0,0)")
             .append("rect")
             .classed("goalBar", true)
             .attr("width", d => this.goalScale(Math.abs(d.value[0] - d.value[1])))
             .attr("height", function(d) {
-                return d.type == "aggregate" ? this.bar['height'] / 2 : this.bar['height'] / 4;
+                return d.type == "aggregate" ? this.bar['height'] / 1.5 : this.bar['height'] / 4;
             }.bind(this))
             .attr("x", d => this.goalScale(Math.min(d.value[0], d.value[1])) + 17.5)
             .attr("y", function(d) {
-                return d.type == "aggregate" ? 5 : 7.5;
+                return d.type == "aggregate" ? 3.5 : 7.5;
             })
             .attr("fill", function(d) {
                 // blue bar for a positive goal difference - red bar for a negative one
@@ -305,13 +309,8 @@ class Table {
      */
     updateList(i) {
         let clickedElement = this.tableElements[i];
-        // game clicked - do nothing
-        if (clickedElement.value.type == "game") {
-            return;
-        } 
         // team clicked - display game information
-
-        else if (this.elementIsAggregateEntry(i + 1)) {
+        if (this.elementIsAggregateEntry(i + 1)) {
             for (let j = 0; j < clickedElement.value.games.length; j++) {
                 this.tableElements.splice((i + j + 1), 0, clickedElement.value.games[j]);
             }
@@ -319,7 +318,8 @@ class Table {
         } 
         // expanded team clicked - collpase game information
         else {
-            this.collapseList();
+            this.tableElements.splice(i + 1, clickedElement.value.games.length);
+            this.updateTable();
         }
     }
 
