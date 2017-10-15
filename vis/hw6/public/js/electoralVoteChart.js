@@ -20,7 +20,6 @@ class ElectoralVoteChart {
         this.svg = divelectoralVotes.append("svg")
             .attr("width",this.svgWidth)
             .attr("height",this.svgHeight)
-
     };
 
     /**
@@ -49,23 +48,96 @@ class ElectoralVoteChart {
      */
 
    update (electionResult, colorScale){
+    console.log(electionResult);
+    this.svg.selectAll("rect").remove();
+    this.svg.selectAll("text").remove();
 
-          // ******* TODO: PART II *******
+    // Group the states based on the winning party for the state
+    let dStates = electionResult.filter(d => d['State_Winner'] == "D");
+    let rStates = electionResult.filter(d => d['State_Winner'] == "R");
+    let iStates = electionResult.filter(d => d['State_Winner'] == "I");
 
-    //Group the states based on the winning party for the state;
-    //then sort them based on the margin of victory
+    // Sort the states based on margin of victory
+    dStates.sort((a, b) => a['RD_Difference'] - b['RD_Difference']);
+    rStates.sort((a, b) => a['RD_Difference'] - b['RD_Difference']);
 
-    //Create the stacked bar chart.
-    //Use the global color scale to color code the rectangles.
-    //HINT: Use .electoralVotes class to style your bars.
+    // Concatenate sorted states
+    let sortedElectionResult = iStates.concat(dStates).concat(rStates);
 
-    //Display total count of electoral votes won by the Democrat and Republican party
-    //on top of the corresponding groups of bars.
-    //HINT: Use the .electoralVoteText class to style your text elements;  Use this in combination with
-    // chooseClass to get a color based on the party wherever necessary
+    // Create a width scale
+    const D_EV_TOTAL = +electionResult[0]['D_EV_Total'];
+    const R_EV_TOTAL = +electionResult[0]['R_EV_Total'];
+    const I_EV_TOTAL = +electionResult[0]['I_EV_Total']
+    const EV_TOTAL = D_EV_TOTAL + R_EV_TOTAL + I_EV_TOTAL;
+    let widthScale = d3.scaleLinear()
+        .domain([0, EV_TOTAL])
+        .range([0, this.svgWidth]);
 
-    //Display a bar with minimal width in the center of the bar chart to indicate the 50% mark
-    //HINT: Use .middlePoint class to style this bar.
+    //Create the stacked bar chart
+    const BAR_Y = this.svgHeight / 4;
+    const BAR_HEIGHT = this.svgHeight / 4;
+    let currentX = 0;
+    this.svg.selectAll("rect")
+        .data(sortedElectionResult)
+        .enter()
+        .append("rect")
+        .attr("x", function(d) {
+            currentX += widthScale(d['Total_EV']);
+            return currentX - widthScale(d['Total_EV']);
+        })
+        .attr("y", BAR_Y)
+        .attr("height", BAR_HEIGHT) 
+        .attr("width", d => widthScale(d['Total_EV']))
+        .style("fill", function(d) {
+            return d['State_Winner'] == "I" ? "#01A142" : colorScale(d['RD_Difference']);
+        })
+        .classed("electoralVotes", true);
+    
+    // Add label for independent votes (if there are any)
+    if (I_EV_TOTAL > 0) {
+        this.svg.append("text")
+            .attr("x", 0)
+            .attr("y", BAR_Y - 10)
+            .text(I_EV_TOTAL)
+            .classed("electoralVoteText", true)
+            .classed(this.chooseClass("I"), true);
+    }
+    
+    // Add label for dem votes
+    let firstDemXPos = this.svg.selectAll("rect")
+        .filter( (d, i) => i == iStates.length).attr("x");
+    this.svg.append("text")
+        .attr("x", firstDemXPos)
+        .attr("y", BAR_Y - 10)
+        .text(D_EV_TOTAL)
+        .classed("electoralVoteText", true)
+        .classed(this.chooseClass("D"), true);
+   
+    // Add label for rep votes
+    let firstRepXPos = this.svg.selectAll("rect")
+        .filter( (d, i) => i == sortedElectionResult.length - 1).attr("x");
+    this.svg.append("text")
+        .attr("x", this.svgWidth)
+        .attr("y", BAR_Y - 10)
+        .text(R_EV_TOTAL)
+        .classed("electoralVoteText", true)
+        .classed(this.chooseClass("R"), true);
+
+    // Add marker to show the middle point
+    this.svg.append("rect")
+        .attr("x", this.svgWidth / 2)
+        .attr("y", BAR_Y - 5)
+        .attr("width", 3)
+        .attr("height", BAR_HEIGHT + 10)
+        .classed("middlePoint", true);
+    
+    // Add a title for the chart
+    let neededVotes = (EV_TOTAL / 2) + 1;
+    this.svg.append("text")
+        .attr("x", this.svgWidth * 0.39)
+        .attr("y", BAR_Y - 10)
+        .text("Electoral Vote (" +neededVotes + " needed to win)")
+        .classed("electoralVoteNote", true);
 
     //Just above this, display the text mentioning the total number of electoral votes required
     // to win the elections throughout the country
