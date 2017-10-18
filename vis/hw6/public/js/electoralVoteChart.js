@@ -73,7 +73,7 @@ class ElectoralVoteChart {
             .range([0, this.svgWidth]);
 
         //Create the stacked bar chart
-        const BAR_Y = this.svgHeight / 4;
+        const BAR_Y = this.svgHeight / 2;
         const BAR_HEIGHT = this.svgHeight / 4;
         let currentX = 0;
         this.svg.selectAll("rect")
@@ -92,7 +92,7 @@ class ElectoralVoteChart {
             })
             .classed("electoralVotes", true);
     
-        // Add label for independent votes (if there are any)
+        // Add label for independent votes (if any)
         if (I_EV_TOTAL > 0) {
             this.svg.append("text")
                 .attr("x", 0)
@@ -131,7 +131,7 @@ class ElectoralVoteChart {
             .classed("middlePoint", true);
     
         // Add a title for the chart
-        let neededVotes = (EV_TOTAL / 2) + 1;
+        let neededVotes = Math.floor(EV_TOTAL / 2) + 1;
         this.svg.append("text")
             .attr("x", this.svgWidth * 0.39)
             .attr("y", BAR_Y - 10)

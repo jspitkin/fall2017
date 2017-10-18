@@ -47,7 +47,7 @@ class VotePercentageChart {
 	tooltip_render (tooltip_data) {
 	    let text = "<ul>";
 	    tooltip_data.result.forEach((row)=>{
-	        text += "<li class = " + this.chooseClass(row.party)+ ">" + row.nominee+":\t\t"+row.votecount+"("+row.percentage+"%)" + "</li>"
+	        text += "<li class = " + this.chooseClass(row.party)+ ">" + row.nominee+":\t\t"+row.votecount+" ("+row.percentage+"%)" + "</li>"
 	    });
 
 	    return text;
@@ -59,7 +59,7 @@ class VotePercentageChart {
 	 * @param electionResult election data for the year selected
 	 */
 	update (electionResult){
-        
+		console.log(electionResult);
 		//for reference:https://github.com/Caged/d3-tip
 		//Use this tool tip element to handle any hover over the chart
 		let tip = d3.tip().attr('class', 'd3-tip')
@@ -68,19 +68,37 @@ class VotePercentageChart {
 				return [0,0];
 			})
 			.html((d)=> {
-				/* populate data in the following format
-					* tooltip_data = {
-					* "result":[
-					* {"nominee": D_Nominee_prop,"votecount": D_Votes_Total,"percentage": D_PopularPercentage,"party":"D"} ,
-					* {"nominee": R_Nominee_prop,"votecount": R_Votes_Total,"percentage": R_PopularPercentage,"party":"R"} ,
-					* {"nominee": I_Nominee_prop,"votecount": I_Votes_Total,"percentage": I_PopularPercentage,"party":"I"}
-					* ]
-					* }
-					* pass this as an argument to the tooltip_render function then,
-					* return the HTML content returned from that method.
-					* */
-				return;
+				let result = electionResult[0];
+				let tooltip_data = {
+					'result' : [
+						{ 'nominee' 	: result['I_Nominee_prop'],
+						  'votecount' 	: result['I_Votes_Total'],
+						  'percentage' 	: result['I_PopularPercentage'],
+						  'party' 		: "I" },
+
+						{ 'nominee' 	: result['D_Nominee_prop'],
+						  'votecount' 	: result['D_Votes_Total'],
+						  'percentage' 	: result['D_PopularPercentage'],
+						  'party' 		: "D" },
+
+						{ 'nominee' 	: result['R_Nominee_prop'],
+						  'votecount' 	: result['R_Votes_Total'],
+						  'percentage' 	: result['R_PopularPercentage'],
+						  'party' 		: "R" }
+					]
+				};
+
+				// Remove ind if no votes
+				if (result['I_PopularPercentage'] == 0) {
+					tooltip_data['result'] = tooltip_data['result'].slice(1);
+				}
+
+				return this.tooltip_render(tooltip_data);
 			});
+		
+		// Remove old elements
+		this.svg.selectAll("rect").remove();
+		this.svg.selectAll("text").remove();
 	
 		// Find the percent for each party
 		let dPercent = electionResult[0]['D_PopularPercentage'];
@@ -99,10 +117,10 @@ class VotePercentageChart {
 					{ 'party' : "R", 'percent' : rPercent}];
 
 		// Create the stacked bar chart
-		const BAR_Y = this.svgHeight / 4;
+		const BAR_Y = this.svgHeight * 0.6;
 		const BAR_HEIGHT = this.svgHeight / 4;
 		let currentX = 0;
-		this.svg.selectAll("rect")
+		let stackedBar = this.svg.selectAll("rect")
 			.data(data)
 			.enter()
 			.append("rect")
@@ -115,6 +133,11 @@ class VotePercentageChart {
 			.attr("width", d => widthScale(d['percent']))
 			.attr("class", d => this.chooseClass(d['party']))
 			.classed("votesPercentage", true);
+		
+		// Add a tooltip when hoving on the stacked bar chart
+		stackedBar.call(tip);
+		stackedBar.on("mouseover", tip.show);
+		stackedBar.on("mouseout", tip.hide);
 		
 		// Add marker to show the middle point
 		this.svg.append("rect")
@@ -130,20 +153,68 @@ class VotePercentageChart {
 			.attr("y", BAR_Y - 10)
 			.text("Popular Vote (50%)")
 			.classed("votesPercentageNote", true);
+		
+		// Add percentage for ind votes (if any)
+		if (iPercent > 0) {
+			this.svg.append("text")
+				.attr("x", 0)
+				.attr("y", BAR_Y - 10)
+				.text(electionResult[0]['I_PopularPercentage'])
+				.classed("votesPercentageText", true)
+				.classed(this.chooseClass("I"), true);
+		}
 
-		//Display the total percentage of votes won by each party
-		//on top of the corresponding groups of bars.
-		//HINT: Use the .votesPercentageText class to style your text elements;  Use this in combination with
-		// chooseClass to get a color based on the party wherever necessary
+		// Add percentage for dem votes
+		this.svg.append("text")
+			.attr("x", function() {
+				if (iPercent > 0) {
+					return widthScale(iPercent) + 70;
+				}
+				return widthScale(iPercent);
+			})
+			.attr("y", BAR_Y - 10)
+			.text(electionResult[0]['D_PopularPercentage'])
+			.classed("votesPercentageText", true)
+			.classed(this.chooseClass("D"), true);
+		
+		// Add percentage for rep votes
+		this.svg.append("text")
+			.attr("x", this.svgWidth)
+			.attr("y", BAR_Y - 10)
+			.text(electionResult[0]['R_PopularPercentage'])
+			.classed("votesPercentageText", true)
+			.classed(this.chooseClass("R"), true);
+		
+		// Add ind candidate (if any)
+		if (iPercent > 0) {
+			this.svg.append("text")
+				.attr("x", 30)
+				.attr("y", BAR_Y - 80)
+				.text(electionResult[0]['I_Nominee_prop'])
+				.classed("votesPercentageText", true)
+				.classed(this.chooseClass("I"), true);
+		}
 
-		//Just above this, display the text mentioning details about this mark on top of this bar
-		//HINT: Use .votesPercentageNote class to style this text element
-
-		//Call the tool tip on hover over the bars to display stateName, count of electoral votes.
-		//then, vote percentage and number of votes won by each party.
-
-		//HINT: Use the chooseClass method to style your elements based on party wherever necessary.
-
+		// Add dem candidate
+		this.svg.append("text")
+			.attr("x", function() {
+				if (iPercent > 0) {
+					return (this.svgWidth / 3.5);
+				}
+				return 30;
+			}.bind(this))
+			.attr("y", BAR_Y - 80)
+			.text(electionResult[0]['D_Nominee_prop'])
+			.classed("votesPercentageText", true)
+			.classed(this.chooseClass("D"), true);
+		
+		// Add rep candidate
+		this.svg.append("text")
+			.attr("x", this.svgWidth)
+			.attr("y", BAR_Y - 80)
+			.text(electionResult[0]['R_Nominee_prop'])
+			.classed("votesPercentageText", true)
+			.classed(this.chooseClass("R"), true);
 	};
 
 
