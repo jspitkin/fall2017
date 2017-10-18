@@ -73,73 +73,119 @@ class TileChart {
      * @param colorScale global quantile scale based on the winning margin between republicans and democrats
      */
     update (electionResult, colorScale){
-
-            //Calculates the maximum number of columns to be laid out on the svg
-            this.maxColumns = d3.max(electionResult,function(d){
-                                    return parseInt(d["Space"]);
-                                });
-
-            //Calculates the maximum number of rows to be laid out on the svg
-            this.maxRows = d3.max(electionResult,function(d){
-                                    return parseInt(d["Row"]);
+        //Calculates the maximum number of columns to be laid out on the svg
+        this.maxColumns = d3.max(electionResult,function(d){
+                                return parseInt(d["Space"]);
                             });
 
-            //Creates a legend element and assigns a scale that needs to be visualized
-            this.legendSvg.append("g")
-                .attr("class", "legendQuantile")
-                .attr("transform", "translate(125,50)");
+        //Calculates the maximum number of rows to be laid out on the svg
+        this.maxRows = d3.max(electionResult,function(d){
+                                return parseInt(d["Row"]);
+                        });
+                        
+        //Creates a legend element and assigns a scale that needs to be visualized
+        this.legendSvg.append("g")
+            .attr("class", "legendQuantile")
+            .attr("transform", "translate(125,50)");
 
-            let legendQuantile = d3.legendColor()
-                .shapeWidth(120)
-                .cells(10)
-                .orient('horizontal')
-                .scale(colorScale);
+        let legendQuantile = d3.legendColor()
+            .shapeWidth(120)
+            .cells(10)
+            .orient('horizontal')
+            .scale(colorScale);
 
-            this.legendSvg.select(".legendQuantile")
-                .call(legendQuantile);
+        this.legendSvg.select(".legendQuantile")
+            .call(legendQuantile);
 
         //for reference:https://github.com/Caged/d3-tip
         //Use this tool tip element to handle any hover over the chart
-            let tip = d3.tip().attr('class', 'd3-tip')
-                .direction('se')
-                .offset(function() {
-                    return [0,0];
-                })
-                .html((d)=>{
-                    /* populate data in the following format
-                     * tooltip_data = {
-                     * "state": State,
-                     * "winner":d.State_Winner
-                     * "electoralVotes" : Total_EV
-                     * "result":[
-                     * {"nominee": D_Nominee_prop,"votecount": D_Votes,"percentage": D_Percentage,"party":"D"} ,
-                     * {"nominee": R_Nominee_prop,"votecount": R_Votes,"percentage": R_Percentage,"party":"R"} ,
-                     * {"nominee": I_Nominee_prop,"votecount": I_Votes,"percentage": I_Percentage,"party":"I"}
-                     * ]
-                     * }
-                     * pass this as an argument to the tooltip_render function then,
-                     * return the HTML content returned from that method.
-                     * */
-                    return ;
-                });
+        let tip = d3.tip().attr('class', 'd3-tip')
+        .direction('se')
+        .offset(function() {
+            return [0,0];
+        })
+        .html((d)=> {
+            let tooltip_data = {
+                'state'  : d['State'],
+                'winner' : d['State_Winner'],
+                'electoralVotes' : d['Total_EV'],
+                'result' : [
+                    { 'nominee' 	: d['D_Nominee_prop'],
+                      'votecount' 	: d['D_Votes'],
+                      'percentage' 	: d['D_Percentage'],
+                      'party' 		: "D" },
 
-            // ******* TODO: PART IV *******
-            //Tansform the legend element to appear in the center and make a call to this element for it to display.
+                    { 'nominee' 	: d['R_Nominee_prop'],
+                      'votecount' 	: d['R_Votes'],
+                      'percentage' 	: d['R_Percentage'],
+                      'party' 		: "R" },
 
-            //Lay rectangles corresponding to each state according to the 'row' and 'column' information in the data.
+                    { 'nominee' 	: d['I_Nominee_prop'],
+                      'votecount' 	: d['I_Votes'],
+                      'percentage' 	: d['I_Percentage'],
+                      'party' 		: "I" }
+                ]
+            };
 
-            //Display the state abbreviation and number of electoral votes on each of these rectangles
+            // Remove ind if no votes
+            if (d['I_Percentage'] == 0) {
+                tooltip_data['result'].splice(2, 1);
+            }
 
-            //Use global color scale to color code the tiles.
+            return this.tooltip_render(tooltip_data);
+        });
 
-            //HINT: Use .tile class to style your tiles;
-            // .tilestext to style the text corresponding to tiles
+        const STATE_WIDTH = this.svgWidth / (this.maxColumns + 1);
+        const STATE_HEIGHT = this.svgHeight / (this.maxRows + 1);
+        
+        let xScale = d3.scaleLinear()
+            .domain([0, this.maxColumns])
+            .range([0, this.svgWidth - STATE_WIDTH]);
 
-            //Call the tool tip on hover over the tiles to display stateName, count of electoral votes
-            //then, vote percentage and number of votes won by each party.
-            //HINT: Use the .republican, .democrat and .independent classes to style your elements.
-    
+        let yScale = d3.scaleLinear()
+            .domain([0, this.maxRows])
+            .range([0, this.svgHeight - STATE_HEIGHT]);
+
+        // Create each tile
+        let tiles = this.svg.selectAll("rect").data(electionResult);
+        tiles = tiles.enter().append("rect").merge(tiles);
+
+        // Add coloring
+        tiles.attr("x", d => xScale(+d["Space"]))
+            .attr("y", d => yScale(+d["Row"]))
+            .attr("width", STATE_WIDTH)
+            .attr("height", STATE_HEIGHT)
+            .style("fill", function(d) {
+                return d['State_Winner'] == "I" ? "#01A142" : colorScale(d['RD_Difference']);
+            })
+            .classed("tile", true);
+
+        // Add state abbreviation to each state
+        let stateAbbr = this.svg.selectAll("text.abbr").data(electionResult);
+        stateAbbr = stateAbbr.enter().append("text").merge(stateAbbr);
+        stateAbbr.attr("x", d => xScale(+d["Space"]) + STATE_WIDTH / 2)
+            .attr("y", d => yScale(+d["Row"]) + STATE_HEIGHT / 2.3)
+            .text(function(d) {
+                return d['Abbreviation'];
+            })
+            .classed("tilestext", true)
+            .classed("abbr", true);
+        
+        // Add state electoral votes to each state
+        let stateVotes = this.svg.selectAll("text.votes").data(electionResult);
+        stateVotes = stateVotes.enter().append("text").merge(stateVotes);
+        stateVotes.attr("x", d => xScale(+d["Space"]) + STATE_WIDTH / 2)
+            .attr("y", d => yScale(+d["Row"]) + STATE_HEIGHT / 1.3)
+            .text(function(d) {
+                return d['Total_EV'];
+            })
+            .classed("tilestext", true)
+            .classed("votes", true);
+            
+        // Add tooltip on hover to each state
+        tiles.call(tip)
+		tiles.on("mouseover", tip.show);
+		tiles.on("mouseout", tip.hide);
     };
-
 
 }

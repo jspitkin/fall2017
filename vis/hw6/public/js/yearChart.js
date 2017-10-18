@@ -91,6 +91,7 @@ class YearChart {
             .attr("cx", (d, i) => xScale(i))
             .attr("cy", this.svgHeight / 3)
             .attr("r", DEFAULT_CIRCLE_RADIUS)
+            .attr("id", d => "year" + d['YEAR'])
             .attr("class", d => this.chooseClass(d['PARTY']));
 
         // append text labels
@@ -99,7 +100,7 @@ class YearChart {
             .enter()
             .append("text")
             .attr("x", (d, i) => xScale(i))
-            .attr("y", this.svgHeight * 0.8)
+            .attr("y", this.svgHeight * 0.85)
             .text(d => d['YEAR'])
             .classed("yeartext", true);
 
@@ -112,14 +113,20 @@ class YearChart {
                 d3.select(this).classed("highlighted", false);
             })
             .on("click", function(d) {
+                // read in new dataset and update vis
                 let csvPath = "data/Year_Timeline_" + d['YEAR'] + ".csv";
                 d3.csv(csvPath, function(error, yearData) {
                     this.electoralVoteChart.update(yearData, this.colorScale);
                     this.tileChart.update(yearData, this.colorScale);
                     this.votePercentageChart.update(yearData);
                 }.bind(this));
+                // set .selected for selected circle and disable the rest
+                this.svg.selectAll("circle").classed("selected", false);
+                d3.select("#year" + d['YEAR'])
+                    .classed("selected", true);
             }.bind(this));
 
+        this.defaultSelection();
     //******* TODO: EXTRA CREDIT *******
 
     //Implement brush on the year chart created above.
@@ -128,5 +135,16 @@ class YearChart {
     //HINT: Use the .brush class to style the brush.
 
     };
+
+    defaultSelection() {
+        // Select the year 2012 on page load
+        let csvPath = "data/Year_Timeline_2012.csv";
+        d3.csv(csvPath, function(error, yearData) {
+            this.electoralVoteChart.update(yearData, this.colorScale);
+            this.tileChart.update(yearData, this.colorScale);
+            this.votePercentageChart.update(yearData);
+        }.bind(this));
+        d3.select("#year2012").classed("selected", true);
+    }
 
 };

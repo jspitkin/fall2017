@@ -59,7 +59,6 @@ class VotePercentageChart {
 	 * @param electionResult election data for the year selected
 	 */
 	update (electionResult){
-		console.log(electionResult);
 		//for reference:https://github.com/Caged/d3-tip
 		//Use this tool tip element to handle any hover over the chart
 		let tip = d3.tip().attr('class', 'd3-tip')
