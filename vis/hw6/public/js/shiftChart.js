@@ -6,6 +6,7 @@ class ShiftChart {
      */
     constructor(){
         this.divShiftChart = d3.select("#shiftChart").classed("sideBar", true);
+        this.divShiftChartList = this.divShiftChart.append("ul");
     };
 
     /**
@@ -14,23 +15,22 @@ class ShiftChart {
      * @param selectedStates data corresponding to the states selected on brush
      */
     update(selectedStates){
-     
-     // ******* TODO: PART V *******
-    //Display the names of selected states in a list
+        // Display the names of selected states in a list
+        let listStates = this.divShiftChartList.selectAll("li").data(selectedStates);
+        listStates.exit().remove();
+        listStates = listStates.enter().append("li").merge(listStates);
+        listStates.text(d => d['State']);
 
-    //******** TODO: PART VI*******
-    //Use the shift data corresponding to the selected years and sketch a visualization
-    //that encodes the shift information
+        //******** TODO: PART VI*******
+        //Use the shift data corresponding to the selected years and sketch a visualization
+        //that encodes the shift information
 
-    //******** TODO: EXTRA CREDIT I*******
-    //Handle brush selection on the year chart and sketch a visualization
-    //that encodes the shift informatiomation for all the states on selected years
+        //******** TODO: EXTRA CREDIT I*******
+        //Handle brush selection on the year chart and sketch a visualization
+        //that encodes the shift informatiomation for all the states on selected years
 
-    //******** TODO: EXTRA CREDIT II*******
-    //Create a visualization to visualize the shift data
-    //Update the visualization on brush events over the Year chart and Electoral Vote Chart
-
+        //******** TODO: EXTRA CREDIT II*******
+        //Create a visualization to visualize the shift data
+        //Update the visualization on brush events over the Year chart and Electoral Vote Chart
     };
-
-
 }

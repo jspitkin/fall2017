@@ -39,7 +39,6 @@ class ElectoralVoteChart {
         }
     }
 
-
     /**
      * Creates the stacked bar chart, text content and tool tips for electoral vote chart
      *
@@ -138,14 +137,30 @@ class ElectoralVoteChart {
             .text("Electoral Vote (" +neededVotes + " needed to win)")
             .classed("electoralVoteNote", true);
 
-        //******* TODO: PART V *******
-        //Implement brush on the bar chart created above.
-        //Implement a call back method to handle the brush end event.
-        //Call the update method of shiftChart and pass the data corresponding to brush selection.
-        //HINT: Use the .brush class to style the brush.
+        // Create the brush with the bounds of the electoral vote chart
+        let brush = d3.brushX()
+            .extent([[0, BAR_Y], [this.svgWidth, BAR_Y + BAR_HEIGHT]])
+            .on("end", function(d) {
+                // Bounds for the brush
+                let lowerBound = d3.event.selection[0];
+                let upperBound = d3.event.selection[1];
+                let selectedStates = [];
+                let currentX = 0;
+                // Consider each state and see if the state is in bounds of the brush
+                for (let i = 0; i < sortedElectionResult.length; i++) {
+                    let xUpdate = widthScale(sortedElectionResult[i]['Total_EV']);
+                    if (currentX >= lowerBound && currentX + xUpdate <= upperBound) {
+                        selectedStates.push(sortedElectionResult[i]);
+                    }
+                    // Update the current position in the bar chart
+                    currentX += xUpdate;
+                }
+                // Pass the selected states to the shift chart
+                this.shiftChart.update(selectedStates);
+            }.bind(this));
 
-
+        // Add the brush to the stacked bar chart
+        this.svg.append("g").attr("class", "brush").call(brush);
     };
 
-    
 }

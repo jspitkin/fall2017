@@ -116,6 +116,7 @@ class YearChart {
                 // read in new dataset and update vis
                 let csvPath = "data/Year_Timeline_" + d['YEAR'] + ".csv";
                 d3.csv(csvPath, function(error, yearData) {
+                    console.log(yearData);
                     this.electoralVoteChart.update(yearData, this.colorScale);
                     this.tileChart.update(yearData, this.colorScale);
                     this.votePercentageChart.update(yearData);
@@ -124,6 +125,8 @@ class YearChart {
                 this.svg.selectAll("circle").classed("selected", false);
                 d3.select("#year" + d['YEAR'])
                     .classed("selected", true);
+                // clear the brushed state selections (if any)
+                d3.select("#shiftChart").select("ul").selectAll("li").remove();
             }.bind(this));
 
         this.defaultSelection();
