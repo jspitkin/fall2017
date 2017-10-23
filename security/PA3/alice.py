@@ -1,20 +1,98 @@
 from socket import *
 from Crypto import Random
+from Crypto.Cipher import DES3
+from Crypto.Util import Padding
 import json
 
 KDC_PORT = 12000
 BOB_PORT = 12001
+ALICE_PORT = 12002
 
 def main():
-    # Generate a unique ID and register with the KDC
+    # Generate a unique ID and register with the KDC.
     ALICE_ID = Random.get_random_bytes(8).hex()
     K_A = register_with_kdc(ALICE_ID)
 
     # Initiate contact with Bob.
     BOB_ID, encrypted_N_B = initiate_contact_bob(ALICE_ID)
 
-    # Contact the KDC to get K_AB and the ticket to Bob
-    kdc_response = contact_kdc(ALICE_ID, BOB_ID, encrypted_N_B)
+    # Contact the KDC to get K_AB and the ticket to Bob.
+    N_1 = Random.get_random_bytes(8).hex()
+    kdc_response = contact_kdc(ALICE_ID, BOB_ID, encrypted_N_B, N_1)
+
+    # Deconstruct the response from the KDC.
+    ticket, K_AB = deconstruct_kdc_response(kdc_response, K_A, N_1, BOB_ID)
+
+    # Send Bob his ticket and a new nonce encrypted with the shared key.
+    N_2 = Random.get_random_bytes(8).hex()
+    send_bob_ticket(ticket, K_AB, N_2)
+
+    # Wait for Bob to respond with his challenge.
+    N_3 = wait_for_bob_challenge(K_AB, N_2)
+
+    # Send final challenge K_AB{N_3 - 1} to Bob.
+    final_challenge(K_AB, N_3)
+
+
+def final_challenge(K_AB, N_3):
+    print("Sending challenge K_AB{{N_3 - 1}} to Bob.")
+    N_3_1 = hex(int(N_3, 16) - 1)[2:] 
+    challenge = encrypt_plaintext(K_AB, N_3_1)
+    request = { 'challenge' : challenge }
+    sock = socket(AF_INET, SOCK_STREAM)
+    sock.connect(('', BOB_PORT))
+    packet = json.dumps(request).encode('utf-8')
+    sock.send(packet)
+    print()
+    print("FINISHED: Fully authenicated with Bob and K_AB exchanged.")
+    return
+
+
+def wait_for_bob_challenge(K_AB, N_2):
+    # Setup a socket for Bob to listen on.
+    alice_lis_sock = socket(AF_INET, SOCK_STREAM)
+    alice_lis_sock.bind(('', ALICE_PORT))
+    alice_lis_sock.listen(1)
+    bob_sock, addr = alice_lis_sock.accept()
+    request = bob_sock.recv(1024)
+    request = json.loads(request)
+    print("Received Bob's challenge K_AB{{N_2 - 1, N_3}}")
+    print()
+    plaintext = decrypt_plaintext(K_AB, request['challenge'])
+    N_2_1 = plaintext[0:16]
+    N_3 = plaintext[16:32]
+    if hex(int(N_2, 16) - 1)[2:] != N_2_1:
+        raise Exception("Challenge N_2 - 1 does not match.")
+    return N_3
+
+
+def send_bob_ticket(ticket, K_AB, N_2):
+    print()
+    print("Sending Bob the ticket and K_AB{{N_2}}.")
+    print()
+    encrypted_nonce = encrypt_plaintext(K_AB, N_2)
+    request = { 'ticket' : ticket,
+                'nonce' : encrypted_nonce }
+    sock = socket(AF_INET, SOCK_STREAM)
+    sock.connect(('', BOB_PORT))
+    packet = json.dumps(request).encode('utf-8')
+    sock.send(packet)
+    return
+
+
+def deconstruct_kdc_response(kdc_response, K_A, N_1, BOB_ID):
+    print()
+    print("Deconstructing KDC response into it's parts.")
+    plaintext = decrypt_plaintext(K_A, kdc_response)
+    nonce = plaintext[0:16]
+    bob = plaintext[16:32]    
+    K_AB = plaintext[32:64]
+    ticket = plaintext[64:]
+    if N_1 != nonce:
+        raise Exception("Nonce N_1 does not match.")
+    if BOB_ID != bob:
+        raise Exception("Bob's ID does not match.")
+    return ticket, K_AB
 
 
 def initiate_contact_bob(ALICE_ID):
@@ -28,24 +106,35 @@ def initiate_contact_bob(ALICE_ID):
     sock.connect(('', BOB_PORT))
     packet = json.dumps(request).encode('utf-8')
     sock.send(packet)
+    print("Making initial contact with Bob.")
     response = sock.recv(1024)
     response = json.loads(response)
     if response['type'] != "initial":
         raise Exception("Expected Bob's initial message.")
     encrypted_nonce = response['data']
     BOB_ID = response['sender_id']
-    print("Received Bob's initial encrypted nonce {}".format(encrypted_nonce))
+    print("Received Bob's encrypted nonce K_B{{N_B}}")
     print()
     return BOB_ID, encrypted_nonce
 
 
-def contact_kdc(req_id, rec_id, encrypted_N_B):
-    N_1 = Random.get_random_bytes(8).hex()
-    request = { 'type' : "initial",
-                'requester_id' : req_id, 
-                'recipient_id' : rec_id,
+def contact_kdc(ALICE_ID, BOB_ID, encrypted_N_B, N_1):
+    request = { 'type' : "key_establishment",
+                'alice_id' : ALICE_ID, 
+                'bob_id' : BOB_ID,
                 'nonce' : N_1,
                 'enc_N_B' : encrypted_N_B }
+    sock = socket(AF_INET, SOCK_STREAM)
+    sock.connect(('', KDC_PORT))
+    packet = json.dumps(request).encode('utf-8')
+    sock.send(packet)
+    print("Requesting K_AB from the KDC.")
+    response = sock.recv(1024)
+    response = json.loads(response)
+    if response['type'] != "key_establishment":
+        raise Exception("Expected key establishment from the KDC.")
+    print("Received ticket to Bob package from KDC.")
+    return response['data']
 
 
 def register_with_kdc(id):
@@ -55,7 +144,7 @@ def register_with_kdc(id):
         id (string): Unique id in hexadecimal.
 
     Return:
-        private_key (byte): Generated private key.
+        private_key (hex): Generated private key.
 
     """
     request = { 'type' : "register",
@@ -73,6 +162,43 @@ def register_with_kdc(id):
     print()
     return private_key
 
+
+def encrypt_plaintext(key, plaintext):
+    """ Encrypts plaintext with the given key and appends the iv to the front.
+
+        Args:
+            key (hex): DES3 key.
+            plaintext (hex): unpadded plaintext.
+
+        Return:
+            ciphertext (hex): padded encrypted plaintext with the iv appended to the front.
+    """
+    key = bytes.fromhex(key)
+    plaintext = bytes.fromhex(plaintext)
+    iv = Random.new().read(DES3.block_size)
+    des3 = DES3.new(key, DES3.MODE_CBC, iv)
+    ciphertext = des3.encrypt(Padding.pad(plaintext, DES3.block_size))
+    ciphertext = (iv + ciphertext).hex()
+    return ciphertext
+
+
+def decrypt_plaintext(key, ciphertext):
+    """ Assumes the iv is appended to the front of the ciphertext and is 8 bytes.
+        
+        Args:
+            key (hex): DES3 key.
+            ciphertext (hex): padded ciphertext with the iv appened to the front.
+        
+        Return:
+            unpadded_plaintext (hex): decrypted plaintext.
+    """
+    key = bytes.fromhex(key)
+    ciphertext = bytes.fromhex(ciphertext)
+    iv = ciphertext[0:8]
+    des3 = DES3.new(key, DES3.MODE_CBC, iv)
+    plaintext = des3.decrypt(ciphertext[8:])
+    unpadded_plaintext = Padding.unpad(plaintext, DES3.block_size)
+    return unpadded_plaintext.hex()
 
 if __name__ == "__main__":
     main()
