@@ -1,3 +1,9 @@
+""" 
+    Jake Pitkin - u0891770
+    CS 6490 - Network Security
+    Programming Assignment 3
+"""
+
 from socket import *
 from Crypto import Random
 from Crypto.Cipher import DES3
@@ -9,6 +15,10 @@ BOB_PORT = 12001
 ALICE_PORT = 12002
 
 def main():
+    """ Executes the extended-NS protocol with Bob.
+        Alice is the party that contacts the KDC. 
+    """
+
     # Generate a unique ID and register with the KDC.
     ALICE_ID = Random.get_random_bytes(8).hex()
     K_A = register_with_kdc(ALICE_ID)
@@ -35,10 +45,14 @@ def main():
 
 
 def final_challenge(K_AB, N_3):
+    """ Send the final challenge K_AB{N_3 - 1} to Bob to authenticate Alice. """
+    
     print("Sending challenge K_AB{{N_3 - 1}} to Bob.")
+    # Calculate N_3 - 1.
     N_3_1 = hex(int(N_3, 16) - 1)[2:] 
     challenge = encrypt_plaintext(K_AB, N_3_1)
     request = { 'challenge' : challenge }
+    # Send K_AB{N_3 - 1} to Bob.
     sock = socket(AF_INET, SOCK_STREAM)
     sock.connect(('', BOB_PORT))
     packet = json.dumps(request).encode('utf-8')
@@ -49,7 +63,10 @@ def final_challenge(K_AB, N_3):
 
 
 def wait_for_bob_challenge(K_AB, N_2):
-    # Setup a socket for Bob to listen on.
+    """ Listen for Bob to send challenge K_AB{N_2 - 1, N_3} 
+        Throws an exception if N_2 - 1 does not match. """
+
+    # Setup a socket to listen for Bob.
     alice_lis_sock = socket(AF_INET, SOCK_STREAM)
     alice_lis_sock.bind(('', ALICE_PORT))
     alice_lis_sock.listen(1)
@@ -58,21 +75,27 @@ def wait_for_bob_challenge(K_AB, N_2):
     request = json.loads(request)
     print("Received Bob's challenge K_AB{{N_2 - 1, N_3}}")
     print()
+    # Decrypt K_AB{N_2 - 1, N_3}
     plaintext = decrypt_plaintext(K_AB, request['challenge'])
     N_2_1 = plaintext[0:16]
     N_3 = plaintext[16:32]
+    # Verify N_2 - 1
     if hex(int(N_2, 16) - 1)[2:] != N_2_1:
         raise Exception("Challenge N_2 - 1 does not match.")
     return N_3
 
 
 def send_bob_ticket(ticket, K_AB, N_2):
+    """ Sends Bob his ticket and challange K_AB{N_2} """
+
     print()
     print("Sending Bob the ticket and K_AB{{N_2}}.")
     print()
+    # Encrypt N_2 with K_AB.
     encrypted_nonce = encrypt_plaintext(K_AB, N_2)
     request = { 'ticket' : ticket,
                 'nonce' : encrypted_nonce }
+    # Send Bob his ticket and the encrypted challenge.
     sock = socket(AF_INET, SOCK_STREAM)
     sock.connect(('', BOB_PORT))
     packet = json.dumps(request).encode('utf-8')
@@ -81,13 +104,20 @@ def send_bob_ticket(ticket, K_AB, N_2):
 
 
 def deconstruct_kdc_response(kdc_response, K_A, N_1, BOB_ID):
+    """ Decrypts the response from the KDC and deconstructs it
+        into it's respective parts.
+        Throws an exception if BOB_ID or N_1 do not match.
+    """
+
     print()
     print("Deconstructing KDC response into it's parts.")
+    # Decrypt the response from the KDC.
     plaintext = decrypt_plaintext(K_A, kdc_response)
     nonce = plaintext[0:16]
     bob = plaintext[16:32]    
     K_AB = plaintext[32:64]
     ticket = plaintext[64:]
+    # Verify BOB_ID and N_1.
     if N_1 != nonce:
         raise Exception("Nonce N_1 does not match.")
     if BOB_ID != bob:
@@ -96,12 +126,12 @@ def deconstruct_kdc_response(kdc_response, K_A, N_1, BOB_ID):
 
 
 def initiate_contact_bob(ALICE_ID):
-    """ Initiate contact with Bob to begin the Needham-Schroeder protocol.
-    """
+    """ Initiate contact with Bob to begin the Needham-Schroeder protocol. """
 
     request = { 'type' : "initial",
                 'sender_id' : ALICE_ID,
                 'data' : "I want to talk to you" }
+    # Send initial contact message to Bob.
     sock = socket(AF_INET, SOCK_STREAM)
     sock.connect(('', BOB_PORT))
     packet = json.dumps(request).encode('utf-8')
@@ -109,8 +139,7 @@ def initiate_contact_bob(ALICE_ID):
     print("Making initial contact with Bob.")
     response = sock.recv(1024)
     response = json.loads(response)
-    if response['type'] != "initial":
-        raise Exception("Expected Bob's initial message.")
+    # Receive K_B{N_B} from Bob.
     encrypted_nonce = response['data']
     BOB_ID = response['sender_id']
     print("Received Bob's encrypted nonce K_B{{N_B}}")
@@ -119,16 +148,20 @@ def initiate_contact_bob(ALICE_ID):
 
 
 def contact_kdc(ALICE_ID, BOB_ID, encrypted_N_B, N_1):
+    """ Contact the KDC to extract N_B, get shared key K_AB and ticket to Bob. """
+    
     request = { 'type' : "key_establishment",
                 'alice_id' : ALICE_ID, 
                 'bob_id' : BOB_ID,
                 'nonce' : N_1,
                 'enc_N_B' : encrypted_N_B }
+    # Send request to the KDC.
     sock = socket(AF_INET, SOCK_STREAM)
     sock.connect(('', KDC_PORT))
     packet = json.dumps(request).encode('utf-8')
     sock.send(packet)
     print("Requesting K_AB from the KDC.")
+    # Receive response from the KDC.
     response = sock.recv(1024)
     response = json.loads(response)
     if response['type'] != "key_establishment":
@@ -147,6 +180,7 @@ def register_with_kdc(id):
         private_key (hex): Generated private key.
 
     """
+    
     request = { 'type' : "register",
                 'data' : id }
     sock = socket(AF_INET, SOCK_STREAM)
@@ -173,6 +207,7 @@ def encrypt_plaintext(key, plaintext):
         Return:
             ciphertext (hex): padded encrypted plaintext with the iv appended to the front.
     """
+
     key = bytes.fromhex(key)
     plaintext = bytes.fromhex(plaintext)
     iv = Random.new().read(DES3.block_size)
@@ -192,6 +227,7 @@ def decrypt_plaintext(key, ciphertext):
         Return:
             unpadded_plaintext (hex): decrypted plaintext.
     """
+
     key = bytes.fromhex(key)
     ciphertext = bytes.fromhex(ciphertext)
     iv = ciphertext[0:8]
@@ -199,6 +235,7 @@ def decrypt_plaintext(key, ciphertext):
     plaintext = des3.decrypt(ciphertext[8:])
     unpadded_plaintext = Padding.unpad(plaintext, DES3.block_size)
     return unpadded_plaintext.hex()
+
 
 if __name__ == "__main__":
     main()

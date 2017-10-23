@@ -48,7 +48,7 @@
 
 \textbf{Suppose a computer is authenticated based on its IP address (no passwords are used). Identify one strength and one weakness of such an authentication mechanism.}
 
-\textit{Strength:} With an address-based authentication, passwords don't need to be created, remembered, or pass around the network. This makes addressed-based authentication much more convenient than password-based systems. Additionally, passwords can't be intercepted by eavesdroppers, brute force guessed using rainbow tables, or leaked as the result of a compromised database.
+\textit{Strength:} With an address-based authentication, passwords don't need to be created, remembered, or passed around the network. This makes addressed-based authentication much more convenient than password-based systems. Additionally, passwords can't be intercepted by eavesdroppers, brute force guessed using rainbow tables, or leaked as the result of a compromised database.
 
 \textit{Weakness:} Trudy can impersonate Alice's network address and pose as her on the network. She can perform source routing and inject IP packets to route traffic in such a way that she can transmit from and receive packets for Alice's network address. This comes with it's share of complications (additional cryptographic authentication on the router), as most security threats do.
 
@@ -138,7 +138,43 @@ Finally Alice uses $K_{AB}$ to decrypt $K_{AB}\{R1\}$ and verifies $R1$ is corre
 
 Alice knows Bob is authentic as well. Only someone with Bob's private key can decrypt $K_{AB}$ and $R1$ from $B^+(K_{AB}, R1)$. Alice will know there is an intruder if Bob's response message $K_{AB}\{R1\}$ doesn't agree with the $K_{AB}$ and $R1$ she generated.
 
-\part{h} \textbf{Here $\mathbf{K_{AB}}$ is the shared secret between Alice and Bob, R1 and R2 are random nonces (random numbers used only once), and the function f is a secret key function or a hash function. The protocol of this question is vulnerable to an off-line dictionary attack by Trudy impersonating as Alice. Modify this protocol appropriately to remove this vulnerability.}
+\part{h} \textbf{With the help of figures and message exchanges, show the reflection attack on the following protocol:}
+
+\begin{figure}[H]
+  \centerline{\includegraphics[width=0.5\linewidth]{3h_1.png}}
+\end{figure}
+
+For Trudy to perform a reflection attack she will open two connections with Bob, posing as Alice in both. She will open a first connection (Trudy 1) and send a nonce $R2$.
+
+\begin{figure}[H]
+  \centerline{\includegraphics[width=0.5\linewidth]{3h_2.png}}
+\end{figure}
+
+Now Bob is expecting $K_{AB}\{SHA1(R1, K_{AB})\}$, so Trudy will open a second connection (Trudy 2) and send the nonce $R1$ she got from Bob.
+
+\begin{figure}[H]
+  \centerline{\includegraphics[width=0.5\linewidth]{3h_3.png}}
+\end{figure}
+
+Now Trudy has obtained $K_{AB}\{SHA1(R1, K_{AB})\}$, so she will return to connection 1 and reply to Bob.
+
+\begin{figure}[H]
+  \centerline{\includegraphics[width=0.5\linewidth]{3h_4.png}}
+\end{figure}
+
+
+\textbf{Here $\mathbf{K_{AB}}$ is the shared secret between Alice and Bob, R1 and R2 are random nonces (random numbers used only once), and the function f is a secret key function or a hash function. The protocol of this question is vulnerable to an off-line dictionary attack by Trudy impersonating as Alice. Modify this protocol appropriately to remove this vulnerability.}
+
+This protocol is vulnerable to a dictionary attack as Trudy can obtain a $R2$, $K_{AB}\{SHA1(R2, K_{AB})\}$ pair by simply posing as Alice and sending a nonce $R2$. Trudy can keep iterating through a dictionary of $K_i$'s, compute $K_{i}\{SHA1(R1, K_{i})\}$ and continue until $K_{x}\{SHA1(R1, K_{x})\}$ is equal to $K_{AB}\{SHA1(R1, K_{AB})\}$ at which point she has found $K_{AB}$.
+
+One solution would be for Alice to use RSA to sign an encrypted version of her original message, sending the message and the signature.
+
+\begin{figure}[H]
+  \centerline{\includegraphics[width=0.5\linewidth]{3h_5.png}}
+\end{figure}
+
+Where $A^+$ is Alice's public key. If Alice's signature doesn't prove to be authentic, then Bob will not respond with his second message $R1$, $K_{AB}\{SHA1(R2, K_{AB})\}$. Trudy can't sign a nonce with her own private key, because the response will be encrypted using $K_{TB}$ (Trudy and Bob's shared key assuming they have one).
+
 
 \question{Question 4}
 
@@ -148,10 +184,42 @@ Suppose Alice has initiated wanting to talk to Bob and Bob has responded with $n
 
 This can be prevented by changing when Bob updates his stored pair for Alice $<n, \ hash^n(password)>$. Normally Bob updates this to $<n-1, \ hash^{n-1}(password)>$ after authenticating Alice. But to make this system less vulnerable to crashes, Bob should update to $<n-1, \ hash^{n-1}(password)>$ \textbf{right before sending n}. And Bob no longer hashes the incoming password before comparing to what he has on record.
 
-Let's say Bob sends $n = 5$ when he crashes so Trudy intercepts Alice's response of $hash^{4}(password)$. Now when Trudy impersonates Alice, Bob will send $n = 4$ and Trudy will have to produce $hash^{3}(password)$. Trudy can't "undo" a hash as it's a one way function so she will fail to authenticate.
+Let's say Bob sends $n = 5$ when he crashes so Trudy intercepts Alice's response of $hash^{4}(password)$. Now when Trudy impersonates Alice, Bob will send $n = 4$ and Trudy will have to produce $hash^{3}(password)$. Trudy can't "undo" a hash and produce $hash^{3}(password)$ (as it's a one way function) so she will fail to authenticate.
 
-\part{b} \textbf{In Protocol 12-4, Bob's Diffie-Hellman value $\mathbf{g^b \ mod \ p}$ is not encrypted with W. Argue why this is still secure. Note that it would not be secure for Bob to send $\mathbf{g^b \ mod \ p}$ without encrypting it with W in Protocol 12-2. Why is that? How could you modify Protocol 12-2 so that it would be secure for Bob not to encrypt $\mathbf{g^b \ mod \ p}$ with W?}
+\part{b} \textbf{Consider Protocol 12-8. How would Alice compute K? How would Bob compute K? Why is it insecure? (Hint: someone impersonating Bob can do a dictionary attack, but show how.)}
 
+\textit{How Alice computes K:} After the initial two exchanges, Alice now has $g^b \ mod \ p$, $a$, and $W$. To compute K Alice will compute the following:
+
+$$K = hash((g^b \ mod \ p)^a \ mod \ p, (g^b \ mod \ p)^W \ mod \ p)$$
+
+We proved in homework 3 that $(x^c \ mod \ n)^d \ mod \ n = x^{cd} \ mod \ n$. We will apply this:
+
+$$K = hash(g^{ab} \ mod \ p, g^{bW} \ mod \ p)$$
+
+And Alice has computed K.
+
+\textit{How Bob computes K:} Bob will compute K in a similar manner. After the initial two exchanges, Bob has $g^W \ mod \ p$, $g^a \ mod \ p$, and $b$. He computes the following:
+
+$$K = hash((g^a \ mod \ p)^b \ mod \ p, (g^b \ mod \ p)^W \ mod \ p)$$
+
+Applying the proven property from homework 3:
+
+
+$$K = hash(g^{ab} \ mod \ p, g^{bW} \ mod \ p)$$
+
+Now Bob has computed K as well.
+
+\textit{Dictionary attack:} Consider Trudy impersonating as Bob. First, Alice will send Trudy "Alice", $g^a \ mod \ p$. Next Trudy can choose her own $b$ and send Alice $g^b \ mod \ p$ and a challenge $c_1$. Alice will respond with $K\{c_1\}, c_2$.
+
+At this point Trudy knows $g^a \ mod \ p$, $g^b \ mod \ p$, $b$, and $p$ as it's public information. Additionally she has the pair $K\{c_1\}$, $c_1$ will be used to check her offline dictionary attack. Trudy wants to compute K:
+
+$$K = hash(g^{ab} \ mod \ p, g^{bW} \ mod \ p)$$
+
+Notice the only information she doesn't have is $W$. Let $X$ be each of Trudy's offline guesses, the following is an equivalent formula:
+
+$$K = hash((g^a \ mod \ p)^b \ mod \ p, (g^b \ mod \ p)^X \ mod \ p)$$
+
+As such, Trudy will pick an $X$, compute $K$, and use the $K\{c_1\}$, $c_1$ pair to see if she is correct. She will continue until she finds it and finally respond to Alice with $K\{c_2\}$.
 
 
 \question{Question 5}
@@ -166,7 +234,8 @@ $$\delta = \frac{y_2 - y_1}{x_2 - x_1} = \frac{85 - 60}{8 - 6} = 12.5$$
 
 Thus our clock skew of the two points is $\textbf{12.5}$.
 
-\part{b} \textbf{Why is it not easy to fabricate clock skews of access points?}
+\part{b} 
+\textbf{Why is it not easy to fabricate clock skews of access points?}
 We must consider two scenarios: the genuine AP is active and the genuine AP is inactive.
 
 \textit{Genuine AP is active:} If both devices are active at the same time, the genuine beacon frames will be mixed with the attacker's beacon frames. As the attacker has no way to control when the genuine beacon frames will be transmitted, the beacon frames will be randomly interwoven. A consequence of this is the sequence of beacon frames will produce a different estimated clock skew than the original AP.

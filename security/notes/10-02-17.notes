@@ -1,0 +1,31 @@
+Midterm
+---
+Sample questions posted
+Review class notes and homeworks
+And then if extra time: read chapters
+Fully-multiple choice
+
+
+SSL
+---
+Will not be on the Midterm
+How R_A and R_B are choosen
+    32-bytes each
+    first 4-bytes - unix time since 1970
+
+Sample Midterm questions
+---
+Q1: you will never reverse the mangler so this is not a problem.
+Q2: you could change the message and still produce the same XOR result
+Q3: sqrt(2^64) = 2^32
+Q4: Using XOR you could find the other message block (example in class notes)
+Q5: if e=3, send the same encrypted message to 3 different people
+    using the Chinese remainder theorem, we can find m^3
+    take the cube root, and recover m
+Q6i: person-in-the-middle attack
+Q6ii: it doesn't
+Q7: 1) use different keys in different directions 2) authenticate the initiator
+    3) even nonces in one direction and odd nonces in the other
+Q8: Authenticate Alice first by adding a 4th message
+Q9: B
+Q10: D
