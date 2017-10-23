@@ -18,9 +18,13 @@ def main():
     """ Executes the extended-NS protocol with Alice.
         Bob is the party that does not contact the KDC. 
     """
+    print("Running Original Needham Schroeder protocol.")
+    print("--------------------------------------------")
+    print()
 
     #Generate a unique ID and register with the KDC.
     BOB_ID = Random.get_random_bytes(8).hex()
+    write_id(BOB_ID)
     K_B = register_with_kdc(BOB_ID)
 
     # Setup a socket for Bob to listen on.
@@ -28,15 +32,12 @@ def main():
     bob_lis_sock.bind(('', BOB_PORT))
     bob_lis_sock.listen(1)
 
-    # Wait for Alice to initially contact me.
-    ALICE_ID, N_B, alice_sock = wait_for_alice(BOB_ID, K_B, bob_lis_sock)
-
     # Wait for Alice to contact me with a ticket.
-    K_AB, N_2 = wait_for_ticket(bob_lis_sock, K_B, ALICE_ID, N_B)
+    K_AB, N_2 = wait_for_ticket(bob_lis_sock, K_B)
 
     # Send challenge K_AB{N_2 - 1, N_3} to Alice.
     N_3 = Random.get_random_bytes(8).hex()
-    send_alice_challenge(K_AB, N_2, N_3, alice_sock)
+    send_alice_challenge(K_AB, N_2, N_3)
 
     # Wait for Alice's response to challenge K_AB{N_3 - 1}.
     wait_for_alice_response(K_AB, N_3, bob_lis_sock)
@@ -57,11 +58,12 @@ def wait_for_alice_response(K_AB, N_3, bob_lis_sock):
     if N_3_1 != hex(int(N_3, 16) - 1)[2:]:
         raise Exception("Challenge N_3 - 1 does not match.")
     print()
+    print("N_3 - 1: {}".format(N_3_1))
     print("FINISHED: Fully authenticated with Alice and K_AB exchanged.")
     return
 
 
-def send_alice_challenge(K_AB, N_2, N_3, alice_sock):
+def send_alice_challenge(K_AB, N_2, N_3):
     """ Send Alice the challenge K_AB{N_2 - 1, N_3}. """
     
     # Calculate N_2 - 1.
@@ -75,60 +77,41 @@ def send_alice_challenge(K_AB, N_2, N_3, alice_sock):
     sock.connect(('', ALICE_PORT))
     sock.send(packet)
     print("Sending Alice challenge K_AB{{N_2 - 1, N_3}}.")
+    print("K_AB{{N_2 - 1, N_3}}: {}".format(challenge))
+    print("K_AB: {}".format(K_AB))
+    print("N_2 - 1: {}".format(N_2_1))
+    print("N_3: {}".format(N_3))
+    print()
     return
-    
-
-def wait_for_alice(BOB_ID, K_B, bob_lis_sock):
-    """ Wait for Alice to make initial contact. 
-        When she does, encrypt a nonce N_B with K_BOB and send it to Alice.
-    """
-    
-    # Wait for Alice to make initial contact.
-    alice_sock, addr = bob_lis_sock.accept()
-    request = alice_sock.recv(1024)
-    request = json.loads(request)
-    if request['type'] != "initial":
-        raise Exception("Expected Alice's initial message.")    
-    print("Received Alice's initial communication message.")
-    print()
-    # Generate a nonce N_B and encrypt it.
-    N_B = Random.get_random_bytes(8).hex()
-    encrypted_N_B = encrypt_plaintext(K_B, N_B)
-    response = { 'type' : "initial",
-                 'sender_id' : BOB_ID,
-                 'data' : encrypted_N_B }
-    packet = json.dumps(response).encode('utf-8')
-    print("Sending Alice encrypted nonce K_B{{N_B}}")
-    print()
-    # Send the encrypted nonce N_B to Alice.
-    alice_sock.send(packet)
-    return request['sender_id'], N_B, alice_sock
 
 
-def wait_for_ticket(bob_lis_sock, K_B, ALICE_ID, N_B):
+def wait_for_ticket(bob_lis_sock, K_B):
     """ Wait for Alice to respond with the ticket to Bob.
-        Exception is thrown if ALICE_ID or N_B do not match expected values.
+        Exception is thrown if ALICE_ID does not match expected value.
     """
 
     # Listen for Alice to send ticket to Bob.
     alice_sock, addr = bob_lis_sock.accept()
     request = alice_sock.recv(1024)
     request = json.loads(request)
-    print("Received ticket and K_AB{{N_2}} from Alice.")
-    print()
     # Decrypt the ticket to Bob.
+    ALICE_ID = read_id()
     encrypted_ticket = request['ticket']
     ticket = decrypt_plaintext(K_B, encrypted_ticket)
     K_AB = ticket[0:32]
     alice_id = ticket[32:48]
-    n_b = ticket[48:64]
-    # Verify ALICE_ID and N_B.
+    print("Received ticket and K_AB{{N_2}} from Alice.")
+    print("Encrypted ticket: {}".format(encrypted_ticket))
+    print("Decrypted ticket: {}".format(ticket))
+    print("K_AB: {}".format(K_AB))
+    print("K_AB{{N_2}}: {}".format(request['nonce']))
+    # Verify ALICE_ID.
     if ALICE_ID != alice_id:
         raise Exception("Alice's ID does not match.")
-    if N_B != n_b:
-        raise Exception("Nonce N_B does not match.")
     encrypted_N_2 = request['nonce']
     N_2 = decrypt_plaintext(K_AB, encrypted_N_2)
+    print("N_2: {}".format(N_2))
+    print()
     return K_AB, N_2
 
 
@@ -158,6 +141,7 @@ def register_with_kdc(id):
         print("ID already registered with the KDC.")
         return ""
     print("Registered with the KDC.")
+    print("K_B: {}".format(private_key))
     print()
     return private_key
 
@@ -175,11 +159,9 @@ def encrypt_plaintext(key, plaintext):
 
     key = bytes.fromhex(key)
     plaintext = bytes.fromhex(plaintext)
-    iv = Random.new().read(DES3.block_size)
-    des3 = DES3.new(key, DES3.MODE_CBC, iv)
+    des3 = DES3.new(key, DES3.MODE_ECB)
     ciphertext = des3.encrypt(Padding.pad(plaintext, DES3.block_size))
-    ciphertext = (iv + ciphertext).hex()
-    return ciphertext
+    return ciphertext.hex()
 
 
 def decrypt_plaintext(key, ciphertext):
@@ -195,12 +177,21 @@ def decrypt_plaintext(key, ciphertext):
 
     key = bytes.fromhex(key)
     ciphertext = bytes.fromhex(ciphertext)
-    iv = ciphertext[0:8]
-    des3 = DES3.new(key, DES3.MODE_CBC, iv)
-    plaintext = des3.decrypt(ciphertext[8:])
+    des3 = DES3.new(key, DES3.MODE_ECB)
+    plaintext = des3.decrypt(ciphertext)
     unpadded_plaintext = Padding.unpad(plaintext, DES3.block_size)
     return unpadded_plaintext.hex()
 
+
+def write_id(id):
+    with open("bob.txt", 'w') as f:
+        f.write(id)
+
+
+def read_id():
+    with open("alice.txt", 'r') as f:
+        lines = f.readlines()
+    return lines[0]
 
 if __name__ == "__main__":
     main()

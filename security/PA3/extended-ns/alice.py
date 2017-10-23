@@ -18,6 +18,9 @@ def main():
     """ Executes the extended-NS protocol with Bob.
         Alice is the party that contacts the KDC. 
     """
+    print("Running Extended Needham Schroeder protocol.")
+    print("--------------------------------------------")
+    print()
 
     # Generate a unique ID and register with the KDC.
     ALICE_ID = Random.get_random_bytes(8).hex()
@@ -47,9 +50,11 @@ def main():
 def final_challenge(K_AB, N_3):
     """ Send the final challenge K_AB{N_3 - 1} to Bob to authenticate Alice. """
     
-    print("Sending challenge K_AB{{N_3 - 1}} to Bob.")
     # Calculate N_3 - 1.
     N_3_1 = hex(int(N_3, 16) - 1)[2:] 
+    print("Sending challenge K_AB{{N_3 - 1}} to Bob.")
+    print("K_AB: {}".format(K_AB))
+    print("N_3 - 1: {}".format(N_3_1))
     challenge = encrypt_plaintext(K_AB, N_3_1)
     request = { 'challenge' : challenge }
     # Send K_AB{N_3 - 1} to Bob.
@@ -74,11 +79,16 @@ def wait_for_bob_challenge(K_AB, N_2):
     request = bob_sock.recv(1024)
     request = json.loads(request)
     print("Received Bob's challenge K_AB{{N_2 - 1, N_3}}")
-    print()
+    print("K_AB: {}".format(K_AB))
+    print("K_AB{{N_2 - 1, N_3}}: {}".format(request['challenge']))
     # Decrypt K_AB{N_2 - 1, N_3}
     plaintext = decrypt_plaintext(K_AB, request['challenge'])
+    print("(N_2 - 1, N_3): {}".format(plaintext))
     N_2_1 = plaintext[0:16]
     N_3 = plaintext[16:32]
+    print("N_2 - 1: {}".format(N_2_1))
+    print("N_3: {}".format(N_3))
+    print()
     # Verify N_2 - 1
     if hex(int(N_2, 16) - 1)[2:] != N_2_1:
         raise Exception("Challenge N_2 - 1 does not match.")
@@ -90,9 +100,12 @@ def send_bob_ticket(ticket, K_AB, N_2):
 
     print()
     print("Sending Bob the ticket and K_AB{{N_2}}.")
-    print()
+    print("K_AB: {}".format(K_AB))
+    print("N_2: {}".format(N_2))
     # Encrypt N_2 with K_AB.
     encrypted_nonce = encrypt_plaintext(K_AB, N_2)
+    print("K_AB{{N_2}}: {}".format(encrypted_nonce))
+    print()
     request = { 'ticket' : ticket,
                 'nonce' : encrypted_nonce }
     # Send Bob his ticket and the encrypted challenge.
@@ -143,6 +156,7 @@ def initiate_contact_bob(ALICE_ID):
     encrypted_nonce = response['data']
     BOB_ID = response['sender_id']
     print("Received Bob's encrypted nonce K_B{{N_B}}")
+    print("K_B{{N_B}}: {}".format(encrypted_nonce))
     print()
     return BOB_ID, encrypted_nonce
 
@@ -161,6 +175,10 @@ def contact_kdc(ALICE_ID, BOB_ID, encrypted_N_B, N_1):
     packet = json.dumps(request).encode('utf-8')
     sock.send(packet)
     print("Requesting K_AB from the KDC.")
+    print("N_1: {}".format(N_1))
+    print("K_B{{N_B}}: {}".format(encrypted_N_B))
+    print("ALICE_ID: {}".format(ALICE_ID))
+    print("BOB_ID: {}".format(BOB_ID))
     # Receive response from the KDC.
     response = sock.recv(1024)
     response = json.loads(response)
@@ -192,7 +210,8 @@ def register_with_kdc(id):
     private_key = response['data']
     if response['success'] == -1:
         raise Exception("ID already registered with the KDC.")
-    print("Registered with the KDC with key {}".format(private_key))
+    print("Registered with the KDC.")
+    print("K_A: {}".format(private_key))
     print()
     return private_key
 
