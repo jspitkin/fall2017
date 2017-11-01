@@ -96,7 +96,7 @@ def handshake_server(S_PUB, R_CLIENT, K, handshake_hash):
     print("Received server handshake hash from the server.")
     # Check the handshake hash.
     sha1_hasher = SHA1.new()
-    sha1_hasher.update(("SERVER" + handshake_messages).encode('utf-8'))
+    sha1_hasher.update(("SERVER" + handshake_messages + "TRUDY").encode('utf-8'))
     handshake_hash = sha1_hasher.hexdigest()
     if handshake_hash == response['hash']:
         print("Handshake hash from server matches.")
