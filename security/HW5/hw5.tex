@@ -48,11 +48,36 @@
 
 \part{a} \textbf{Is it possible to encapsulate an AH packet within an ESP packet and vice versa? Explain with the help of examples.}
 
+Consider the scenario (similar to Figure 17-3 in the text) where Alice and Bob are using IPsec and two firewalls, F1 and F2, between them are also using IPsec. Tunnel mode is used between F1 and F2.
+
+First, the scenario where the firewalls are using AH packets and Alice/Bob are using ESP packets.
+
+\begin{figure}[H]
+  \centerline{\includegraphics[width=0.5\linewidth]{hw5_1b_1.png}}
+\end{figure}
+
+This scenario does \textbf{not} work. One difference of the integrity protection provided by AH/ESP is that AH provides integrity protection of the IP header. The IPsec between F1 and F2 cannot perform the integrity protection of Alice and Bob's IP header as it is inside an encrypted ESP packet and the F1/F2 do not have the key.
+
+Alternatively, the firewalls could be using ESP packets and Alice/Bob are using AH packets.
+
+\begin{figure}[H]
+  \centerline{\includegraphics[width=0.5\linewidth]{hw5_1b_2.png}}
+\end{figure}
+
+In this scenario, the encapsulation of an AH packet inside a ESP packet \textbf{will} work. The IPsec between the routers are using ESP and do not check the IP headers during the integrity process.
+
+
 \part{b} \textbf{Suppose Alice is sending packets to Bob using IPsec. Suppose Bob's TCP acknowledgement gets lost, and Alice's TCP, assuming the packet was lost, retransmits the packet. Will Bob's IPsec implementation notice that the packet is a duplicate and discard it?}
+
+Bob's IPsec implementation will \textbf{not} notice it as a duplicate packet. Both AH and ESP IPsec headers have a \textit{sequence number} field that function identically. This sequence number is used by IPsec to prevent replay attacks.
+
+TCP handles the retransmission of packets. When TCP retransmits a packet, AH/ESP will treat it as a new packet with a new sequence number. This is one of the pros of building IPsec on top of TCP: it can hand-off the responsibility of guaranteed delivery (and discarding duplicate packets).
 
 \part{c} \textbf{Referring to Figure 17-2, assume that A and B are using IPsec in transport mode, and F1 and F2 have established an encrypted tunnel using IPsec. Assume A sends a TCP packet to B. Show the relevant fields of the IP header(s) as given to A's IPsec layer, as transmitted by A, as transmitted by F1, and as received by B.}
 
 \part{d} \textbf{Why is IPsec not firewall-friendly?}
+
+A firewall looks at the fields in the transport layer (such as port and protocol) as part of its filtering process. Using the ESP protocol with IPsec encrypts this information and the firewall does not have the ability to decrypt this information. Solutions include terminating IPsec at the firewall or trusting the endpoint and forwarding the encrypted packet to the endpoint.
 
 \question{Question 2}
 
