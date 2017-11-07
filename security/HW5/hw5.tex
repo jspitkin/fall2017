@@ -21,6 +21,7 @@
 \usepackage{graphicx}
 \usepackage[margin=1in]{geometry}
 \usepackage{fancyhdr}
+\usepackage{tabu}
 \usepackage{framed}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
@@ -48,15 +49,17 @@
 
 \part{a} \textbf{Is it possible to encapsulate an AH packet within an ESP packet and vice versa? Explain with the help of examples.}
 
-Consider the scenario (similar to Figure 17-3 in the text) where Alice and Bob are using IPsec and two firewalls, F1 and F2, between them are also using IPsec. Tunnel mode is used between F1 and F2.
+Consider the scenario (similar to Figure 17-3 in the text) where Alice and Bob are using IPsec and two firewalls, F1 and F2, between them are also using IPsec.
 
-First, the scenario where the firewalls are using AH packets and Alice/Bob are using ESP packets.
+First, the scenario where the firewalls are using AH packets and Alice/Bob are using ESP packets, both using tunnel mode.
 
 \begin{figure}[H]
   \centerline{\includegraphics[width=0.5\linewidth]{hw5_1b_1.png}}
 \end{figure}
 
 This scenario does \textbf{not} work. One difference of the integrity protection provided by AH/ESP is that AH provides integrity protection of the IP header. The IPsec between F1 and F2 cannot perform the integrity protection of Alice and Bob's IP header as it is inside an encrypted ESP packet and the F1/F2 do not have the key.
+
+To get this scenario to work, Alice and Bob need to use transport mode. In transport mode the original IP header is not encrypted. This allows AH to perform it's integrity protection of the IP header.
 
 Alternatively, the firewalls could be using ESP packets and Alice/Bob are using AH packets.
 
@@ -74,6 +77,25 @@ Bob's IPsec implementation will \textbf{not} notice it as a duplicate packet. Bo
 TCP handles the retransmission of packets. When TCP retransmits a packet, AH/ESP will treat it as a new packet with a new sequence number. This is one of the pros of building IPsec on top of TCP: it can hand-off the responsibility of guaranteed delivery (and discarding duplicate packets).
 
 \part{c} \textbf{Referring to Figure 17-2, assume that A and B are using IPsec in transport mode, and F1 and F2 have established an encrypted tunnel using IPsec. Assume A sends a TCP packet to B. Show the relevant fields of the IP header(s) as given to A's IPsec layer, as transmitted by A, as transmitted by F1, and as received by B.}
+
+Assume that that both A/B and F1/F2 are using ESP packets.
+
+\textit{Given to A's IPsec layer:} 
+
+\begin{tabu} to 0.8\textwidth { | X[c] | X[c] | }
+ \hline
+ source address & A\\
+ \hline
+ destination address  & B  \\
+\hline
+\end{tabu}
+
+
+\textit{Transmitted by A:} 
+
+\textit{Transmitted by F1:}
+
+\textit{Received by B:}
 
 \part{d} \textbf{Why is IPsec not firewall-friendly?}
 
@@ -103,20 +125,22 @@ A firewall looks at the fields in the transport layer (such as port and protocol
 
 \part{1} \textbf{What are the advantages of building security at the TCP layer?}
 
+There are many advantages to building security at the TCP layer. Since TCPsec is built on top of TCP, it can take advantage of some of the features of TCP. TCPsec can use TCP's guarantee of in-order delivery. Additionally it can use TCP's handshake phase to exchange keys used for TCPsec, removing an extra handshake phase. 
+
+By moving security to the transport layer, it provides end-to-end security. Maybe applications already use TCP and can update their kernel and set the TCP flags for quick deployment.
+
 \part{2} \textbf{What flexibility does TCPsec provide for encrypting the TCP segment?}
+
+Similar to SSL, TCPsec provides flexibility to the user for how to encrypt the TCP segment. First, encryption and integrity protection are independent operations and can be done in any order. Second, the user can specify which crypto algorithms they would like to be used for these operations. As for the actual encryption, the TCP payload is always encrypted. TCPsec leaves the option up to the user to encrypt portions of the IP header as well. 
 
 \part{3} \textbf{How does TCPsec interoperate with NATS?}
 
+During the TCPsec handshake, a NAT option is provided. To detect if there are NATS (aka there are NATS on the path to the destination) the first SYN message is used. The NAT option contains the source IP address and port numbers. TCPsec can detect if these are changed (by a NAT) along the path to the destination. If detected, these new values can be used during message digest integrity checks and TCPsec plays well with NATS.
+
 \part{4} \textbf{Why does TCPsec handshake perform better than SSL?}
 
-\newpage
+SSL is deployed at the application layer. To perform an SSL handshake, a TCP connection is opened and the SSL handshake is performed over this connection. This TCP connection needs to perform the typical 3-way handshake to establish the connection. Once established, the application can use this connection to perform the SSL handshake, which requires multiple TCP packets to be transmitted back and forth.
 
-\section*{References}
-[1]  S. Jana and S. K. Kasera. On fast and accurate detection of
-unauthorized access points using \hspace*{1em} clock skews. In \textit{ACM
-MOBICOM Conference}, Sept. 2008.
-\newline \newline
-[2]  A. Pásztor and D. Veitch, “PC based precision timing without GPS,”
-\textit{SIGMETRICS Perform.} \hspace*{1em} \textit{Eval.} Rev., vol. 30, no. 1, pp. 1–10, 2002.
+In TCPsec, the security handshake is performed at the same time as the TCPsec 4-way handshake (a modified version of the 3-way TCP handshake). As you could imagine, this will be more performant than the SSL handshake.
 
 \end{document}
