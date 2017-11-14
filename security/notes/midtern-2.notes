@@ -1,0 +1,197 @@
+26 multiple choice questions
+2 additional questions - on research paper
+    short answer questions
+solutions for last homework will be released
+SSL/IPsec sections as noted in the announcement 4-5 questions for SSL 3-5 for IPsec
+Three papers for DDoS - 2-3 questions from each paper
+wireless security - class notes and referenced book chapter
+SSL know the importance of each step of the handshake (maybe a modified version of SSL)
+sample 1: D
+sample 3: D - link-layer security
+sample 4: D - integrity protection for voice communication
+sample 5: C is wrong because the computer could be idle, answer is D ensure there is a human 
+sample 6: A 
+
+GSM
+---
+Visted network operator is not authenticated.
+GSM authentication triplets can be re-used indefinitely.
+    Subscriber can't verify the "freshness" of a triplet.
+    Can use a fake base station to coerce a mobile to reauthenticate with a fake base station.
+No integrity protection (encryption though)
+    Can use fake base station to alter encrypted messages as a stream cipher is used.
+Encryption key is short (practically 54 bits)
+Weakness in A3/A8 algorithm allow an attacker to compromise the long term secret stored in the SIM card.
+    Allowing the attacker to clone the SIM card.
+UMTS was designed to address these problems.
+
+UMTS
+----
+adds two values to the triplet
+    IK - integrity protection key
+    AUTN - authentication token = (SQN XOR AK, AMF, MAC)
+        SQN - sequence number maintained by the subscriber and the home network
+        AK - anonymity key. used to hide the value of SQN from evesdroppers (computed from RAND and K)
+        AMF - used to pass parameters
+        MAC - message auth code computed over RAND, SQN, and AMF using the long-term key K.
+Problem - the visited network is not authenticated by the subscriber.
+    the visited network authenticates with the home network to get AUTN
+    but there is no identifying information about the visited network in the AUTN
+    this allows a visited network X to masquerade as network Y to the subscriber.
+    it will still authenticate with the home network as X but the subscriber does not know this.
+    this could be an issue as a subscriber could be using a more expensive network than expected.
+    solution - use the AMF field of the AUTN to identify the visited network.
+
+WiFi LANs
+----
+
+WEP
+---
+intention is to make breaking into a wireless LAN as hard as a wired LAN
+didn't work out - security flaws found
+due to the broadcast nature of radio communications, wireless transmissions can be eavesdropped.
+    WEP approach: encrypt messages
+connecting to the network didn't require physical access to the access point (AP)
+    WEP approach: require authentication before allowing connection to the network
+The key used for authentication and encryption is the same key.
+RC4 stream cipher is used for encryption
+WEP uses an IV so the streams are different
+IV is sent in the clear across the network
+WEP has the option for each STA to maintain a unique key with the AP
+    the AP has to manage a key for each STA
+    this isn't used - what is commonly used is a AP uses the SAME default key for every STA
+    allows devices inside the network to decrypt other messages and impersonate
+authentication
+    problem: AP does not authenticate itself to a STA
+    problem: authentication and encryption use the same secret key
+    problem: STA is authenticated once it becomes associated with an AP.
+        MAC address can be spoofed to send messages posing as the STA
+        only really a problem if the STA uses the same key with other APs
+            need the key to encrypt messages
+    RC4 authentication
+        AP sends C and R = C XOR K
+            these can be used to easily compute the secret key K
+            she can now compute the responses to challenges
+            IV doesn't help because the sender of messages (attacker) selects this
+                can select the IV appended to R
+    Integrity protection:
+        Can flip bits of messages and maintain integrity
+        No replay detection
+    IV is only 24-bits starts to repeat pretty fast as a network sends many packets
+    Doesn't throw away first 256 bytes of RC4 output
+        Secret key can be cracked using known vulnerabilities of RC4
+
+IEEE 802.11i
+----
+Called RSN (Robust Security Network)
+AES is used over RC4
+to switch from WEP hardware needs to be updated that only supports RC4
+    optional protocol TKIP that uses RC4 to deal with this
+Also called WPA and WPA2 by device manufacturers
+authentication
+    the supplicant: wants access to the network
+    the authenticator: controls the port the supplicant wants access over
+    the authentication server: authenticates the supplicant
+    the supplicant authenticates itself to the authentication server. 
+    if successful, then the server lets the authenticator to open the port for the supplicant
+    WiFi:
+        In Wifi network, the supplicant is a mobile device
+        The authenticator is the access point (AP)
+        In small networks, the authentication server is a process running on the AP
+        In large networks, a dedicated machine for multiple APs
+        The port is not physical but a logical connector ran on the AP
+    Wired LAN:
+        device authenticates itself once when it is physically connected to the network
+        the physical nature of the STA and AP being connected prohibits others from using that port
+    EAP authentication protocol used
+    EAP messages between the mobile device and the AP are carried out by EAPOL
+    Session key is established between the AP and mobile device is called the PMK
+        PMK (pair-wise master key) is used to derive encryption and integrity keys
+            data-encryption key
+            data-integrity key
+            key-encryption key
+            key-integrity key
+        MAC addresses of AP and mobile device and two nonces also used in key gen
+    TKIP solves some problems WEP had
+        TKIP can be implemented on old hardware made for WEP with a software update
+            Integrity: uses the IV as a sequence number to prevent replay attacks
+            Confidentiality: IV increased from 24 bits to 48 bits
+                message keys are generated from the data-encryption key in the PMK
+                different for each message to get past the problem of weak keys in WEP
+    AES-CCMP
+        more straight forward than TKIP but requires new hardware that can perform AES
+        RC4 replaced by AES block cipher
+
+Public WiFi spots
+---
+common group key used by default by WEP even more dangerous here
+long-term secret keys less practical
+getting people to pay for hotspot use
+    username/password approach for authentication
+    hotspot controller directs new connections to a gateway that blocks all IP traffic
+    once authenticated, user can be tracked for time use and charged
+
+Chaper 17: IPsec AH and ESP
+---
+IKE is used to establish session keys
+An IPsec security association (SA) is a cryptographically protected connection.
+SA is unidirectional
+SA is defined by both SPI, the destination address, and if AH or ESP is being used.
+    <SPI, destination address, AH/ESP flag>
+    SPI - Security Parameter Index
+    SPI used to look up crypto keys
+    allows for multi-casting in the case that Bob is assigned the same SPI by two people
+A system using IPsec keeps a security association database.
+    An IP destination/source can be looked up and all relevant information is stored here
+    
+AH vs ESP
+----
+AH provides integrity protection only
+ESP provides encryption and/or integrity protection
+AH provides integrity protection for some of the fields inside the IP header as well.
+Can't protect all of the fields as some are intended to be modified by routers.
+The "feature" of having routers and firewalls look at the TCP ports can only be used with unencrypted IP traffic.
+Many security advocates argue that IPsec should always be encrypting the traffic.
+
+Tunnel vs Transport Mode
+---
+Transport - IPsec information between the IP header and the remainder of the packet.
+Tunnel - keep the original IP packet intact and adding a new IP header and IPsec information outside.
+Transport mode is most logical when IPsec is being applied end-to-end.
+A common use of tunnel mode is firewall to firewall or endnode to firewall.
+Transport mode is not strictly necessary as tunnel mode could always be used instead.
+Tunnel mode just uses more header space since there will be two IP headers.
+The same packet might have multiple layers of IPsec headers.
+Tunnel mode is essential between firewalls in order to preserve the original source and destination addresses.
+
+IP and IPv6
+---
+IP is a network layer or layer 3 protocol.
+Puts a source and destination address on data.
+IP was designed with 32-bit addresses.
+Could of easily transitioned to larger address spaces in the 90's but IPv6 took forever to design.
+IPv6 hard to deploy - need to change system and there is little motivation
+IPv6 is noninteroperability with 600 million current Internet nodes.
+IPv6 128-bits
+IPsec works with both IPv4 and IPv6
+With a NAT box, the computers on your internal network do not need global IPv4 addresses in order to connect.
+An IPsec tunnel cannot go through a NAT box. (NAT wants to update IP address which is encrypted)
+IPsec transport mode also has trouble as changing the IP address ruins the TCP/UDP checksum.
+    NAT box cannot correct the checksum as it is encrypted.
+People like NAT because users just want things to work.
+NAT delays the IPv6 release so designers do not like NAT boxes.
+
+Firewalls
+---
+IPsec encrypts information on which firewalls like to base decision, such as PORT fields in the TCP header.
+Protocol designers are fine with this because they think that that information is no ones business.
+Network admins disagree and find this informaiton vital to managing their network.
+firewall-friendly - disguising traffic with extra layers of protocol to pass through the firewall
+
+Headers
+---
+AH/ESP sequence number in header is used to combat replay attacks and not related to TCP sequence number.
+Some fields in the IP header get modified by routers, so they can't be part of AH's integrity check.
+    mutable and immutable fields
+ESP "header" puts informaiton before and after the encrypted data.
+There is an option to use a "null" encryption algorithm that doesn't encrypt.

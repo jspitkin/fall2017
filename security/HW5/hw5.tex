@@ -76,27 +76,6 @@ Bob's IPsec implementation will \textbf{not} notice it as a duplicate packet. Bo
 
 TCP handles the retransmission of packets. When TCP retransmits a packet, AH/ESP will treat it as a new packet with a new sequence number. This is one of the pros of building IPsec on top of TCP: it can hand-off the responsibility of guaranteed delivery (and discarding duplicate packets).
 
-\part{c} \textbf{Referring to Figure 17-2, assume that A and B are using IPsec in transport mode, and F1 and F2 have established an encrypted tunnel using IPsec. Assume A sends a TCP packet to B. Show the relevant fields of the IP header(s) as given to A's IPsec layer, as transmitted by A, as transmitted by F1, and as received by B.}
-
-Assume that that both A/B and F1/F2 are using ESP packets.
-
-\textit{Given to A's IPsec layer:} 
-
-\begin{tabu} to 0.8\textwidth { | X[c] | X[c] | }
- \hline
- source address & A\\
- \hline
- destination address  & B  \\
-\hline
-\end{tabu}
-
-
-\textit{Transmitted by A:} 
-
-\textit{Transmitted by F1:}
-
-\textit{Received by B:}
-
 \part{d} \textbf{Why is IPsec not firewall-friendly?}
 
 A firewall looks at the fields in the transport layer (such as port and protocol) as part of its filtering process. Using the ESP protocol with IPsec encrypts this information and the firewall does not have the ability to decrypt this information. Solutions include terminating IPsec at the firewall or trusting the endpoint and forwarding the encrypted packet to the endpoint.
@@ -105,21 +84,51 @@ A firewall looks at the fields in the transport layer (such as port and protocol
 
 \part{a} \textbf{Why does the HMAC computation in SSL data transfer phase use a sequence number with each record even though SSL is built on top of TCP that delivers data in the correct order?}
 
+During the transfer phase of SSL, HMAC is used for integrity protection of the message. Part of the data that is hashed is a sequence number. This sequence number is never actually transmitted as SSL is built on top of TCP which handles in-order delivery. 
+
+This sequence number is kept as state and is used to \textbf{protect against reply/ordering attacks}. If TCP manages to fail (or someone is being malicious) and the packets do not not arrive in order, the HMAC will detect this.
+
 \part{b} \textbf{This question pertains to 3G-UMTS security. Consider the case when a user visits another country and turns her phone on to make a phone call and notices service X. However, it is possble that service provider X is actually service provider Y that charges a lot more for phone calls made while roaming. The service provider Y when working as the intermediary between the subscriber and the user's home network appears to be X to the user by stays as Y for the home network. How does the home network ensure that the user knows the service provider it is actually connecting to?}
+
+
 
 \part{c} \textbf{What are two advantages of computing the response to the challenge in the SIM card for GSM authentication?}
 
+\textit{Advantage 1:} The SIM card is unique to the user and contains their subscription information. By containing this all in the SIM card, it makes it easy for the user to switch the SIM card to another device and still use the same secret key for authentication. The user doesn't have to trust mobile device creators and only have to trust their wireless provider.
+
+\textit{Advantage 2:} The A3 and A8 algorithms run inside the SIM card to respond to challenges. These algorithms could be changed (updated to be more secure) by the Home Network (HLR) by making changes on their end and on the SIM card. This is an advantage as it is rare that a protocol or algorithm can be updated this easily.
+
+
 \part{d} \textbf{What are two problems in deploying DDoS prevention solutions close to the sources of attack traffic?}
+
+\textit{Problem 1:} A DDoS attack is made possible by a distributed collection of computers targeting a server. It's common for these computers to be compromised devices that are now used as attack agents. A good prevention solution to DDoS attacks would be to increase the security of these devices so they can't be used as attack agents. Sadly there is little motivation for this to happen as the compromised computers are rarely affected. Lack of motivation is a common theme of cause for security vulneriabilies.
+
+\textit{Problem 2:} A second problem is the inherent structure of how the Internet is designed. Packets are routed to a destination address by routers. These routers are not concerned with security issues, the security and handling of packets is delegated to the destination machine (and the source machine but we have seen there is little motivation on their end to stop DDoS attacks). As such, we would have to redesign crucial parts of the Internet stack such as routing if we wanted to tackle DDoS attacks not on the targeted server (and close to the sources of attack).
 
 \part{e} \textbf{Could the Local Aggregate Congestion Control mechanism for DDoS prevention result in collateral damage? Explain your answer.}
 
+Yes the Local Aggregate Congestion Control mechanism can result in collateral damage. During this mechanism, a router detects when it's dropping a large number of packets. The offending packets are aggregated together and their rate is severely limited. Now no system is perfect and legitimate traffic will be aggregated with malicious traffic. As a result a genuine user's rate will become limited.
+
 \part{f} \textbf{Would it make sense to use crypto cookies in conjunction with IP traceback? Explain briefly.}
+
+Both could be used as two layers of defense against DDoS attacks, but they are separate approaches. A downside I could see of this is there would be too much collateral damage as a genuine user doubles their chance of their rate unintentionally being throttled or blocked.
 
 \part{g} \textbf{What is a bloom filter? How could it be used to filter IP packets?}
 
+A bloom filter is a set that uses probability to make it space efficient. It consists of an array of m bits and K independent hash functions and represents a set A that contains n elements. Each of the n elements is hashed by the K functions and the ouputs are positions of the m-bit vector. Given a new incoming element b, we can apply the hash functions to b and see if it produces 1's in all the bit positions. If it does, then it is an element of A. The catch is there is a (small) probabilistic chance of a false positive. That is, we say b belongs to A when it doesn't.
+
+This can be used to filter IP packets. Let A be a collection of problematic IP addresses. As a new address b comes in, we can see if it belongs to A and filter it out. There runs a small chance that we label a non-malicious IP address as malicious.
+
 \part{h} \textbf{Why doesn't the Botz-for-sale system use only one TCP connection to send the puzzle and receive the response instead of using two TCP connections?}
 
+When the Botz-for-sale system sends the puzzle, it protects itself from DDoS attacks related to using the TCP handshake phase to overload a system. Kill-Bots provides a modification to the TCP stack on the server and it sends the puzzle in a 1-2 packet at the end of the TCP handshake. This prevents maintaining any connection state so the server can't be overwhelmed by a distributed attack of handshake messages. Since no state is kept, a second TCP connection is required to get the response.
+
 \part{i} \textbf{Why does it make sense to use an onion that encrypts information using public keys in the connection set up phase but secret keys during data movement?}
+
+It makes sense to use public keys during the connection set up as the end point is connecting to an onion proxy. An onion proxy is a trusted node and knows the true source and destination address of the packets being transmitted.
+
+During the data transmission step, there are multiple layers of encryption. This is essential to maintaining anonymity and keys must be secret. If they weren't, someone who wants to trace your identity could do so. 
+
 
 \question{Question 3}
 
