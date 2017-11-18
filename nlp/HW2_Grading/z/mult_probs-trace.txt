@@ -1,0 +1,354 @@
+PROCESSING SENTENCE: walk
+
+FINAL VITERBI NETWORK
+P(walk=noun) = 1.5740
+P(walk=verb) = 4.7806
+P(walk=inf) = 176.5633
+P(walk=prep) = 176.5633
+
+FINAL BACKPTR NETWORK
+
+BEST TAG SEQUENCE HAS LOG PROBABILITY = 176.5633
+walk -> inf
+
+FORWARD ALGORITHM RESULTS
+P(walk=noun) = 0.6364
+P(walk=verb) = 0.3636
+P(walk=inf) = 0.0000
+P(walk=prep) = 0.0000
+
+
+PROCESSING SENTENCE: mark walks
+
+FINAL VITERBI NETWORK
+P(mark=noun) = 1.2329
+P(mark=verb) = 4.5125
+P(mark=inf) = 176.5633
+P(mark=prep) = 176.5633
+P(walks=noun) = 5804.1453
+P(walks=verb) = 3365.2845
+P(walks=inf) = 31174.5990
+P(walks=prep) = 31174.5990
+
+FINAL BACKPTR NETWORK
+Backptr(walks=noun) = inf
+Backptr(walks=verb) = prep
+Backptr(walks=inf) = inf
+Backptr(walks=prep) = inf
+
+BEST TAG SEQUENCE HAS LOG PROBABILITY = 31174.5990
+walks -> inf
+mark -> inf
+
+FORWARD ALGORITHM RESULTS
+P(mark=noun) = 0.7189
+P(mark=verb) = 0.2811
+P(mark=inf) = 0.0000
+P(mark=prep) = 0.0000
+P(walks=noun) = 0.1858
+P(walks=verb) = 0.8139
+P(walks=inf) = 0.0001
+P(walks=prep) = 0.0002
+
+
+PROCESSING SENTENCE: mary enjoys walks
+
+FINAL VITERBI NETWORK
+P(mary=noun) = 1.8750
+P(mary=verb) = 10.0352
+P(mary=inf) = 176.5633
+P(mary=prep) = 176.5633
+P(enjoys=noun) = 8548.9325
+P(enjoys=verb) = 1902.6259
+P(enjoys=inf) = 31174.5990
+P(enjoys=prep) = 31174.5990
+P(walks=noun) = 1024799.0416
+P(walks=verb) = 594185.7423
+P(walks=inf) = 5504290.0855
+P(walks=prep) = 5504290.0855
+
+FINAL BACKPTR NETWORK
+Backptr(enjoys=noun) = inf
+Backptr(enjoys=verb) = prep
+Backptr(enjoys=inf) = inf
+Backptr(enjoys=prep) = inf
+Backptr(walks=noun) = inf
+Backptr(walks=verb) = prep
+Backptr(walks=inf) = inf
+Backptr(walks=prep) = inf
+
+BEST TAG SEQUENCE HAS LOG PROBABILITY = 5504290.0855
+walks -> inf
+enjoys -> inf
+mary -> inf
+
+FORWARD ALGORITHM RESULTS
+P(mary=noun) = 0.8485
+P(mary=verb) = 0.1515
+P(mary=inf) = 0.0000
+P(mary=prep) = 0.0000
+P(enjoys=noun) = 0.0292
+P(enjoys=verb) = 0.9706
+P(enjoys=inf) = 0.0000
+P(enjoys=prep) = 0.0001
+P(walks=noun) = 0.9503
+P(walks=verb) = 0.0493
+P(walks=inf) = 0.0003
+P(walks=prep) = 0.0001
+
+
+PROCESSING SENTENCE: mark walks to school
+
+FINAL VITERBI NETWORK
+P(mark=noun) = 1.2329
+P(mark=verb) = 4.5125
+P(mark=inf) = 176.5633
+P(mark=prep) = 176.5633
+P(walks=noun) = 5804.1453
+P(walks=verb) = 3365.2845
+P(walks=inf) = 31174.5990
+P(walks=prep) = 31174.5990
+P(to=noun) = 5504290.0855
+P(to=verb) = 5504290.0855
+P(to=inf) = 69643.0212
+P(to=prep) = 719519.0734
+P(school=noun) = 971855623.2062
+P(school=verb) = 971855623.2062
+P(school=inf) = 971855623.2062
+P(school=prep) = 200180085.7239
+
+FINAL BACKPTR NETWORK
+Backptr(walks=noun) = inf
+Backptr(walks=verb) = prep
+Backptr(walks=inf) = inf
+Backptr(walks=prep) = inf
+Backptr(to=noun) = inf
+Backptr(to=verb) = prep
+Backptr(to=inf) = inf
+Backptr(to=prep) = inf
+Backptr(school=noun) = noun
+Backptr(school=verb) = verb
+Backptr(school=inf) = noun
+Backptr(school=prep) = verb
+
+BEST TAG SEQUENCE HAS LOG PROBABILITY = 971855623.2062
+school -> noun
+to -> noun
+walks -> inf
+mark -> inf
+
+FORWARD ALGORITHM RESULTS
+P(mark=noun) = 0.7189
+P(mark=verb) = 0.2811
+P(mark=inf) = 0.0000
+P(mark=prep) = 0.0000
+P(walks=noun) = 0.1858
+P(walks=verb) = 0.8139
+P(walks=inf) = 0.0001
+P(walks=prep) = 0.0002
+P(to=noun) = 0.0002
+P(to=verb) = 0.0000
+P(to=inf) = 0.8021
+P(to=prep) = 0.1977
+P(school=noun) = 0.1443
+P(school=verb) = 0.8553
+P(school=inf) = 0.0001
+P(school=prep) = 0.0002
+
+
+PROCESSING SENTENCE: mary likes to walk to school
+
+FINAL VITERBI NETWORK
+P(mary=noun) = 1.8750
+P(mary=verb) = 10.0352
+P(mary=inf) = 176.5633
+P(mary=prep) = 176.5633
+P(likes=noun) = 6905.6152
+P(likes=verb) = 2484.2942
+P(likes=inf) = 31174.5990
+P(likes=prep) = 31174.5990
+P(to=noun) = 5504290.0855
+P(to=verb) = 5504290.0855
+P(to=inf) = 69643.0212
+P(to=prep) = 719519.0734
+P(walk=noun) = 223725720.9956
+P(walk=verb) = 150586297.4856
+P(walk=inf) = 971855623.2062
+P(walk=prep) = 200180085.7239
+P(to=noun) = 171594036230.5480
+P(to=verb) = 35344456586.0662
+P(to=inf) = 2171093258.3502
+P(to=prep) = 22430718590.4544
+P(school=noun) = 30297209345511.4375
+P(school=verb) = 6240533901496.6943
+P(school=inf) = 30297209345511.4375
+P(school=prep) = 3960441702019.1851
+
+FINAL BACKPTR NETWORK
+Backptr(likes=noun) = inf
+Backptr(likes=verb) = prep
+Backptr(likes=inf) = inf
+Backptr(likes=prep) = inf
+Backptr(to=noun) = inf
+Backptr(to=verb) = prep
+Backptr(to=inf) = inf
+Backptr(to=prep) = inf
+Backptr(walk=noun) = noun
+Backptr(walk=verb) = verb
+Backptr(walk=inf) = noun
+Backptr(walk=prep) = verb
+Backptr(to=noun) = inf
+Backptr(to=verb) = prep
+Backptr(to=inf) = inf
+Backptr(to=prep) = inf
+Backptr(school=noun) = noun
+Backptr(school=verb) = verb
+Backptr(school=inf) = noun
+Backptr(school=prep) = prep
+
+BEST TAG SEQUENCE HAS LOG PROBABILITY = 30297209345511.4375
+school -> noun
+to -> noun
+walk -> inf
+to -> noun
+likes -> inf
+mary -> inf
+
+FORWARD ALGORITHM RESULTS
+P(mary=noun) = 0.8485
+P(mary=verb) = 0.1515
+P(mary=inf) = 0.0000
+P(mary=prep) = 0.0000
+P(likes=noun) = 0.0549
+P(likes=verb) = 0.9449
+P(likes=inf) = 0.0000
+P(likes=prep) = 0.0002
+P(to=noun) = 0.0002
+P(to=verb) = 0.0000
+P(to=inf) = 0.8495
+P(to=prep) = 0.1503
+P(walk=noun) = 0.0571
+P(walk=verb) = 0.9429
+P(walk=inf) = 0.0000
+P(walk=prep) = 0.0000
+P(to=noun) = 0.0002
+P(to=verb) = 0.0000
+P(to=inf) = 0.8488
+P(to=prep) = 0.1510
+P(school=noun) = 0.1086
+P(school=verb) = 0.8911
+P(school=inf) = 0.0001
+P(school=prep) = 0.0002
+
+
+PROCESSING SENTENCE: mark likes to walk with mary to school
+
+FINAL VITERBI NETWORK
+P(mark=noun) = 1.2329
+P(mark=verb) = 4.5125
+P(mark=inf) = 176.5633
+P(mark=prep) = 176.5633
+P(likes=noun) = 6905.6152
+P(likes=verb) = 2484.2942
+P(likes=inf) = 31174.5990
+P(likes=prep) = 31174.5990
+P(to=noun) = 5504290.0855
+P(to=verb) = 5504290.0855
+P(to=inf) = 69643.0212
+P(to=prep) = 719519.0734
+P(walk=noun) = 223725720.9956
+P(walk=verb) = 150586297.4856
+P(walk=inf) = 971855623.2062
+P(walk=prep) = 200180085.7239
+P(with=noun) = 171594036230.5480
+P(with=verb) = 35344456586.0662
+P(with=inf) = 171594036230.5480
+P(with=prep) = 4157295070.8018
+P(mary=noun) = 8308328074323.1904
+P(mary=verb) = 2029780448701.2932
+P(mary=inf) = 30297209345511.4375
+P(mary=prep) = 30297209345511.4375
+P(to=noun) = 5349375271366993.0000
+P(to=verb) = 5349375271366993.0000
+P(to=inf) = 67682961734437.8438
+P(to=prep) = 699268657481509.7500
+P(school=noun) = 944503352357505408.0000
+P(school=verb) = 944503352357505408.0000
+P(school=inf) = 944503352357505408.0000
+P(school=prep) = 194546141964640128.0000
+
+FINAL BACKPTR NETWORK
+Backptr(likes=noun) = inf
+Backptr(likes=verb) = prep
+Backptr(likes=inf) = inf
+Backptr(likes=prep) = inf
+Backptr(to=noun) = inf
+Backptr(to=verb) = prep
+Backptr(to=inf) = inf
+Backptr(to=prep) = inf
+Backptr(walk=noun) = noun
+Backptr(walk=verb) = verb
+Backptr(walk=inf) = noun
+Backptr(walk=prep) = verb
+Backptr(with=noun) = inf
+Backptr(with=verb) = prep
+Backptr(with=inf) = inf
+Backptr(with=prep) = inf
+Backptr(mary=noun) = noun
+Backptr(mary=verb) = verb
+Backptr(mary=inf) = noun
+Backptr(mary=prep) = inf
+Backptr(to=noun) = inf
+Backptr(to=verb) = prep
+Backptr(to=inf) = inf
+Backptr(to=prep) = inf
+Backptr(school=noun) = noun
+Backptr(school=verb) = verb
+Backptr(school=inf) = noun
+Backptr(school=prep) = verb
+
+BEST TAG SEQUENCE HAS LOG PROBABILITY = 944503352357505408.0000
+school -> noun
+to -> noun
+mary -> inf
+with -> noun
+walk -> inf
+to -> noun
+likes -> inf
+mark -> inf
+
+FORWARD ALGORITHM RESULTS
+P(mark=noun) = 0.7189
+P(mark=verb) = 0.2811
+P(mark=inf) = 0.0000
+P(mark=prep) = 0.0000
+P(likes=noun) = 0.1128
+P(likes=verb) = 0.8871
+P(likes=inf) = 0.0000
+P(likes=prep) = 0.0002
+P(to=noun) = 0.0002
+P(to=verb) = 0.0000
+P(to=inf) = 0.8296
+P(to=prep) = 0.1702
+P(walk=noun) = 0.0656
+P(walk=verb) = 0.9344
+P(walk=inf) = 0.0000
+P(walk=prep) = 0.0000
+P(with=noun) = 0.0005
+P(with=verb) = 0.0000
+P(with=inf) = 0.0002
+P(with=prep) = 0.9993
+P(mary=noun) = 0.9994
+P(mary=verb) = 0.0006
+P(mary=inf) = 0.0000
+P(mary=prep) = 0.0000
+P(to=noun) = 0.0000
+P(to=verb) = 0.0005
+P(to=inf) = 0.0021
+P(to=prep) = 0.9975
+P(school=noun) = 0.9962
+P(school=verb) = 0.0032
+P(school=inf) = 0.0004
+P(school=prep) = 0.0003
+
+

@@ -1,8 +1,28 @@
-Programmed using Java 1.8, and tested with whatever the CADE machines have.
+Language:
+------------------
+Programming language used - python2
 
-Compile using javac ngrams.java
-Run using java ngrams <training_file> -test <test_file>
+File details:
+------------------
+1. 'ngrams.py' is the main python file.
 
-Tested on Lab1-19
+2. 'ngrams-test.trace' has the sample output for 'test.txt'.
 
-Probably fails horribly if the test file contains any unigrams that are not in the training file.
+3. 'ngrams-gen.trace' has the sample for 'seeds.txt'.
+
+4. 'train.txt' contains the training set.
+
+
+Running Method
+-----------------
+
+Please run as,
+
+	python ngrams.py train.txt -test test.txt
+
+	python ngrams.py train.txt -gen seeds.txt
+
+
+Machine used:
+--------------
+CADE machine used for testing 'lab1-1.eng.utah.edu'
