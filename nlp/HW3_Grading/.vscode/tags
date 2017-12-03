@@ -1,0 +1,20 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+collections	../eval.py	/^import collections$/;"	kind:namespace	line:2
+collections	../old.py	/^import collections$/;"	kind:namespace	line:2
+eval.py	../eval.py	1;"	kind:file	line:1
+getRecallPrecision	../eval.py	/^def getRecallPrecision(pGroup, gGroup, key):$/;"	kind:function	line:45
+getRecallPrecision	../old.py	/^def getRecallPrecision(pGroup, gGroup, key):$/;"	kind:function	line:46
+group	../eval.py	/^def group(data):$/;"	kind:function	line:55
+group	../old.py	/^def group(data):$/;"	kind:function	line:56
+main	../eval.py	/^def main():$/;"	kind:function	line:4
+main	../old.py	/^def main():$/;"	kind:function	line:4
+old.py	../old.py	1;"	kind:file	line:1
+sys	../eval.py	/^import sys$/;"	kind:namespace	line:1
+sys	../old.py	/^import sys$/;"	kind:namespace	line:1
+toString	../eval.py	/^def toString(pGroup, gGroup, key):$/;"	kind:function	line:34
+toString	../old.py	/^def toString(pGroup, gGroup, key):$/;"	kind:function	line:35

@@ -1,0 +1,9 @@
+Jake Pitkin - u0891770
+Programming Assignment 6
+
+
+My design notes are with my designs in design.pdf.
+
+Other notes:
+My brushing of states in the electoral vote chart selects states that are completely inside the brush.
+Visualization looks the best on a large display or zoomed out to 50% on a 13 inch MBP.

@@ -1,0 +1,42 @@
+Design critque
+---
+1) Identify data, tasks / intentions
+    e.g., quantiative, time-series, etc
+
+2) Identify Marks, Channels
+    Marks
+        encodes "existence" of item
+            points, lines, shape (pie chart slice), ..
+    Channels
+        encodes "magnitude of dimension associated with an item"
+            position, size, saturation, color, arch length (pie chart) ...
+
+Quantiative data shouldn't be encoded with hue but rather with saturation
+
+3) Is effectiveness principle followed?
+Use the best visual channel available for the most important aspect of your data.
+
+4) Is the espressiveness principle followed?
+The visualization should show all of the data, and only the data.
+If there are violations, are they justified (useful chart junk)?
+
+5) Scales
+Are the scales appropriate?
+Zero-based scales are not always the best choice but a strong default.
+Lie factor - size of the mark compared to the size of the effect.
+
+6) Context
+Is the data shown in an appropriate context?
+
+7) Would derived data be better?
+E.g., show change instead of absolute values.
+Show distrobution instead of data points.
+
+8) Other Guidelines
+No unjustified 3D
+Time progresses linearly
+Perception: color, colorblindness, shadows, etc.
+Use of gestalt principles
+Use of popout
+Use of interaction / animation
+Appropriate legends, labels
