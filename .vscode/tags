@@ -4,93 +4,471 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
+AES	../security/PA4/failed_hash/server.py	/^from Crypto.Cipher import AES$/;"	kind:namespace	line:10
+AES	../security/PA4/server.py	/^from Crypto.Cipher import AES$/;"	kind:namespace	line:10
+AES	../security/final/secure_server.py	/^from Crypto.Cipher import AES$/;"	kind:namespace	line:7
+AES	../security/final/test_client.py	/^from Crypto.Cipher import AES$/;"	kind:namespace	line:1
+ALICE_PORT	../security/PA3/extended-ns/alice.py	/^ALICE_PORT = 12002$/;"	kind:variable	line:15
+ALICE_PORT	../security/PA3/extended-ns/bob.py	/^ALICE_PORT = 12002$/;"	kind:variable	line:15
+ALICE_PORT	../security/PA3/original-ns/alice.py	/^ALICE_PORT = 12002$/;"	kind:variable	line:15
+ALICE_PORT	../security/PA3/original-ns/bob.py	/^ALICE_PORT = 12002$/;"	kind:variable	line:15
+ALICE_PORT	../security/PA3/reflection-attack/bob.py	/^ALICE_PORT = 12002$/;"	kind:variable	line:15
+BOB_PORT	../security/PA3/extended-ns/alice.py	/^BOB_PORT = 12001$/;"	kind:variable	line:14
+BOB_PORT	../security/PA3/extended-ns/bob.py	/^BOB_PORT = 12001$/;"	kind:variable	line:14
+BOB_PORT	../security/PA3/original-ns/alice.py	/^BOB_PORT = 12001$/;"	kind:variable	line:14
+BOB_PORT	../security/PA3/original-ns/bob.py	/^BOB_PORT = 12001$/;"	kind:variable	line:14
+BOB_PORT	../security/PA3/reflection-attack/bob.py	/^BOB_PORT = 12001$/;"	kind:variable	line:14
+BOB_PORT	../security/PA3/reflection-attack/trudy.py	/^BOB_PORT = 12001$/;"	kind:variable	line:13
+CLIENT_CERT_PATH	../security/PA4/client.py	/^CLIENT_CERT_PATH = "client.crt"$/;"	kind:variable	line:16
+CLIENT_CERT_PATH	../security/PA4/failed_hash/client.py	/^CLIENT_CERT_PATH = "client.crt"$/;"	kind:variable	line:16
+CLIENT_KEY_PATH	../security/PA4/client.py	/^CLIENT_KEY_PATH = "client.key"$/;"	kind:variable	line:17
+CLIENT_KEY_PATH	../security/PA4/failed_hash/client.py	/^CLIENT_KEY_PATH = "client.key"$/;"	kind:variable	line:17
+CLIENT_PORT	../security/PA4/client.py	/^CLIENT_PORT = 12000$/;"	kind:variable	line:14
+CLIENT_PORT	../security/PA4/failed_hash/client.py	/^CLIENT_PORT = 12000$/;"	kind:variable	line:14
+CLIENT_PORT	../security/PA4/failed_hash/server.py	/^CLIENT_PORT = 12000$/;"	kind:variable	line:15
+CLIENT_PORT	../security/PA4/server.py	/^CLIENT_PORT = 12000$/;"	kind:variable	line:15
+CLIENT_PORT	../security/final/secure_server.py	/^CLIENT_PORT = 12000$/;"	kind:variable	line:13
 DECRYPT_SUB_TABLES	../security/PA1/secret_key.py	/^DECRYPT_SUB_TABLES = []$/;"	kind:variable	line:14
+DES3	../security/PA3/extended-ns/alice.py	/^from Crypto.Cipher import DES3$/;"	kind:namespace	line:9
+DES3	../security/PA3/extended-ns/bob.py	/^from Crypto.Cipher import DES3$/;"	kind:namespace	line:9
+DES3	../security/PA3/extended-ns/kdc.py	/^from Crypto.Cipher import DES3$/;"	kind:namespace	line:9
+DES3	../security/PA3/original-ns/alice.py	/^from Crypto.Cipher import DES3$/;"	kind:namespace	line:9
+DES3	../security/PA3/original-ns/bob.py	/^from Crypto.Cipher import DES3$/;"	kind:namespace	line:9
+DES3	../security/PA3/original-ns/kdc.py	/^from Crypto.Cipher import DES3$/;"	kind:namespace	line:9
+DES3	../security/PA3/reflection-attack/bob.py	/^from Crypto.Cipher import DES3$/;"	kind:namespace	line:9
+DES3	../security/PA3/reflection-attack/trudy.py	/^from Crypto.Cipher import DES3$/;"	kind:namespace	line:9
+DES3	../security/PA4/failed_hash/util.py	/^from Crypto.Cipher import DES3$/;"	kind:namespace	line:18
+DES3	../security/PA4/util.py	/^from Crypto.Cipher import DES3$/;"	kind:namespace	line:18
 ENCRYPT_SUB_TABLES	../security/PA1/secret_key.py	/^ENCRYPT_SUB_TABLES = []$/;"	kind:variable	line:13
+Firewall	../security/final/netfilter_firewall_example.py	/^class Firewall:$/;"	kind:class	line:29
+HMAC	../security/PA4/failed_hash/util.py	/^from Crypto.Hash import HMAC$/;"	kind:namespace	line:17
+HMAC	../security/PA4/util.py	/^from Crypto.Hash import HMAC$/;"	kind:namespace	line:17
+KDC_PORT	../security/PA3/extended-ns/alice.py	/^KDC_PORT = 12000$/;"	kind:variable	line:13
+KDC_PORT	../security/PA3/extended-ns/bob.py	/^KDC_PORT = 12000$/;"	kind:variable	line:13
+KDC_PORT	../security/PA3/extended-ns/kdc.py	/^KDC_PORT = 12000$/;"	kind:variable	line:13
+KDC_PORT	../security/PA3/original-ns/alice.py	/^KDC_PORT = 12000$/;"	kind:variable	line:13
+KDC_PORT	../security/PA3/original-ns/bob.py	/^KDC_PORT = 12000$/;"	kind:variable	line:13
+KDC_PORT	../security/PA3/original-ns/kdc.py	/^KDC_PORT = 12000$/;"	kind:variable	line:13
+KDC_PORT	../security/PA3/reflection-attack/bob.py	/^KDC_PORT = 12000$/;"	kind:variable	line:13
 KEY	../security/PA1/secret_key.py	/^KEY = None$/;"	kind:variable	line:12
 LOG	../security/PA1/secret_key.py	/^LOG = []$/;"	kind:variable	line:15
 MSG_LENGTH	../security/PA1/secret_key.py	/^MSG_LENGTH = 8$/;"	kind:variable	line:11
+Match	../security/final/netfilter_firewall_example.py	/^from netfilter.rule import Rule, Match, Target$/;"	kind:namespace	line:25
+Padding	../security/PA3/extended-ns/alice.py	/^from Crypto.Util import Padding$/;"	kind:namespace	line:10
+Padding	../security/PA3/extended-ns/bob.py	/^from Crypto.Util import Padding$/;"	kind:namespace	line:10
+Padding	../security/PA3/extended-ns/kdc.py	/^from Crypto.Util import Padding$/;"	kind:namespace	line:10
+Padding	../security/PA3/original-ns/alice.py	/^from Crypto.Util import Padding$/;"	kind:namespace	line:10
+Padding	../security/PA3/original-ns/bob.py	/^from Crypto.Util import Padding$/;"	kind:namespace	line:10
+Padding	../security/PA3/original-ns/kdc.py	/^from Crypto.Util import Padding$/;"	kind:namespace	line:10
+Padding	../security/PA3/reflection-attack/bob.py	/^from Crypto.Util import Padding$/;"	kind:namespace	line:10
+Padding	../security/PA3/reflection-attack/trudy.py	/^from Crypto.Util import Padding$/;"	kind:namespace	line:10
+Padding	../security/PA4/failed_hash/util.py	/^from Crypto.Util import Padding$/;"	kind:namespace	line:19
+Padding	../security/PA4/util.py	/^from Crypto.Util import Padding$/;"	kind:namespace	line:19
 ROUNDS	../security/PA1/secret_key.py	/^ROUNDS = 16$/;"	kind:variable	line:10
+Random	../security/PA3/extended-ns/alice.py	/^from Crypto import Random$/;"	kind:namespace	line:8
+Random	../security/PA3/extended-ns/bob.py	/^from Crypto import Random$/;"	kind:namespace	line:8
+Random	../security/PA3/extended-ns/kdc.py	/^from Crypto import Random$/;"	kind:namespace	line:8
+Random	../security/PA3/original-ns/alice.py	/^from Crypto import Random$/;"	kind:namespace	line:8
+Random	../security/PA3/original-ns/bob.py	/^from Crypto import Random$/;"	kind:namespace	line:8
+Random	../security/PA3/original-ns/kdc.py	/^from Crypto import Random$/;"	kind:namespace	line:8
+Random	../security/PA3/reflection-attack/bob.py	/^from Crypto import Random$/;"	kind:namespace	line:8
+Random	../security/PA3/reflection-attack/trudy.py	/^from Crypto import Random$/;"	kind:namespace	line:8
+Random	../security/PA4/client.py	/^from Crypto import Random$/;"	kind:namespace	line:8
+Random	../security/PA4/failed_hash/client.py	/^from Crypto import Random$/;"	kind:namespace	line:8
+Random	../security/PA4/failed_hash/server.py	/^from Crypto import Random$/;"	kind:namespace	line:8
+Random	../security/PA4/failed_hash/util.py	/^from Crypto import Random$/;"	kind:namespace	line:12
+Random	../security/PA4/server.py	/^from Crypto import Random$/;"	kind:namespace	line:8
+Random	../security/PA4/util.py	/^from Crypto import Random$/;"	kind:namespace	line:12
+Rule	../security/final/netfilter_firewall_example.py	/^from netfilter.rule import Rule, Match, Target$/;"	kind:namespace	line:25
 SA	../security/PA2/client.py	/^SA = 160011 # Alice's secret key$/;"	kind:variable	line:11
 SB	../security/PA2/server.py	/^SB = 12067 # Bob's secret key$/;"	kind:variable	line:11
+SERVER_CERT_PATH	../security/PA4/failed_hash/server.py	/^SERVER_CERT_PATH = "server.crt"$/;"	kind:variable	line:17
+SERVER_CERT_PATH	../security/PA4/server.py	/^SERVER_CERT_PATH = "server.crt"$/;"	kind:variable	line:17
+SERVER_KEY_PATH	../security/PA4/failed_hash/server.py	/^SERVER_KEY_PATH = "server.key"$/;"	kind:variable	line:18
+SERVER_KEY_PATH	../security/PA4/server.py	/^SERVER_KEY_PATH = "server.key"$/;"	kind:variable	line:18
 SERVER_NAME	../security/PA0/client.py	/^SERVER_NAME = ''$/;"	kind:variable	line:3
+SERVER_NAME	../security/final/test_client.py	/^SERVER_NAME = ''$/;"	kind:variable	line:5
 SERVER_PORT	../security/PA0/client.py	/^SERVER_PORT = 12000$/;"	kind:variable	line:4
 SERVER_PORT	../security/PA0/server.py	/^SERVER_PORT = 12000$/;"	kind:variable	line:3
 SERVER_PORT	../security/PA2/client.py	/^SERVER_PORT = 12000$/;"	kind:variable	line:10
 SERVER_PORT	../security/PA2/server.py	/^SERVER_PORT = 12000$/;"	kind:variable	line:10
+SERVER_PORT	../security/PA4/client.py	/^SERVER_PORT = 12001$/;"	kind:variable	line:15
+SERVER_PORT	../security/PA4/failed_hash/client.py	/^SERVER_PORT = 12001$/;"	kind:variable	line:15
+SERVER_PORT	../security/PA4/failed_hash/server.py	/^SERVER_PORT = 12001$/;"	kind:variable	line:16
+SERVER_PORT	../security/PA4/server.py	/^SERVER_PORT = 12001$/;"	kind:variable	line:16
+SERVER_PORT	../security/final/secure_server.py	/^SERVER_PORT = 12001$/;"	kind:variable	line:14
+SERVER_PORT	../security/final/test_client.py	/^SERVER_PORT = 12001$/;"	kind:variable	line:6
+SHA1	../security/PA4/client.py	/^from Crypto.Hash import SHA1$/;"	kind:namespace	line:9
+SHA1	../security/PA4/failed_hash/client.py	/^from Crypto.Hash import SHA1$/;"	kind:namespace	line:9
+SHA1	../security/PA4/failed_hash/server.py	/^from Crypto.Hash import SHA1$/;"	kind:namespace	line:9
+SHA1	../security/PA4/server.py	/^from Crypto.Hash import SHA1$/;"	kind:namespace	line:9
+SHA256	../security/PA4/failed_hash/util.py	/^from Crypto.Hash import SHA256$/;"	kind:namespace	line:16
+SHA256	../security/PA4/util.py	/^from Crypto.Hash import SHA256$/;"	kind:namespace	line:16
 TA	../security/PA2/client.py	/^TA = exponentiate(g, SA, p)$/;"	kind:variable	line:19
 TA	../security/PA2/server.py	/^    TA = conn_sock.recv(1024)$/;"	kind:variable	line:28
 TB	../security/PA2/client.py	/^TB = client_sock.recv(1024)$/;"	kind:variable	line:26
 TB	../security/PA2/server.py	/^    TB = exponentiate(g, SB, p)$/;"	kind:variable	line:24
-argparse	../nlp/HW1 2/ngrams.py	/^import argparse$/;"	kind:namespace	line:3
+TRUDY_PORT	../security/PA3/reflection-attack/bob.py	/^TRUDY_PORT = 12003$/;"	kind:variable	line:16
+TRUDY_PORT	../security/PA3/reflection-attack/trudy.py	/^TRUDY_PORT = 12003$/;"	kind:variable	line:14
+Target	../security/final/netfilter_firewall_example.py	/^from netfilter.rule import Rule, Match, Target$/;"	kind:namespace	line:25
+__init__	../security/final/egress_firewall.py	/^    def __init__(self, sock=None):$/;"	kind:member	line:8
+__init__	../security/final/netfilter_firewall_example.py	/^    def __init__(self, auto_commit=True, ipv6=False):$/;"	kind:member	line:35
+__init__	../security/final/server.py	/^    def __init__(self, sock=None):$/;"	kind:member	line:9
+acceptForward	../security/final/netfilter_firewall_example.py	/^    def acceptForward(self, in_interface=None, out_interface=None):$/;"	kind:member	line:106
+acceptIcmp	../security/final/netfilter_firewall_example.py	/^    def acceptIcmp(self, interface=None):$/;"	kind:member	line:113
+acceptInput	../security/final/netfilter_firewall_example.py	/^    def acceptInput(self, interface=None):$/;"	kind:member	line:135
+acceptProtocol	../security/final/netfilter_firewall_example.py	/^    def acceptProtocol(self, interface, protocol, ports, destination=None, source=None):$/;"	kind:member	line:141
+alice.py	../security/PA3/extended-ns/alice.py	1;"	kind:file	line:1
+alice.py	../security/PA3/original-ns/alice.py	1;"	kind:file	line:1
 argparse	../nlp/HW1/ngrams.py	/^import argparse$/;"	kind:namespace	line:3
+argparse	../nlp/HW1_Grading/ngrams.py	/^import argparse$/;"	kind:namespace	line:1
 array	../security/PA1/secret_key.py	/^import array$/;"	kind:namespace	line:6
+bob.py	../security/PA3/extended-ns/bob.py	1;"	kind:file	line:1
+bob.py	../security/PA3/original-ns/bob.py	1;"	kind:file	line:1
+bob.py	../security/PA3/reflection-attack/bob.py	1;"	kind:file	line:1
+buffer	../security/final/test_client.py	/^        buffer = buffer + response$/;"	kind:variable	line:45
+buffer	../security/final/test_client.py	/^buffer = b""$/;"	kind:variable	line:40
 byte_array_to_hex	../security/PA1/secret_key.py	/^def byte_array_to_hex(bytes):$/;"	kind:function	line:149
 byte_array_to_string	../security/PA1/secret_key.py	/^def byte_array_to_string(bytes):$/;"	kind:function	line:145
 byte_to_binary	../security/PA1/secret_key.py	/^def byte_to_binary(byte):$/;"	kind:function	line:141
 byte_to_char	../security/PA1/secret_key.py	/^def byte_to_char(bytes):$/;"	kind:function	line:156
 capitalized_sentence	../security/PA0/server.py	/^    capitalized_sentence = sentence.upper()$/;"	kind:variable	line:13
+clear	../security/final/netfilter_firewall_example.py	/^    def clear(self):$/;"	kind:member	line:49
 client.py	../security/PA0/client.py	1;"	kind:file	line:1
 client.py	../security/PA2/client.py	1;"	kind:file	line:1
+client.py	../security/PA4/client.py	1;"	kind:file	line:1
+client.py	../security/PA4/failed_hash/client.py	1;"	kind:file	line:1
 client_sock	../security/PA2/client.py	/^client_sock = socket(AF_INET, SOCK_STREAM)$/;"	kind:variable	line:15
 client_socket	../security/PA0/client.py	/^client_socket = socket(AF_INET, SOCK_STREAM)$/;"	kind:variable	line:6
+client_socket	../security/final/test_client.py	/^client_socket = socket(AF_INET, SOCK_STREAM)$/;"	kind:variable	line:35
+collections	../nlp/HW3_Grading/eval.py	/^import collections$/;"	kind:namespace	line:2
+collections	../nlp/HW3_Grading/old.py	/^import collections$/;"	kind:namespace	line:2
+commit	../security/final/netfilter_firewall_example.py	/^    def commit(self):$/;"	kind:member	line:55
+connect	../security/final/egress_firewall.py	/^    def connect(self, host, port):$/;"	kind:member	line:15
+connect	../security/final/server.py	/^    def connect(self, host, port):$/;"	kind:member	line:16
+contact_kdc	../security/PA3/extended-ns/alice.py	/^def contact_kdc(ALICE_ID, BOB_ID, encrypted_N_B, N_1):$/;"	kind:function	line:164
+contact_kdc	../security/PA3/original-ns/alice.py	/^def contact_kdc(ALICE_ID, BOB_ID, N_1):$/;"	kind:function	line:140
+create_certificate_and_key	../security/PA4/failed_hash/util.py	/^def create_certificate_and_key(cert_path, key_path):$/;"	kind:function	line:41
+create_certificate_and_key	../security/PA4/util.py	/^def create_certificate_and_key(cert_path, key_path):$/;"	kind:function	line:41
+create_shared_key	../security/PA3/extended-ns/kdc.py	/^def create_shared_key(conn_sock, request, registry):$/;"	kind:function	line:78
+create_shared_key	../security/PA3/original-ns/kdc.py	/^def create_shared_key(conn_sock, request, registry):$/;"	kind:function	line:78
 create_substitution_table_decrypt	../security/PA1/secret_key.py	/^def create_substitution_table_decrypt():$/;"	kind:function	line:104
 create_substitution_table_encrypt	../security/PA1/secret_key.py	/^def create_substitution_table_encrypt():$/;"	kind:function	line:95
+create_tag	../nlp/HW2_Grading/viterbi.py	/^def create_tag(probability):$/;"	kind:function	line:98
+create_ticket_package	../security/PA3/extended-ns/kdc.py	/^def create_ticket_package(ALICE_ID, BOB_ID, K_AB, K_A, K_B, N_B, N_1):$/;"	kind:function	line:125
+create_ticket_package	../security/PA3/original-ns/kdc.py	/^def create_ticket_package(ALICE_ID, BOB_ID, K_AB, K_A, K_B, N_1):$/;"	kind:function	line:123
+crypto	../security/PA4/client.py	/^from OpenSSL import crypto$/;"	kind:namespace	line:10
+crypto	../security/PA4/failed_hash/client.py	/^from OpenSSL import crypto$/;"	kind:namespace	line:10
+crypto	../security/PA4/failed_hash/server.py	/^from OpenSSL import crypto$/;"	kind:namespace	line:11
+crypto	../security/PA4/failed_hash/util.py	/^from OpenSSL import crypto$/;"	kind:namespace	line:15
+crypto	../security/PA4/server.py	/^from OpenSSL import crypto$/;"	kind:namespace	line:11
+crypto	../security/PA4/util.py	/^from OpenSSL import crypto$/;"	kind:namespace	line:15
+deconstruct_kdc_response	../security/PA3/extended-ns/alice.py	/^def deconstruct_kdc_response(kdc_response, K_A, N_1, BOB_ID):$/;"	kind:function	line:119
+deconstruct_kdc_response	../security/PA3/original-ns/alice.py	/^def deconstruct_kdc_response(kdc_response, K_A, N_1, BOB_ID):$/;"	kind:function	line:118
 decrypt	../security/PA1/secret_key.py	/^def decrypt(msg):$/;"	kind:function	line:66
+decrypt_plaintext	../security/PA3/extended-ns/alice.py	/^def decrypt_plaintext(key, ciphertext):$/;"	kind:function	line:239
+decrypt_plaintext	../security/PA3/extended-ns/bob.py	/^def decrypt_plaintext(key, ciphertext):$/;"	kind:function	line:204
+decrypt_plaintext	../security/PA3/extended-ns/kdc.py	/^def decrypt_plaintext(key, ciphertext):$/;"	kind:function	line:160
+decrypt_plaintext	../security/PA3/original-ns/alice.py	/^def decrypt_plaintext(key, ciphertext):$/;"	kind:function	line:211
+decrypt_plaintext	../security/PA3/original-ns/bob.py	/^def decrypt_plaintext(key, ciphertext):$/;"	kind:function	line:167
+decrypt_plaintext	../security/PA3/original-ns/kdc.py	/^def decrypt_plaintext(key, ciphertext):$/;"	kind:function	line:156
+decrypt_plaintext	../security/PA3/reflection-attack/bob.py	/^def decrypt_plaintext(key, ciphertext):$/;"	kind:function	line:196
+decrypt_plaintext	../security/PA3/reflection-attack/trudy.py	/^def decrypt_plaintext(key, ciphertext):$/;"	kind:function	line:160
+decrypt_plaintext	../security/PA4/failed_hash/util.py	/^def decrypt_plaintext(key, ciphertext):$/;"	kind:function	line:186
+decrypt_plaintext	../security/PA4/util.py	/^def decrypt_plaintext(key, ciphertext):$/;"	kind:function	line:186
+decrypt_text	../security/final/secure_server.py	/^def decrypt_text(ciphertext, key):$/;"	kind:function	line:79
+decrypt_text	../security/final/test_client.py	/^def decrypt_text(ciphertext, key):$/;"	kind:function	line:22
+default_prob	../nlp/HW2_Grading/z/codes/main.py	/^default_prob = 0.0001$/;"	kind:variable	line:9
+defaultdict	../nlp/HW3_Grading/ner.py	/^from collections import defaultdict$/;"	kind:namespace	line:2
+diff	../security/PA4/failed_hash/util.py	/^def diff(data):$/;"	kind:function	line:216
+diff	../security/PA4/util.py	/^def diff(data):$/;"	kind:function	line:216
+egress_firewall.py	../security/final/egress_firewall.py	1;"	kind:file	line:1
+em_pr	../nlp/HW2_Grading/z/codes/main.py	/^em_pr = {}$/;"	kind:variable	line:12
 encrypt	../security/PA1/secret_key.py	/^def encrypt(msg):$/;"	kind:function	line:39
+encrypt_plaintext	../security/PA3/extended-ns/alice.py	/^def encrypt_plaintext(key, plaintext):$/;"	kind:function	line:219
+encrypt_plaintext	../security/PA3/extended-ns/bob.py	/^def encrypt_plaintext(key, plaintext):$/;"	kind:function	line:184
+encrypt_plaintext	../security/PA3/extended-ns/kdc.py	/^def encrypt_plaintext(key, plaintext):$/;"	kind:function	line:140
+encrypt_plaintext	../security/PA3/original-ns/alice.py	/^def encrypt_plaintext(key, plaintext):$/;"	kind:function	line:193
+encrypt_plaintext	../security/PA3/original-ns/bob.py	/^def encrypt_plaintext(key, plaintext):$/;"	kind:function	line:149
+encrypt_plaintext	../security/PA3/original-ns/kdc.py	/^def encrypt_plaintext(key, plaintext):$/;"	kind:function	line:138
+encrypt_plaintext	../security/PA3/reflection-attack/bob.py	/^def encrypt_plaintext(key, plaintext):$/;"	kind:function	line:178
+encrypt_plaintext	../security/PA3/reflection-attack/trudy.py	/^def encrypt_plaintext(key, plaintext):$/;"	kind:function	line:142
+encrypt_plaintext	../security/PA4/failed_hash/util.py	/^def encrypt_plaintext(key, plaintext):$/;"	kind:function	line:168
+encrypt_plaintext	../security/PA4/util.py	/^def encrypt_plaintext(key, plaintext):$/;"	kind:function	line:168
+encrypt_text	../security/final/secure_server.py	/^def encrypt_text(plaintext, key):$/;"	kind:function	line:72
+encrypt_text	../security/final/test_client.py	/^def encrypt_text(plaintext, key):$/;"	kind:function	line:15
+eval.py	../nlp/HW3_Grading/eval.py	1;"	kind:file	line:1
 expo.py	../security/PA2/expo.py	1;"	kind:file	line:1
 exponentiate	../security/PA2/client.py	/^from expo import exponentiate$/;"	kind:namespace	line:8
 exponentiate	../security/PA2/expo.py	/^def exponentiate(m, d, n):$/;"	kind:function	line:7
 exponentiate	../security/PA2/server.py	/^from expo import exponentiate$/;"	kind:namespace	line:8
+feature	../nlp/HW3_Grading/ner.py	/^feature = defaultdict(list)$/;"	kind:variable	line:10
+final_challenge	../security/PA3/extended-ns/alice.py	/^def final_challenge(K_AB, N_3):$/;"	kind:function	line:50
+final_challenge	../security/PA3/original-ns/alice.py	/^def final_challenge(K_AB, N_3):$/;"	kind:function	line:49
+findBigrams	../nlp/HW1_Grading/ngrams.py	/^def findBigrams(lines):$/;"	kind:function	line:203
+findBigramsSmooth	../nlp/HW1_Grading/ngrams.py	/^def findBigramsSmooth(lines, uniC):$/;"	kind:function	line:247
+findUnigrams	../nlp/HW1_Grading/ngrams.py	/^def findUnigrams(lines):$/;"	kind:function	line:170
+forward	../nlp/HW2_Grading/viterbi.py	/^def forward(pos_tag, word_tag,line):$/;"	kind:function	line:113
+forward	../nlp/HW2_Grading/z/codes/main.py	/^def forward(sentence):$/;"	kind:function	line:106
 g	../security/PA2/client.py	/^g = 1907 # Public prime base$/;"	kind:variable	line:12
 g	../security/PA2/server.py	/^g = 1907 # Public prime base$/;"	kind:variable	line:12
-generate_sentences	../nlp/HW1 2/ngrams.py	/^def generate_sentences(seed, unigram_freq, bigram_freq):$/;"	kind:function	line:36
+gen	../nlp/HW1_Grading/ngrams.py	/^def gen(wGen, biun):$/;"	kind:function	line:59
+generate	../nlp/HW3_Grading/ner.py	/^def generate(f1, f2, f3, f4, f5, f6, f7):$/;"	kind:function	line:20
+generate_50kbyte_file	../security/PA4/failed_hash/util.py	/^def generate_50kbyte_file():$/;"	kind:function	line:127
+generate_50kbyte_file	../security/PA4/util.py	/^def generate_50kbyte_file():$/;"	kind:function	line:127
+generate_HMAC	../security/PA4/failed_hash/util.py	/^def generate_HMAC(key, message):$/;"	kind:function	line:161
+generate_HMAC	../security/PA4/util.py	/^def generate_HMAC(key, message):$/;"	kind:function	line:161
+generate_SSL_data_record	../security/PA4/failed_hash/util.py	/^def generate_SSL_data_record(enc_key, int_key, msg, seq):$/;"	kind:function	line:205
+generate_SSL_data_record	../security/PA4/util.py	/^def generate_SSL_data_record(enc_key, int_key, msg, seq):$/;"	kind:function	line:205
+generate_key	../security/final/secure_server.py	/^def generate_key(path):$/;"	kind:function	line:60
+generate_keys	../security/PA4/failed_hash/util.py	/^def generate_keys(K):$/;"	kind:function	line:139
+generate_keys	../security/PA4/util.py	/^def generate_keys(K):$/;"	kind:function	line:139
+generate_master_secret	../security/PA4/failed_hash/util.py	/^def generate_master_secret(n1, n2):$/;"	kind:function	line:22
+generate_master_secret	../security/PA4/util.py	/^def generate_master_secret(n1, n2):$/;"	kind:function	line:22
 generate_sentences	../nlp/HW1/ngrams.py	/^def generate_sentences(seed, unigram_freq, bigram_freq):$/;"	kind:function	line:36
-get_bigram_freq	../nlp/HW1 2/ngrams.py	/^def get_bigram_freq(tokens):$/;"	kind:function	line:117
+getNode	../security/final/netfilter_firewall_example.py	/^    def getNode(self):$/;"	kind:member	line:153
+getRecallPrecision	../nlp/HW3_Grading/eval.py	/^def getRecallPrecision(pGroup, gGroup, key):$/;"	kind:function	line:45
+getRecallPrecision	../nlp/HW3_Grading/old.py	/^def getRecallPrecision(pGroup, gGroup, key):$/;"	kind:function	line:46
 get_bigram_freq	../nlp/HW1/ngrams.py	/^def get_bigram_freq(tokens):$/;"	kind:function	line:117
-get_next_gen_word	../nlp/HW1 2/ngrams.py	/^def get_next_gen_word(prev_word, unigram_freq, bigram_freq):$/;"	kind:function	line:65
+get_buffer	../security/final/netfilter_firewall_example.py	/^    def get_buffer(self):$/;"	kind:member	line:60
+get_intercepted_message	../security/PA3/reflection-attack/trudy.py	/^def get_intercepted_message():$/;"	kind:function	line:74
+get_message_3_and_4	../security/PA3/reflection-attack/trudy.py	/^def get_message_3_and_4():$/;"	kind:function	line:120
 get_next_gen_word	../nlp/HW1/ngrams.py	/^def get_next_gen_word(prev_word, unigram_freq, bigram_freq):$/;"	kind:function	line:65
+get_padding	../security/PA4/failed_hash/util.py	/^def get_padding():$/;"	kind:function	line:115
+get_padding	../security/PA4/util.py	/^def get_padding():$/;"	kind:function	line:115
+get_private_key	../security/PA4/failed_hash/util.py	/^def get_private_key(key_path):$/;"	kind:function	line:99
+get_private_key	../security/PA4/util.py	/^def get_private_key(key_path):$/;"	kind:function	line:99
+get_prob	../nlp/HW2_Grading/z/codes/main.py	/^def get_prob(word, tag, tag_previous, log):$/;"	kind:function	line:34
+get_public_key	../security/PA4/failed_hash/util.py	/^def get_public_key(key_path):$/;"	kind:function	line:91
+get_public_key	../security/PA4/util.py	/^def get_public_key(key_path):$/;"	kind:function	line:91
+get_public_key_cert	../security/PA4/failed_hash/util.py	/^def get_public_key_cert(cert):$/;"	kind:function	line:107
+get_public_key_cert	../security/PA4/util.py	/^def get_public_key_cert(cert):$/;"	kind:function	line:107
+get_random_bytes	../security/final/secure_server.py	/^from Crypto.Random import get_random_bytes$/;"	kind:namespace	line:8
+get_random_bytes	../security/final/test_client.py	/^from Crypto.Random import get_random_bytes$/;"	kind:namespace	line:2
 get_seed	../security/PA1/secret_key.py	/^def get_seed():$/;"	kind:function	line:167
-get_unigram_freq	../nlp/HW1 2/ngrams.py	/^def get_unigram_freq(tokens):$/;"	kind:function	line:106
 get_unigram_freq	../nlp/HW1/ngrams.py	/^def get_unigram_freq(tokens):$/;"	kind:function	line:106
+getopt	../nlp/HW1_Grading/ngrams.py	/^import getopt$/;"	kind:namespace	line:3
+group	../nlp/HW3_Grading/eval.py	/^def group(data):$/;"	kind:function	line:55
+group	../nlp/HW3_Grading/old.py	/^def group(data):$/;"	kind:function	line:56
+handshake_messages	../security/PA4/client.py	/^handshake_messages = ""$/;"	kind:variable	line:18
+handshake_messages	../security/PA4/failed_hash/client.py	/^handshake_messages = ""$/;"	kind:variable	line:18
+handshake_messages	../security/PA4/failed_hash/server.py	/^handshake_messages = ""$/;"	kind:variable	line:19
+handshake_messages	../security/PA4/server.py	/^handshake_messages = ""$/;"	kind:variable	line:19
+handshake_server	../security/PA4/client.py	/^def handshake_server(S_PUB, R_CLIENT, K, handshake_hash):$/;"	kind:function	line:72
+handshake_server	../security/PA4/failed_hash/client.py	/^def handshake_server(S_PUB, R_CLIENT, K, handshake_hash):$/;"	kind:function	line:72
+hashes	../security/PA4/failed_hash/util.py	/^from cryptography.hazmat.primitives import hashes$/;"	kind:namespace	line:14
+hashes	../security/PA4/util.py	/^from cryptography.hazmat.primitives import hashes$/;"	kind:namespace	line:14
+initial_contact	../security/PA4/client.py	/^def initial_contact(R_CLIENT, client_cert):$/;"	kind:function	line:114
+initial_contact	../security/PA4/failed_hash/client.py	/^def initial_contact(R_CLIENT, client_cert):$/;"	kind:function	line:114
+initiate_contact_bob	../security/PA3/extended-ns/alice.py	/^def initiate_contact_bob(ALICE_ID):$/;"	kind:function	line:141
 invalid_input	../security/PA1/secret_key.py	/^def invalid_input(args):$/;"	kind:function	line:120
-main	../nlp/HW1 2/ngrams.py	/^def main():$/;"	kind:function	line:7
+json	../security/PA3/extended-ns/alice.py	/^import json$/;"	kind:namespace	line:11
+json	../security/PA3/extended-ns/bob.py	/^import json$/;"	kind:namespace	line:11
+json	../security/PA3/extended-ns/kdc.py	/^import json$/;"	kind:namespace	line:11
+json	../security/PA3/original-ns/alice.py	/^import json$/;"	kind:namespace	line:11
+json	../security/PA3/original-ns/bob.py	/^import json$/;"	kind:namespace	line:11
+json	../security/PA3/original-ns/kdc.py	/^import json$/;"	kind:namespace	line:11
+json	../security/PA3/reflection-attack/bob.py	/^import json$/;"	kind:namespace	line:11
+json	../security/PA3/reflection-attack/trudy.py	/^import json$/;"	kind:namespace	line:11
+json	../security/PA4/client.py	/^import json$/;"	kind:namespace	line:11
+json	../security/PA4/failed_hash/client.py	/^import json$/;"	kind:namespace	line:11
+json	../security/PA4/failed_hash/server.py	/^import json$/;"	kind:namespace	line:12
+json	../security/PA4/server.py	/^import json$/;"	kind:namespace	line:12
+kdc.py	../security/PA3/extended-ns/kdc.py	1;"	kind:file	line:1
+kdc.py	../security/PA3/original-ns/kdc.py	1;"	kind:file	line:1
+key	../security/final/test_client.py	/^key = read_key('aes-key.bin')$/;"	kind:variable	line:38
+l_lst	../nlp/HW2_Grading/z/codes/main.py	/^            l_lst = l.strip().split()$/;"	kind:variable	line:18
+label	../nlp/HW3_Grading/ner.py	/^label = defaultdict(list)$/;"	kind:variable	line:11
+listen_for_challenge	../security/PA3/reflection-attack/trudy.py	/^def listen_for_challenge():$/;"	kind:function	line:63
+listen_for_data	../security/PA4/client.py	/^def listen_for_data(keys):$/;"	kind:function	line:141
+listen_for_data	../security/PA4/failed_hash/client.py	/^def listen_for_data(keys):$/;"	kind:function	line:141
+loc	../nlp/HW3_Grading/ner.py	/^loc = []$/;"	kind:variable	line:9
+loc_file	../nlp/HW3_Grading/ner.py	/^loc_file = tuple(open(sys.argv[3], "r"))$/;"	kind:variable	line:6
 main	../nlp/HW1/ngrams.py	/^def main():$/;"	kind:function	line:7
+main	../nlp/HW1_Grading/ngrams.py	/^def main(argv):$/;"	kind:function	line:9
+main	../nlp/HW2_Grading/viterbi.py	/^def main():$/;"	kind:function	line:173
+main	../nlp/HW2_Grading/z/codes/main.py	/^def main():$/;"	kind:function	line:133
+main	../nlp/HW3_Grading/eval.py	/^def main():$/;"	kind:function	line:4
+main	../nlp/HW3_Grading/ner.py	/^def main():$/;"	kind:function	line:373
+main	../nlp/HW3_Grading/old.py	/^def main():$/;"	kind:function	line:4
 main	../security/PA1/secret_key.py	/^def main():$/;"	kind:function	line:18
-math	../nlp/HW1 2/ngrams.py	/^import math$/;"	kind:namespace	line:2
+main	../security/PA3/extended-ns/alice.py	/^def main():$/;"	kind:function	line:17
+main	../security/PA3/extended-ns/bob.py	/^def main():$/;"	kind:function	line:17
+main	../security/PA3/extended-ns/kdc.py	/^def main():$/;"	kind:function	line:15
+main	../security/PA3/original-ns/alice.py	/^def main():$/;"	kind:function	line:17
+main	../security/PA3/original-ns/bob.py	/^def main():$/;"	kind:function	line:17
+main	../security/PA3/original-ns/kdc.py	/^def main():$/;"	kind:function	line:15
+main	../security/PA3/reflection-attack/bob.py	/^def main():$/;"	kind:function	line:18
+main	../security/PA3/reflection-attack/trudy.py	/^def main():$/;"	kind:function	line:16
+main	../security/PA4/client.py	/^def main():$/;"	kind:function	line:21
+main	../security/PA4/failed_hash/client.py	/^def main():$/;"	kind:function	line:21
+main	../security/PA4/failed_hash/server.py	/^def main():$/;"	kind:function	line:22
+main	../security/PA4/server.py	/^def main():$/;"	kind:function	line:22
+main	../security/final/secure_server.py	/^def main():$/;"	kind:function	line:17
+main.py	../nlp/HW2_Grading/z/codes/main.py	1;"	kind:file	line:1
+make_http_request	../security/final/secure_server.py	/^def make_http_request(url):$/;"	kind:function	line:55
 math	../nlp/HW1/ngrams.py	/^import math$/;"	kind:namespace	line:2
+math	../nlp/HW1_Grading/ngrams.py	/^import math$/;"	kind:namespace	line:4
+math	../nlp/HW2_Grading/viterbi.py	/^import math$/;"	kind:namespace	line:3
+math	../nlp/HW2_Grading/z/codes/main.py	/^import math$/;"	kind:namespace	line:7
+math	../security/PA4/failed_hash/util.py	/^import math$/;"	kind:namespace	line:8
+math	../security/PA4/util.py	/^import math$/;"	kind:namespace	line:8
+math	../security/final/secure_server.py	/^import math$/;"	kind:namespace	line:11
 modified_sentence	../security/PA0/client.py	/^modified_sentence = client_socket.recv(1024)$/;"	kind:variable	line:11
-ngrams.py	../nlp/HW1 2/ngrams.py	1;"	kind:file	line:1
+mysocket	../security/final/egress_firewall.py	/^class mysocket:$/;"	kind:class	line:6
+mysocket	../security/final/server.py	/^class mysocket:$/;"	kind:class	line:7
+ner.py	../nlp/HW3_Grading/ner.py	1;"	kind:file	line:1
+netfilter	../security/final/netfilter_firewall_example.py	/^import netfilter.table$/;"	kind:namespace	line:26
+netfilter_firewall_example.py	../security/final/netfilter_firewall_example.py	1;"	kind:file	line:1
 ngrams.py	../nlp/HW1/ngrams.py	1;"	kind:file	line:1
+ngrams.py	../nlp/HW1_Grading/ngrams.py	1;"	kind:file	line:1
+old.py	../nlp/HW3_Grading/old.py	1;"	kind:file	line:1
+optimizeBiun	../nlp/HW1_Grading/ngrams.py	/^def optimizeBiun(biun):$/;"	kind:function	line:92
+os	../security/PA4/failed_hash/util.py	/^import os.path$/;"	kind:namespace	line:10
+os	../security/PA4/util.py	/^import os.path$/;"	kind:namespace	line:10
+os	../security/final/netfilter_firewall_example.py	/^import os$/;"	kind:namespace	line:21
 p	../security/PA2/client.py	/^p = 784313 # Public prime modulus$/;"	kind:variable	line:13
 p	../security/PA2/server.py	/^p = 784313 # Public prime modulus$/;"	kind:variable	line:13
-print_gen_results	../nlp/HW1 2/ngrams.py	/^def print_gen_results(seed, generated_sentences):$/;"	kind:function	line:177
+padding	../security/PA4/failed_hash/util.py	/^from cryptography.hazmat.primitives.asymmetric import padding$/;"	kind:namespace	line:13
+padding	../security/PA4/util.py	/^from cryptography.hazmat.primitives.asymmetric import padding$/;"	kind:namespace	line:13
+parseFile	../nlp/HW1_Grading/ngrams.py	/^def parseFile(filename):$/;"	kind:function	line:283
+parseFileIntoWords	../nlp/HW1_Grading/ngrams.py	/^def parseFileIntoWords(filename):$/;"	kind:function	line:321
+parseFileLines	../nlp/HW1_Grading/ngrams.py	/^def parseFileLines(filename):$/;"	kind:function	line:308
+path	../security/PA4/failed_hash/util.py	/^import os.path$/;"	kind:namespace	line:10
+path	../security/PA4/util.py	/^import os.path$/;"	kind:namespace	line:10
+printMessage	../security/final/netfilter_firewall_example.py	/^    def printMessage(self, msg, interface=None):$/;"	kind:member	line:166
 print_gen_results	../nlp/HW1/ngrams.py	/^def print_gen_results(seed, generated_sentences):$/;"	kind:function	line:177
-print_test_results	../nlp/HW1 2/ngrams.py	/^def print_test_results(results):$/;"	kind:function	line:165
 print_test_results	../nlp/HW1/ngrams.py	/^def print_test_results(results):$/;"	kind:function	line:165
-random	../nlp/HW1 2/ngrams.py	/^import random$/;"	kind:namespace	line:4
+r	../security/PA4/failed_hash/util.py	/^import random as r$/;"	kind:namespace	line:11
+r	../security/PA4/util.py	/^import random as r$/;"	kind:namespace	line:11
 random	../nlp/HW1/ngrams.py	/^import random$/;"	kind:namespace	line:4
+random	../nlp/HW1_Grading/ngrams.py	/^import random$/;"	kind:namespace	line:6
 random	../security/PA1/secret_key.py	/^import random$/;"	kind:namespace	line:7
-read_test_file	../nlp/HW1 2/ngrams.py	/^def read_test_file(path):$/;"	kind:function	line:81
+re	../nlp/HW1_Grading/ngrams.py	/^import re$/;"	kind:namespace	line:5
+read	../security/PA3/reflection-attack/bob.py	/^def read(path):$/;"	kind:function	line:220
+read	../security/PA3/reflection-attack/trudy.py	/^def read(path):$/;"	kind:function	line:179
+read	../security/PA4/failed_hash/util.py	/^def read(path):$/;"	kind:function	line:231
+read	../security/PA4/util.py	/^def read(path):$/;"	kind:function	line:231
+readInput	../nlp/HW2_Grading/viterbi.py	/^def readInput(filename):$/;"	kind:function	line:4
+read_certificate	../security/PA4/failed_hash/util.py	/^def read_certificate(cert_path):$/;"	kind:function	line:77
+read_certificate	../security/PA4/util.py	/^def read_certificate(cert_path):$/;"	kind:function	line:77
+read_id	../security/PA3/original-ns/alice.py	/^def read_id():$/;"	kind:function	line:236
+read_id	../security/PA3/original-ns/bob.py	/^def read_id():$/;"	kind:function	line:191
+read_key	../security/PA4/failed_hash/util.py	/^def read_key(key_path):$/;"	kind:function	line:84
+read_key	../security/PA4/util.py	/^def read_key(key_path):$/;"	kind:function	line:84
+read_key	../security/final/secure_server.py	/^def read_key(path):$/;"	kind:function	line:66
+read_key	../security/final/test_client.py	/^def read_key(path):$/;"	kind:function	line:9
 read_test_file	../nlp/HW1/ngrams.py	/^def read_test_file(path):$/;"	kind:function	line:81
-read_training_file	../nlp/HW1 2/ngrams.py	/^def read_training_file(path):$/;"	kind:function	line:89
 read_training_file	../nlp/HW1/ngrams.py	/^def read_training_file(path):$/;"	kind:function	line:89
+receive	../security/final/egress_firewall.py	/^    def receive(self):$/;"	kind:member	line:26
+receive	../security/final/secure_server.py	/^def receive(socket):$/;"	kind:function	line:32
+receive	../security/final/server.py	/^    def receive(self):$/;"	kind:member	line:27
+redirectHttp	../security/final/netfilter_firewall_example.py	/^    def redirectHttp(self, interface, proxy_port):$/;"	kind:member	line:177
+register_user	../security/PA3/extended-ns/kdc.py	/^def register_user(conn_sock, user_id, registry):$/;"	kind:function	line:44
+register_user	../security/PA3/original-ns/kdc.py	/^def register_user(conn_sock, user_id, registry):$/;"	kind:function	line:44
+register_with_kdc	../security/PA3/extended-ns/alice.py	/^def register_with_kdc(id):$/;"	kind:function	line:191
+register_with_kdc	../security/PA3/extended-ns/bob.py	/^def register_with_kdc(id):$/;"	kind:function	line:154
+register_with_kdc	../security/PA3/original-ns/alice.py	/^def register_with_kdc(id):$/;"	kind:function	line:165
+register_with_kdc	../security/PA3/original-ns/bob.py	/^def register_with_kdc(id):$/;"	kind:function	line:119
+requests	../security/final/secure_server.py	/^import requests$/;"	kind:namespace	line:10
+response	../security/final/test_client.py	/^        response = client_socket.recv(1024)$/;"	kind:variable	line:44
+rsa_decrypt	../security/PA4/failed_hash/util.py	/^def rsa_decrypt(ciphertext, private_key):$/;"	kind:function	line:123
+rsa_decrypt	../security/PA4/util.py	/^def rsa_decrypt(ciphertext, private_key):$/;"	kind:function	line:123
+rsa_encrypt	../security/PA4/failed_hash/util.py	/^def rsa_encrypt(plaintext, public_key):$/;"	kind:function	line:119
+rsa_encrypt	../security/PA4/util.py	/^def rsa_encrypt(plaintext, public_key):$/;"	kind:function	line:119
+run	../security/final/netfilter_firewall_example.py	/^    def run(self, args):$/;"	kind:member	line:67
 secret	../security/PA2/client.py	/^secret = exponentiate(int(TB), SA, p)$/;"	kind:variable	line:30
 secret	../security/PA2/server.py	/^    secret = exponentiate(int(TA), SB, p)$/;"	kind:variable	line:35
 secret_key.py	../security/PA1/secret_key.py	1;"	kind:file	line:1
+secure_server.py	../security/final/secure_server.py	1;"	kind:file	line:1
+send	../security/final/egress_firewall.py	/^    def send(self, msg):$/;"	kind:member	line:18
+send	../security/final/server.py	/^    def send(self, msg):$/;"	kind:member	line:19
+send_alice_challenge	../security/PA3/extended-ns/bob.py	/^def send_alice_challenge(K_AB, N_2, N_3):$/;"	kind:function	line:68
+send_alice_challenge	../security/PA3/original-ns/bob.py	/^def send_alice_challenge(K_AB, N_2, N_3):$/;"	kind:function	line:66
+send_bob_challenge_first_connection	../security/PA3/reflection-attack/trudy.py	/^def send_bob_challenge_first_connection(encrypt_N_4_1):$/;"	kind:function	line:51
+send_bob_ticket	../security/PA3/extended-ns/alice.py	/^def send_bob_ticket(ticket, K_AB, N_2):$/;"	kind:function	line:98
+send_bob_ticket	../security/PA3/original-ns/alice.py	/^def send_bob_ticket(ticket, K_AB, N_2):$/;"	kind:function	line:97
+send_bob_ticket	../security/PA3/reflection-attack/trudy.py	/^def send_bob_ticket(ticket, encrypt_N_2):$/;"	kind:function	line:84
+send_bob_ticket_2	../security/PA3/reflection-attack/trudy.py	/^def send_bob_ticket_2(ticket, encrypt_N_4):$/;"	kind:function	line:102
+send_certificate	../security/PA4/failed_hash/server.py	/^def send_certificate(conn_sock, request):$/;"	kind:function	line:48
+send_certificate	../security/PA4/server.py	/^def send_certificate(conn_sock, request):$/;"	kind:function	line:48
+send_data	../security/PA4/failed_hash/server.py	/^def send_data(keys):$/;"	kind:function	line:128
+send_data	../security/PA4/server.py	/^def send_data(keys):$/;"	kind:function	line:128
+send_handshake_hash	../security/PA4/failed_hash/server.py	/^def send_handshake_hash(conn_sock, request, R_SERVER):$/;"	kind:function	line:87
+send_handshake_hash	../security/PA4/server.py	/^def send_handshake_hash(conn_sock, request, R_SERVER):$/;"	kind:function	line:87
+send_response	../security/final/secure_server.py	/^def send_response(response, socket):$/;"	kind:function	line:44
+send_trudy_challenge_1	../security/PA3/reflection-attack/bob.py	/^def send_trudy_challenge_1(K_AB, N_2):$/;"	kind:function	line:74
+send_trudy_challenge_2	../security/PA3/reflection-attack/bob.py	/^def send_trudy_challenge_2(K_AB, N_4):$/;"	kind:function	line:98
 sentence	../security/PA0/client.py	/^sentence = input('Input lowercase sentence:')$/;"	kind:variable	line:9
 sentence	../security/PA0/server.py	/^    sentence = connection_socket.recv(1024)$/;"	kind:variable	line:12
-sentence_bigram_prob	../nlp/HW1 2/ngrams.py	/^def sentence_bigram_prob(sentence, bigram_freq, unigram_freq):$/;"	kind:function	line:136
 sentence_bigram_prob	../nlp/HW1/ngrams.py	/^def sentence_bigram_prob(sentence, bigram_freq, unigram_freq):$/;"	kind:function	line:136
-sentence_bigram_prob_smoothing	../nlp/HW1 2/ngrams.py	/^def sentence_bigram_prob_smoothing(sentence, bigram_freq, unigram_freq):$/;"	kind:function	line:150
 sentence_bigram_prob_smoothing	../nlp/HW1/ngrams.py	/^def sentence_bigram_prob_smoothing(sentence, bigram_freq, unigram_freq):$/;"	kind:function	line:150
-sentence_unigram_prob	../nlp/HW1 2/ngrams.py	/^def sentence_unigram_prob(sentence, unigram_freq, token_count):$/;"	kind:function	line:128
 sentence_unigram_prob	../nlp/HW1/ngrams.py	/^def sentence_unigram_prob(sentence, unigram_freq, token_count):$/;"	kind:function	line:128
+sentences	../nlp/HW2_Grading/z/codes/main.py	/^sentences = []$/;"	kind:variable	line:13
 serv_sock	../security/PA2/server.py	/^serv_sock = socket(AF_INET, SOCK_STREAM)$/;"	kind:variable	line:15
 server.py	../security/PA0/server.py	1;"	kind:file	line:1
 server.py	../security/PA2/server.py	1;"	kind:file	line:1
+server.py	../security/PA4/failed_hash/server.py	1;"	kind:file	line:1
+server.py	../security/PA4/server.py	1;"	kind:file	line:1
+server.py	../security/final/server.py	1;"	kind:file	line:1
 server_socket	../security/PA0/server.py	/^server_socket = socket(AF_INET, SOCK_STREAM)$/;"	kind:variable	line:5
+setDefaultPolicy	../security/final/netfilter_firewall_example.py	/^    def setDefaultPolicy(self):$/;"	kind:member	line:186
+setOpenPolicy	../security/final/netfilter_firewall_example.py	/^    def setOpenPolicy(self):$/;"	kind:member	line:198
+socket	../security/final/egress_firewall.py	/^import socket$/;"	kind:namespace	line:4
+socket	../security/final/server.py	/^import socket$/;"	kind:namespace	line:5
+sourceNAT	../security/final/netfilter_firewall_example.py	/^    def sourceNAT(self, interface):$/;"	kind:member	line:204
+start	../security/final/netfilter_firewall_example.py	/^    def start(self):$/;"	kind:member	line:90
+stop	../security/final/netfilter_firewall_example.py	/^    def stop(self):$/;"	kind:member	line:97
+subprocess	../security/final/netfilter_firewall_example.py	/^import subprocess$/;"	kind:namespace	line:22
+sys	../nlp/HW1_Grading/ngrams.py	/^import sys$/;"	kind:namespace	line:2
+sys	../nlp/HW2_Grading/viterbi.py	/^import sys $/;"	kind:namespace	line:2
+sys	../nlp/HW2_Grading/z/codes/main.py	/^import sys$/;"	kind:namespace	line:6
+sys	../nlp/HW3_Grading/eval.py	/^import sys$/;"	kind:namespace	line:1
+sys	../nlp/HW3_Grading/ner.py	/^import sys$/;"	kind:namespace	line:1
+sys	../nlp/HW3_Grading/old.py	/^import sys$/;"	kind:namespace	line:1
 sys	../security/PA1/secret_key.py	/^import sys$/;"	kind:namespace	line:5
-test_sentences	../nlp/HW1 2/ngrams.py	/^def test_sentences(sentences, unigram_freq, bigram_freq, token_count):$/;"	kind:function	line:53
+sys	../security/PA4/failed_hash/util.py	/^import sys$/;"	kind:namespace	line:9
+sys	../security/PA4/util.py	/^import sys$/;"	kind:namespace	line:9
+sys	../security/final/netfilter_firewall_example.py	/^import sys$/;"	kind:namespace	line:23
+table	../security/final/netfilter_firewall_example.py	/^import netfilter.table$/;"	kind:namespace	line:26
+tag_set	../nlp/HW2_Grading/z/codes/main.py	/^tag_set = ['noun', 'verb', 'inf', 'prep']$/;"	kind:variable	line:10
+test	../nlp/HW1_Grading/ngrams.py	/^def test(linesTest, linesP, uni, biun, bism, startsWith, unic):$/;"	kind:function	line:110
+testBism	../nlp/HW1_Grading/ngrams.py	/^def testBism(line, bism, startsWith, unic):$/;"	kind:function	line:147
+testBiun	../nlp/HW1_Grading/ngrams.py	/^def testBiun(line, biun):$/;"	kind:function	line:129
+testUni	../nlp/HW1_Grading/ngrams.py	/^def testUni(line, uni):$/;"	kind:function	line:121
+test_client.py	../security/final/test_client.py	1;"	kind:file	line:1
+test_file	../nlp/HW3_Grading/ner.py	/^test_file = tuple(open(sys.argv[2], "r"))$/;"	kind:variable	line:5
 test_sentences	../nlp/HW1/ngrams.py	/^def test_sentences(sentences, unigram_freq, bigram_freq, token_count):$/;"	kind:function	line:53
+time	../security/PA4/failed_hash/util.py	/^import time$/;"	kind:namespace	line:7
+time	../security/PA4/util.py	/^import time$/;"	kind:namespace	line:7
+toString	../nlp/HW3_Grading/eval.py	/^def toString(pGroup, gGroup, key):$/;"	kind:function	line:34
+toString	../nlp/HW3_Grading/old.py	/^def toString(pGroup, gGroup, key):$/;"	kind:function	line:35
+tr_pr	../nlp/HW2_Grading/z/codes/main.py	/^tr_pr = {}$/;"	kind:variable	line:11
+train_file	../nlp/HW3_Grading/ner.py	/^train_file = tuple(open(sys.argv[1], "r"))$/;"	kind:variable	line:4
+trudy.py	../security/PA3/reflection-attack/trudy.py	1;"	kind:file	line:1
+usage	../security/final/netfilter_firewall_example.py	/^    def usage(self, prog):$/;"	kind:member	line:102
+util	../security/PA4/client.py	/^import util$/;"	kind:namespace	line:12
+util	../security/PA4/failed_hash/client.py	/^import util$/;"	kind:namespace	line:12
+util	../security/PA4/failed_hash/server.py	/^import util$/;"	kind:namespace	line:13
+util	../security/PA4/server.py	/^import util$/;"	kind:namespace	line:13
+util.py	../security/PA4/failed_hash/util.py	1;"	kind:file	line:1
+util.py	../security/PA4/util.py	1;"	kind:file	line:1
+viterbi	../nlp/HW2_Grading/viterbi.py	/^def viterbi(pos_tag, word_tag, line) :$/;"	kind:function	line:13
+viterbi	../nlp/HW2_Grading/z/codes/main.py	/^def viterbi(sentence):$/;"	kind:function	line:49
+viterbi.py	../nlp/HW2_Grading/viterbi.py	1;"	kind:file	line:1
+wait_for_alice	../security/PA3/extended-ns/bob.py	/^def wait_for_alice(BOB_ID, K_B, bob_lis_sock):$/;"	kind:function	line:90
+wait_for_alice_response	../security/PA3/extended-ns/bob.py	/^def wait_for_alice_response(K_AB, N_3, bob_lis_sock):$/;"	kind:function	line:48
+wait_for_alice_response	../security/PA3/original-ns/bob.py	/^def wait_for_alice_response(K_AB, N_3, bob_lis_sock):$/;"	kind:function	line:46
+wait_for_bob_challenge	../security/PA3/extended-ns/alice.py	/^def wait_for_bob_challenge(K_AB, N_2):$/;"	kind:function	line:70
+wait_for_bob_challenge	../security/PA3/original-ns/alice.py	/^def wait_for_bob_challenge(K_AB, N_2):$/;"	kind:function	line:69
+wait_for_ticket	../security/PA3/extended-ns/bob.py	/^def wait_for_ticket(bob_lis_sock, K_B, ALICE_ID, N_B):$/;"	kind:function	line:121
+wait_for_ticket	../security/PA3/original-ns/bob.py	/^def wait_for_ticket(bob_lis_sock, K_B):$/;"	kind:function	line:88
+wait_for_ticket	../security/PA3/reflection-attack/bob.py	/^def wait_for_ticket(bob_lis_sock, K_B):$/;"	kind:function	line:121
+wait_for_ticket_2	../security/PA3/reflection-attack/bob.py	/^def wait_for_ticket_2(bob_lis_sock, K_B):$/;"	kind:function	line:152
+wait_for_trudy_response	../security/PA3/reflection-attack/bob.py	/^def wait_for_trudy_response(K_AB, N_4, bob_lis_sock):$/;"	kind:function	line:53
+write	../security/PA3/reflection-attack/bob.py	/^def write(value, path):$/;"	kind:function	line:215
+write	../security/PA3/reflection-attack/trudy.py	/^def write(value, path):$/;"	kind:function	line:185
+write_id	../security/PA3/original-ns/alice.py	/^def write_id(id):$/;"	kind:function	line:231
+write_id	../security/PA3/original-ns/bob.py	/^def write_id(id):$/;"	kind:function	line:186
 write_log	../security/PA1/secret_key.py	/^def write_log():$/;"	kind:function	line:161
 xor_byte_arrays	../security/PA1/secret_key.py	/^def xor_byte_arrays(a1, a2):$/;"	kind:function	line:133

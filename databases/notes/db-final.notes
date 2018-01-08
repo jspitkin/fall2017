@@ -1,0 +1,47 @@
+Final Exam
+-----
+Homework 3 and homework 4
+Three problems
+
+Problem 1: hashing and sorting
+-----
+part 1: linear hashing and extendable hashing
+    when do you split an overflow bucket and what is the result of that
+    impact of linear and extendable hashing respectively
+part 2: external merge sort
+    double buffering
+    sequential and random IO
+    impact to sorting cost if you do double buffering and/or block IOs
+
+Problem 2: query evaluation and optimization
+-----
+part 1: motivating example of joining the two tables
+    pushing down the selections
+    change the join op algorithm
+    show the IO of each case
+    three cases:
+        two base cases and one invovling pushing down operators
+    writing the intermediate results to disk and read back etc
+    (see example in slides)
+part 2: similar to homework 3 problem 5
+    use something to estimate statistical information about your table
+    in the homework we use something to estimate the frequency
+    in the final we will use something to estimate something related to frequency (but not exactly the frequency)
+    in the proof is to show your estimator and show that it is an unbias estimator
+        the proof is almost identical to the proof shown in homework 3 problem 5 part b
+        the key is to use the indicator variable to show that it is an unbias estimator
+
+Problem 3: Transactions
+-----
+part 1: check understanding of concurrency control
+    given a schedule with two transactions - what happens with strict two-phase locking
+        produce a table that shows how the two transactions interact with each other
+    same as above but with non-strict two-phase locking
+part 2: recovery as shown in lecture
+    only analysis phase
+        show the contents of the dirty page table and transaction table at the end of the analysis
+        don't have to show the redo and undo (the homework does both this and the analysis)
+part 3: multiple choice question on transactions
+    impact of steal no force policy
+    and locking
+

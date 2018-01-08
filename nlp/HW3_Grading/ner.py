@@ -1,394 +1,543 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Oct 24 17:56:46 2017
+
+@author: Raghubar
+"""
 import sys
-from collections import defaultdict
-
-train_file = tuple(open(sys.argv[1], "r"))
-test_file = tuple(open(sys.argv[2], "r"))
-loc_file = tuple(open(sys.argv[3], "r"))
-
-word_list = pos_list = ftype = f = []
-loc = []
-feature = defaultdict(list)
-label = defaultdict(list)
-label['O'] = 0
-label['B-PER'] = 1
-label['I-PER'] = 2
-label['B-LOC'] = 3
-label['I-LOC'] = 4
-label['B-ORG'] = 5
-label['I-ORG'] = 6
-
-def generate(f1, f2, f3, f4, f5, f6, f7):
-    prev_word = 'PHI'
-    prev_pos = 'PHIPOS'
-    if f7 == 1:
-	for i in range(len(loc_file)):
-		s = loc_file[i]
-		s = s.strip()
-		loc.append(s)
-    with open("train.txt.readable", "w") as out_file:
-	for i in range(len(train_file)):
-	    l = train_file[i].split()
-            if l == []:
-		prev_word = 'PHI'
-                prev_pos = 'PHIPOS'
+train_File = sys.argv[1]
+test_File = sys.argv[2]
+loc_File = sys.argv[3]
+ftype = []
+ftype.append(sys.argv[4])
+for i in range(5,len(sys.argv)):
+    ftype.append(sys.argv[i])
+#ftype = ['WORD','WORDCON','POS','POSCON','ABBR','CAP','LOCATION']
+#ftype = ['WORD','CAP']
+count = 0
+#fileRead = open('ner-input-files/train.txt')
+fileRead = open(train_File)
+initialData = fileRead.read()
+dataSepInSent = initialData.strip().split('\n\n')
+#locRead = open('ner-input-files/locs.txt')
+locRead = open(loc_File)
+locData = locRead.read()
+locSep = locData.strip().split('\n')
+labels = {'O': 0, 'B-PER': 1,'I-PER': 2,'B-LOC': 3,'I-LOC': 4,'B-ORG': 5,'I-ORG': 6}
+featureList = {}
+reverseList = {}
+sortFeature = []
+featureList["ABBR"] = count+1;
+count = count+1
+reverseList[count] = "ABBR"
+featureList["CAP"] = count+1;
+count = count+1
+reverseList[count] = "CAP"
+featureList["LOCATION"] = count+1;
+count = count+1
+reverseList[count] = "LOCATION"
+featureList["PHI"] = count+1;
+count = count+1
+reverseList[count] = "PHI"
+featureList["PHIPOS"] = count+1;
+count = count+1
+reverseList[count] = "PHIPOS"
+featureList["OMEGA"] = count+1;
+count = count+1
+reverseList[count] = "OMEGA"
+featureList["OMEGAPOS"] = count+1;
+count = count+1
+reverseList[count] = "OMEGAPOS"
+featureList["word*UNK"] = count+1;
+count = count+1
+reverseList[count] = "word*UNK"
+featureList["prev*word*UNK"] = count+1;
+count = count+1
+reverseList[count] = "prev*word*UNK"
+featureList["next*word*UNK"] = count+1;
+count = count+1
+reverseList[count] = "next*word*UNK"
+featureList["pos*UNKPOS"] = count+1;
+count = count+1
+reverseList[count] = "pos*UNKPOS"
+featureList["prev*pos*UNKPOS"] = count+1;
+count = count+1
+reverseList[count] = "prev*pos*UNKPOS"
+featureList["next*pos*UNKPOS"] = count+1;
+count = count+1
+reverseList[count] = "next*pos*UNKPOS"
+prevWord = "PHI"
+prevPos = "PHIPOS"
+feature = ""
+f = open("train.txt.readable","w+")
+v = open("train.txt.vector","w+")
+for row in dataSepInSent :
+    iteration = 0
+    newWord = row.strip().split('\n')
+    prevWord = "PHI"
+    prevPos = "PHIPOS"
+    for word in newWord :
+        wordArr = word.split()
+        if iteration!=0 :
+            if "next*word*"+wordArr[2] not in featureList:
+                featureList["next*word*"+wordArr[2]] = count+1
+                count = count+1
+                reverseList[count] = "next*word*"+wordArr[2]
+            if "next*pos*"+wordArr[1] not in featureList:
+                featureList["next*pos*"+wordArr[1]] = count+1
+                count = count+1
+                reverseList[count] = "next*pos*"+wordArr[1]
+            if "WORDCON" in ftype:
+                sortFeature.append(featureList["next*word*"+wordArr[2]])
+            if "POSCON" in ftype:
+                sortFeature.append(featureList["next*pos*"+wordArr[1]])
+        for i in sorted(sortFeature):
+            feature = feature+" "+str(i)+":1"
+        if iteration!=0:
+            v.write(feature+'\n')
+        sortFeature = []
+        printingFeature = feature.split()
+        s = ""
+        prevW = ""
+        prevP = ""
+        nextW = ""
+        nextP = ""
+        pos = ""
+        abbr = "no"
+        cap = "no"
+        loc = "no"
+        for i in printingFeature:
+            if ":" in i:
+                a = i.split(':')
+                reverse = reverseList[int(a[0])].rsplit("*",1)
+                abca = reverseList[int(a[0])]
+                if "WORD" in ftype and "word"==reverse[0] and iteration!=0:
+                    f.write("WORD: "+ reverse[-1])
+                    f.write('\n')
+                if "WORDCON" in ftype and "prev*word" in reverse:
+                    prevW = reverse[-1]
+                if "WORDCON" in ftype and "next*word" in reverse :
+                    nextW = reverse[-1]
+                if "POSCON" in ftype and "prev*pos" in reverse:
+                    prevP = reverse[-1]
+                if "POSCON" in ftype and "next*pos" in reverse :
+                    nextP = reverse[-1]
+                if "POS" in ftype and "pos" in reverse:
+                    pos = reverse[-1]
+                if "ABBR" in ftype and abca in "ABBR":
+                    abbr = "yes"
+                if "CAP" in ftype and abca in "CAP":
+                    cap = "yes"
+                if "LOCATION" in ftype and abca in "LOCATION":
+                    loc = "yes"
+                    
+        if iteration!=0 :    
+            if "WORDCON" in ftype and prevW!="" and nextW!="":
+                f.write("WORDCON: "+prevW+" "+nextW)
+                f.write('\n')
+            else :
+                f.write("WORDCON: n/a")
+                f.write('\n')
+            if "POS" in ftype and pos !="":
+                f.write("POS: "+ pos)
+                f.write('\n')
+            else :
+                f.write("POS: n/a")
+                f.write('\n')
+            if "POSCON" in ftype and prevP!="" and nextP!="":
+                f.write("POSCON: "+prevP+" "+nextP)
+                f.write('\n')
+            else :
+                f.write("POSCON: n/a")
+                f.write('\n')
+            if "ABBR" in ftype and abbr!="":
+                f.write("ABBR: "+abbr)
+                f.write('\n')
             else:
-                l_next = train_file[i+1]
-		l_next = l_next.split()
-                if l_next == []:
-                    next_word = 'OMEGA'
-                    next_pos = 'OMEGAPOS'
-                else:
-                    next_word = l_next[2]
-                    next_pos = l_next[1]
-                    word_list.append(l[2])
-                    pos_list.append(l[1])
-                    out_file.write('WORD:' + ' ' + l[2] + '\n')
-                    if f2 == 1:
-                        out_file.write('WORDCON:' + ' ' + prev_word + ' ' + next_word + '\n')
-                    else:
-                        out_file.write('WORDCON: n/a' + '\n')
-                    if f3 == 1:
-                        out_file.write('POS:' +  ' ' + l[1] + '\n')
-                    else:
-                        out_file.write('POS: n/a' + '\n')
-                    if f4 == 1:
-                        out_file.write('POSCON:' + ' ' + prev_pos + ' ' + next_pos + '\n')
-                    else:
-                        out_file.write('POSCON: n/a' + '\n')
-                    if f5 == 1:
-                        word = l[2]
-                        if (word[-1] == '.' and '.' in word and len(word) <= 4):
-                            out_file.write('ABBR: yes' + '\n')
-                        else:
-                            out_file.write('ABBR: no' + '\n')
-                    else:
-                        out_file.write('ABBR: n/a' + '\n')
-                    if f6 == 1:
-                        first_letter = l[2][0]
-                        if first_letter.isupper():
-                            out_file.write('CAPS: yes' + '\n')
-                        else:
-                            out_file.write('CAPS: no' + '\n')
-                    else:
-                        out_file.write('CAPS: n/a' + '\n')
-                    if f7 == 1:
-                        if l[2] in loc:
-                            out_file.write('LOCATION: yes' + '\n')
-                        else:
-                            out_file.write('LOCATION: no' + '\n')
-                    else:
-                        out_file.write('LOCATION: n/a' + '\n')
-                    out_file.write('\n')
-                    prev_word = l[2]
-                    prev_pos = l[1]
-    x = 1
-    for i in xrange(len(train_file)):
-        l2 = train_file[i].split()
-        if l2:
-            w = 'word-' + l2[2]
-            if w not in feature:
-                feature[w] = x
-                x = x + 1
-	feature['word-UNK'] = x
-	x = x + 1
-    if f2 == 1:
-        for i in xrange(len(train_file)):
-            l2 = train_file[i].split()
-            if len(l2) != 0:
-                prev_line = train_file[i-1]
-		prev_line = prev_line.split()
-                if prev_line == [] or i==1:
-                    prev_word = 'prev-word-PHI'
-                else:
-                    prev_word = 'prev-word-' + prev_line[2]
-                next_line = train_file[i+1]
-		next_line = next_line.split()
-                if next_line == []:
-                    next_word = 'next-word-OMEGA'
-                else:
-                    next_word = 'next-word-' + next_line[2]
-                if prev_word not in feature:
-                    feature[prev_word] = x
-                    x = x + 1
-                if next_word not in feature:
-                    feature[next_word] = x
-                    x = x + 1
-	feature['prev-word-UNK'] = x
-	x = x + 1
-	feature['next-word-UNK'] = x
-	x = x + 1
-    if f3 == 1:
-        for i in xrange(len(train_file)):
-            l2 = train_file[i].split()
-            if l2:
-                p = 'pos-' + l2[1]
-                if p not in feature:
-                    feature[p] = x
-                    x = x + 1
-	feature['pos-UNKPOS'] = x
-	x = x + 1
-    if f4 == 1:
-        for i in xrange(len(train_file)):
-            l2 = train_file[i].split()
-            if len(l2) != 0:
-                prev_line = train_file[i-1]
-		prev_line = prev_line.split()
-                if prev_line == [] or i==1:
-                    prev_pos = 'prev-pos-PHIPOS'
-                else:
-                    prev_pos = 'prev-pos-' + prev_line[1]
-                next_line = train_file[i+1]
-		next_line = next_line.split()
-                if next_line == []:
-                    next_pos = 'next-pos-OMEGAPOS'
-                else:
-                    next_pos = 'next-pos-' + next_line[1]
-                if prev_pos not in feature:
-                    feature[prev_pos] = x
-                    x = x + 1
-                if next_pos not in feature:
-                    feature[next_pos] = x
-                    x = x + 1
-	feature['prev-pos-UNKPOS'] = x
-	x = x + 1
-	feature['next-pos-UNKPOS'] = x
-	x = x + 1
-    if f5 == 1:
-        feature['abbreviation'] = x
-        x = x + 1
-    if f6 == 1:
-        feature['capitalized'] = x
-        x = x + 1
-    if f7 == 1:
-        feature['location'] = x
-    with open("train.txt.vector", "w") as out_file:
-        for i in range(len(train_file)):
-            del f[:]
- 	    t = train_file[i].split()
-            if t != []:
-                key = t[0]
-                la = label[key]
-                la = str(la)
-                word1 = 'word-' + t[2]
-                if word1 in feature:
-                    f.append(feature[word1])
-                if f2 == 1:
-                    prev_line = train_file[i - 1]
-		    prev_line = prev_line.split()
-                    if i == 1 or prev_line == []:
-                        prev_word = 'prev-word-PHI'
-                    else:
-                        prev_word = 'prev-word-' + prev_line[2]
-                    next_line = train_file[i+1]
-		    next_line = next_line.split()
-                    if next_line == []:
-                        next_word = 'next-word-OMEGA'
-                    else:
-                        next_word = 'next-word-' + next_line[2]
-                    f.append(feature[prev_word])
-                    f.append(feature[next_word])
-                if f3 == 1:
-                    pos = 'pos-' + t[1]
-                    f.append(feature[pos])
-                if f4 == 1:
-                    prev_line = train_file[i-1]
-		    prev_line = prev_line.split()
-                    if prev_line == [] or i==1:
-                        prev_pos = 'prev-pos-PHIPOS'
-                    else:
-                        prev_pos = 'prev-pos-' + prev_line[1]
-                    next_line = train_file[i+1]
-		    next_line = next_line.split()
-                    if next_line == []:
-                        next_pos = 'next-pos-OMEGAPOS'
-                    else:
-                        next_pos = 'next-pos-' + next_line[1]
-                    f.append(feature[prev_pos])
-                    f.append(feature[next_pos])
-                if f5 == 1:
-                    word = t[2]
-                    if (word[-1] == '.' and len(word) <= 4 and '.' in word):
-                        f.append(feature['abbreviation'])
-                if f6 == 1:
-                    first_letter = t[2][0]
-                    if first_letter.isupper():
-                        f.append(feature['capitalized'])
-                if f7 == 1:
-                    if t[2] in loc:
-                        f.append(feature['location'])
-                if len(f) == 1:
-                    out_file.write(la + ' ')
-                    f[0] = str(f[0])
-                    out_file.write(f[0] + ':1' + ' ')
-                else:
-                    f.sort()
-                    out_file.write(la + ' ')
-                    for j in range(len(f)):
-                        f[j] = str(f[j])
-                        out_file.write(f[j] + ':1' + ' ')
-                out_file.write("\n")
-
-    with open("test.txt.readable", "w") as out_file:
-        for i in range(len(test_file)):
-            l = test_file[i].split()
-            if l == []:
-                prev_word = 'PHI'
-                prev_pos = 'PHIPOS'
+                f.write("ABBR: n/a")
+                f.write('\n')
+            if "CAP" in ftype and cap!="":
+                f.write("CAP: "+cap)
+                f.write('\n')
             else:
-                l_next = test_file[i+1]
-                l_next = l_next.split()
-                if l_next == []:
-                    next_word = 'OMEGA'
-                    next_pos = 'OMEGAPOS'
-                else:
-                    next_word = l_next[2]
-                    next_pos = l_next[1]
-                    if next_word not in word_list:
-                        next_word = 'UNK'
-                    if next_pos not in pos_list:
-                        next_pos = 'UNKPOS'
-                    out_file.write('WORD:' + ' ' + l[2] + '\n')
-                    if f2 == 1:
-                        out_file.write('WORDCON:' + ' ' + prev_word + ' ' + next_word + '\n')
-                    else:
-                        out_file.write('WORDCON: n/a' + '\n')
-                    if f3 == 1:
-                        out_file.write('POS:' +  ' ' + l[1] + '\n')
-                    else:
-                        out_file.write('POS: n/a' + '\n')
-                    if f4 == 1:
-                        out_file.write('POSCON:' + ' ' + prev_pos + ' ' + next_pos + '\n')
-                    else:
-                        out_file.write('POSCON: n/a' + '\n')
-                    if f5 == 1:
-                        word = l[2]
-                        if (word[-1] == '.' and '.' in word and len(word) <= 4):
-                            out_file.write('ABBR: yes' + '\n')
-                        else:
-                            out_file.write('ABBR: no' + '\n')
-                    else:
-                        out_file.write('ABBR: n/a' + '\n')
-                    if f6 == 1:
-                        first_letter = l[2][0]
-                        if first_letter.isupper():
-                            out_file.write('CAPS: yes' + '\n')
-                        else:
-                            out_file.write('CAPS: no' + '\n')
-                    else:
-                        out_file.write('CAPS: n/a' + '\n')
-                    if f7 == 1:
-                        if l[2] in loc:
-                            out_file.write('LOCATION: yes' + '\n')
-                        else:
-                            out_file.write('LOCATION: no' + '\n')
-                    else:
-                        out_file.write('LOCATION: n/a' + '\n')
-                out_file.write('\n')
-                prev_word = l[2]
-                prev_pos = l[1]
-    with open("test.txt.vector", "w") as out_file:
-        for i in range(len(test_file)):
-            del f[:]
-            t1 = test_file[i].split()
-            if t1 != []:
-                key = t1[0]
-                la = label[key]
-                la = str(la)
-                word1 = 'word-' + t1[2]
-                if word1 in feature:
-                    f.append(feature[word1])
-                else:
-                    f.append(feature['word-UNK'])
-                if f2 == 1:
-                    prev_line = test_file[i - 1]
-                    prev_line = prev_line.split()
-                    if i == 1 or prev_line == []:
-                        prev_word = 'prev-word-PHI'
-                    else:
-                        prev_word = 'prev-word-' + prev_line[2]
-                    next_line = test_file[i+1]
-                    next_line = next_line.split()
-                    if next_line == []:
-                        next_word = 'next-word-OMEGA'
-                    else:
-                        next_word = 'next-word-' + next_line[2]
-		    if prev_word in feature:
-                    	f.append(feature[prev_word])
-		    else:
-			f.append(feature['prev-word-UNK'])
-		    if next_word in feature:
-                    	f.append(feature[next_word])
-		    else:
-			f.append(feature['next-word-UNK']) 
-                if f3 == 1:
-                    pos = 'pos-' + t1[1]
-                    if pos in feature:
-                        f.append(feature[pos])
-                    else:
-                        f.append(feature['pos-UNKPOS'])
-                if f4 == 1:
-                    prev_line = test_file[i-1]
-                    prev_line = prev_line.split()
-                    if prev_line == [] or i==1:
-                        prev_pos = 'prev-pos-PHIPOS'
-                    else:
-                        prev_pos = 'prev-pos-' + prev_line[1]
-                    next_line = test_file[i+1]
-                    next_line = next_line.split()
-                    if next_line == []:
-                        next_pos = 'next-pos-OMEGAPOS'
-                    else:
-                        next_pos = 'next-pos-' + next_line[1]
-		    if prev_pos in feature:
-                    	f.append(feature[prev_pos])
-		    else:
-			f.append(feature['prev-pos-UNKPOS'])
-		    if next_pos in feature:
-                    	f.append(feature[next_pos])
-		    else:
-			f.append(feature['next-pos-UNKPOS']) 
-                if f5 == 1:
-                    word = t1[2]
-                    if (word[-1] == '.' and '.' in word and len(word) <= 4):
-                        f.append(feature['abbreviation'])
-                if f6 == 1:
-                    first_letter = t1[2][0]
-                    if first_letter.isupper():
-                        f.append(feature['capitalized'])
-                if f7 == 1:
-                    if t1[2] in loc:
-                        f.append(feature['location'])
-                if len(f) == 1:
-                    out_file.write(la + ' ')
-                    f[0] = str(f[0])
-                    out_file.write(f[0] + ':1' + ' ')
-                else:
-                    f.sort()
-                    out_file.write(la + ' ')
-                    for j in range(len(f)):
-                        f[j] = str(f[j])
-                        out_file.write(f[j] + ':1' + ' ')
-                out_file.write("\n")
-
-def main():
-    for i in range(len(sys.argv)):
-        if i >= 4:
-            ftype.append(sys.argv[i])
-    f1 = 1
-    f2 = f3 = f4 = f5 = f6 = f7 = 0
-    if 'WORDCON' in ftype:
-        f2 = 1
-    if 'POS' in ftype:
-        f3 = 1
-    if 'POSCON' in ftype:
-        f4 = 1
-    if 'ABBR' in ftype:
-        f5 = 1
-    if 'CAP' in ftype:
-        f6 = 1
-    if 'LOCATION' in ftype:
-        f7 = 1
-    generate(f1, f2, f3, f4, f5, f6, f7)
-
-if __name__ == '__main__':
-    main()
+                f.write("CAP: n/a")
+                f.write('\n')
+            if "LOCATION" in ftype and loc!="":
+                f.write("LOCATION: "+loc)
+                f.write('\n')
+                f.write('\n')
+            else:
+                f.write("LOCATION: n/a")
+                f.write('\n')
+                f.write('\n')
+       
+        feature = ""
+        if "word*"+wordArr[2] not in featureList :
+            featureList["word*"+wordArr[2]] = count+1
+            count = count+1
+            reverseList[count] = "word*"+wordArr[2]
+        if "next*word*"+wordArr[2] not in featureList :
+            featureList["next*word*"+wordArr[2]] = count+1
+            count = count+1
+            reverseList[count] = "next*word*"+wordArr[2]
+        if "prev*word*"+wordArr[2] not in featureList :
+            featureList["prev*word*"+wordArr[2]] = count+1
+            count = count+1
+            reverseList[count] = "prev*word*"+wordArr[2]
+        if "pos*"+wordArr[1] not in featureList:
+            featureList["pos*"+wordArr[1]] = count+1
+            count = count+1
+            reverseList[count] = "pos*"+wordArr[1]
+        if "prev*pos*"+wordArr[1] not in featureList:
+            featureList["prev*pos*"+wordArr[1]] = count+1
+            count = count+1
+            reverseList[count] = "prev*pos*"+wordArr[1]
+        if "next*pos*"+wordArr[1] not in featureList:
+            featureList["next*pos*"+wordArr[1]] = count+1
+            count = count+1
+            reverseList[count] ="next*pos*"+wordArr[1]
+        if "prev*word*"+prevWord not in featureList:
+            featureList["prev*word*"+prevWord] = count+1
+            count = count+1
+            reverseList[count] = "prev*word*"+prevWord
+        if "prev*pos*"+prevPos not in featureList:
+            featureList["prev*pos*"+prevPos] = count+1
+            count = count+1
+            reverseList[count] = "prev*pos*"+prevPos 
+        feature = feature+str(labels[wordArr[0]])
+        if "WORD" in ftype:
+            sortFeature.append(featureList["word*"+wordArr[2]])
+        if "WORDCON" in ftype:
+            sortFeature.append(featureList["prev*word*"+prevWord])
+        if "POS" in ftype:
+            sortFeature.append(featureList["pos*"+wordArr[1]])
+        if "POSCON" in ftype:
+            sortFeature.append(featureList["prev*pos*"+prevPos])
+        if "CAP" in ftype:
+            if wordArr[2][0].isupper():
+                sortFeature.append(featureList["CAP"])
+        if "ABBR" in ftype:
+            if len( wordArr[2])<=4 and wordArr[2][len(wordArr[2])-1]=='.':
+                abbrNew = wordArr[2].replace(".","")
+                if abbrNew.isalpha():
+                    sortFeature.append(featureList["ABBR"])
+                elif abbrNew == "":
+                    sortFeature.append(featureList["ABBR"])
+                
+        if "LOCATION" in ftype and wordArr[2] in locSep:
+            sortFeature.append(featureList["LOCATION"])
+        iteration = iteration+1
+        prevWord = wordArr[2]
+        prevPos = wordArr[1]
+    if "next*word*OMEGA" not in featureList:
+        featureList["next*word*OMEGA"] = count+1
+        count = count+1
+        reverseList[count] = "next*word*OMEGA"
+    if "next*pos*OMEGAPOS" not in featureList:
+        featureList["next*pos*OMEGAPOS"] = count+1
+        count = count+1
+        reverseList[count] = "next*pos*OMEGAPOS"
+    if "WORDCON" in ftype:
+        sortFeature.append(featureList["next*word*OMEGA"])
+    if "POSCON" in ftype:
+        sortFeature.append(featureList["next*pos*OMEGAPOS"])
+    for i in sorted(sortFeature):
+            feature = feature+" "+str(i)+":1"
+    v.write(feature+'\n')
+    printingFeature = feature.split()
+    prevW = ""
+    prevP = ""
+    nextW = ""
+    nextP = ""
+    pos = ""
+    abbr = "no"
+    cap = "no"
+    loc = "no"
+    for i in printingFeature:
+        if ":" in i:
+            a = i.split(':')
+            reverse = reverseList[int(a[0])].rsplit("*",1)
+            abca = reverseList[int(a[0])]
+            if "WORD" in ftype and "word"==reverse[0]:
+                f.write("WORD: "+ reverse[-1])
+                f.write('\n')
+            if "WORDCON" in ftype and "prev*word" in reverse:
+                prevW = reverse[-1]
+            if "WORDCON" in ftype and "next*word" in reverse :
+                nextW = reverse[-1]
+            if "POSCON" in ftype and "prev*pos" in reverse:
+                prevP = reverse[-1]
+            if "POSCON" in ftype and "next*pos" in reverse :
+                nextP = reverse[-1]
+            if "POS" in ftype and "pos" in reverse:
+                pos = reverse[-1]
+            if "ABBR" in ftype and abca in "ABBR":
+                abbr = "yes"
+            if "CAP" in ftype and abca in "CAP":
+                cap = "yes"
+            if "LOCATION" in ftype and abca in "LOCATION":
+                loc = "yes"
+                    
+    if iteration!=0 :    
+        if "WORDCON" in ftype and prevW!="" and nextW!="":
+            f.write("WORDCON: "+prevW+" "+nextW)
+            f.write('\n')
+        else :
+            f.write("WORDCON: n/a")
+            f.write('\n')
+        if "POS" in ftype and pos !="":
+            f.write("POS: "+ pos)
+            f.write('\n')
+        else :
+            f.write("POS: n/a")
+            f.write('\n')
+        if "POSCON" in ftype and prevP!="" and nextP!="":
+            f.write("POSCON: "+prevP+" "+nextP)
+            f.write('\n')
+        else :
+            f.write("POSCON: n/a")
+            f.write('\n')
+        if "ABBR" in ftype and abbr!="":
+            f.write("ABBR: "+abbr)
+            f.write('\n')
+        else:
+            f.write("ABBR: n/a")
+            f.write('\n')
+        if "CAP" in ftype and cap!="":
+            f.write("CAP: "+cap)
+            f.write('\n')
+        else:
+            f.write("CAP: n/a")
+            f.write('\n')
+        if "LOCATION" in ftype and loc!="":
+            f.write("LOCATION: "+loc)
+            f.write('\n')
+            f.write('\n')
+        else:
+            f.write("LOCATION: n/a")
+            f.write('\n')
+            f.write('\n')
+       
+f.close() 
+v.close()  
+print "hey"
+prevWord = "PHI"
+prevPos = "PHIPOS"
+feature = ""
+ft = open("test.txt.readable","w+")
+vt = open("test.txt.vector","w+")
+fileRead = open(test_File)
+initialData = fileRead.read()
+dataSepInSent = initialData.strip().split('\r\n\r\n\r\n')
+for row in dataSepInSent :
+    iteration = 0
+    newWord = row.strip().split('\r\n')
+    prevWord = "PHI"
+    prevPos = "PHIPOS"
+    for word in newWord :
+        wordArr = word.split()
+        if iteration!=0 :
+            if "WORDCON" in ftype and "next*word*"+wordArr[2] in featureList:
+                sortFeature.append(featureList["next*word*"+wordArr[2]])
+            else:
+                sortFeature.append(featureList["next*word*UNK"])
+            if "POSCON" in ftype and "next*pos*"+wordArr[1] in featureList:
+                sortFeature.append(featureList["next*pos*"+wordArr[1]])
+            else:
+                sortFeature.append(featureList["next*pos*UNKPOS"])
+        for i in sorted(sortFeature):
+            feature = feature+" "+str(i)+":1"
+        if iteration!=0:
+            vt.write(feature+'\n')
+        sortFeature = []
+        printingFeature = feature.split()
+        s = ""
+        prevW = ""
+        prevP = ""
+        nextW = ""
+        nextP = ""
+        pos = ""
+        abbr = "no"
+        cap = "no"
+        loc = "no"
+        for i in printingFeature:
+            if ":" in i:
+                a = i.split(':')
+                reverse = reverseList[int(a[0])].rsplit("*",1)
+                abca = reverseList[int(a[0])]
+                if "WORD" in ftype and "word"==reverse[0] and iteration!=0:
+                    ft.write("WORD: "+ reverse[-1])
+                    ft.write('\n')
+                if "WORDCON" in ftype and "prev*word" in reverse:
+                    prevW = reverse[-1]
+                if "WORDCON" in ftype and "next*word" in reverse :
+                    nextW = reverse[-1]
+                if "POSCON" in ftype and "prev*pos" in reverse:
+                    prevP = reverse[-1]
+                if "POSCON" in ftype and "next*pos" in reverse :
+                    nextP = reverse[-1]
+                if "POS" in ftype and "pos" in reverse:
+                    pos = reverse[-1]
+                if "ABBR" in ftype and abca in "ABBR":
+                    abbr = "yes"
+                if "CAP" in ftype and abca in "CAP":
+                    cap = "yes"
+                if "LOCATION" in ftype and abca in "LOCATION":
+                    loc = "yes"
+                    
+        if iteration!=0 :    
+            if "WORDCON" in ftype and prevW!="" and nextW!="":
+                ft.write("WORDCON: "+prevW+" "+nextW)
+                ft.write('\n')
+            else :
+                ft.write("WORDCON: n/a")
+                ft.write('\n')
+            if "POS" in ftype and pos !="":
+                ft.write("POS: "+ pos)
+                ft.write('\n')
+            else :
+                ft.write("POS: n/a")
+                ft.write('\n')
+            if "POSCON" in ftype and prevP!="" and nextP!="":
+                ft.write("POSCON: "+prevP+" "+nextP)
+                ft.write('\n')
+            else :
+                ft.write("POSCON: n/a")
+                ft.write('\n')
+            if "ABBR" in ftype and abbr!="":
+                ft.write("ABBR: "+abbr)
+                ft.write('\n')
+            else:
+                ft.write("ABBR: n/a")
+                ft.write('\n')
+            if "CAP" in ftype and cap!="":
+                ft.write("CAP: "+cap)
+                ft.write('\n')
+            else:
+                ft.write("CAP: n/a")
+                ft.write('\n')
+            if "LOCATION" in ftype and loc!="":
+                ft.write("LOCATION: "+loc)
+                ft.write('\n')
+                ft.write('\n')
+            else:
+                ft.write("LOCATION: n/a")
+                ft.write('\n')
+                ft.write('\n')
+       
+        feature = ""
+        feature = feature+str(labels[wordArr[0]])
+        if "WORD" in ftype and "word*"+wordArr[2] in featureList:
+            sortFeature.append(featureList["word*"+wordArr[2]])
+        else:
+            sortFeature.append(featureList["word*UNK"])
+        if "WORDCON" in ftype and "prev*word*"+prevWord in featureList:
+            sortFeature.append(featureList["prev*word*"+prevWord])
+        else:
+            sortFeature.append(featureList["prev*word*UNK"])
+        if "POS" in ftype and "pos*"+wordArr[1] in featureList:
+            sortFeature.append(featureList["pos*"+wordArr[1]])
+        else:
+            sortFeature.append(featureList["pos*UNKPOS"])
+        if "POSCON" in ftype and "prev*pos*"+prevPos in featureList:
+            sortFeature.append(featureList["prev*pos*"+prevPos])
+        else:
+            sortFeature.append(featureList["prev*pos*UNKPOS"])
+        if "CAP" in ftype:
+            if wordArr[2][0].isupper():
+                sortFeature.append(featureList["CAP"])
+        if "ABBR" in ftype:
+            if len( wordArr[2])<=4 and wordArr[2][len(wordArr[2])-1]=='.':
+                abbrNew = wordArr[2].replace(".","")
+                if abbrNew.isalpha():
+                    sortFeature.append(featureList["ABBR"])
+                elif abbrNew == "":
+                    sortFeature.append(featureList["ABBR"])
+                
+        if "LOCATION" in ftype and wordArr[2] in locSep:
+            sortFeature.append(featureList["LOCATION"])
+        iteration = iteration+1
+        prevWord = wordArr[2]
+        prevPos = wordArr[1]
+    if "WORDCON" in ftype:
+        sortFeature.append(featureList["next*word*OMEGA"])
+    if "POSCON" in ftype:
+        sortFeature.append(featureList["next*pos*OMEGAPOS"])
+    for i in sorted(sortFeature):
+            feature = feature+" "+str(i)+":1"
+    vt.write(feature+'\n')
+    printingFeature = feature.split()
+    prevW = ""
+    prevP = ""
+    nextW = ""
+    nextP = ""
+    pos = ""
+    abbr = "no"
+    cap = "no"
+    loc = "no"
+    for i in printingFeature:
+        if ":" in i:
+            a = i.split(':')
+            reverse = reverseList[int(a[0])].rsplit("*",1)
+            abca = reverseList[int(a[0])]
+            if "WORD" in ftype and "word"==reverse[0]:
+                ft.write("WORD: "+ reverse[-1])
+                ft.write('\n')
+            if "WORDCON" in ftype and "prev*word" in reverse:
+                prevW = reverse[-1]
+            if "WORDCON" in ftype and "next*word" in reverse :
+                nextW = reverse[-1]
+            if "POSCON" in ftype and "prev*pos" in reverse:
+                prevP = reverse[-1]
+            if "POSCON" in ftype and "next*pos" in reverse :
+                nextP = reverse[-1]
+            if "POS" in ftype and "pos" in reverse:
+                pos = reverse[-1]
+            if "ABBR" in ftype and abca in "ABBR":
+                abbr = "yes"
+            if "CAP" in ftype and abca in "CAP":
+                cap = "yes"
+            if "LOCATION" in ftype and abca in "LOCATION":
+                loc = "yes"
+                    
+    if iteration!=0 :    
+        if "WORDCON" in ftype and prevW!="" and nextW!="":
+            ft.write("WORDCON: "+prevW+" "+nextW)
+            ft.write('\n')
+        else :
+            ft.write("WORDCON: n/a")
+            ft.write('\n')
+        if "POS" in ftype and pos !="":
+            ft.write("POS: "+ pos)
+            ft.write('\n')
+        else :
+            ft.write("POS: n/a")
+            ft.write('\n')
+        if "POSCON" in ftype and prevP!="" and nextP!="":
+            ft.write("POSCON: "+prevP+" "+nextP)
+            ft.write('\n')
+        else :
+            ft.write("POSCON: n/a")
+            ft.write('\n')
+        if "ABBR" in ftype and abbr!="":
+            ft.write("ABBR: "+abbr)
+            ft.write('\n')
+        else:
+            ft.write("ABBR: n/a")
+            ft.write('\n')
+        if "CAP" in ftype and cap!="":
+            ft.write("CAP: "+cap)
+            ft.write('\n')
+        else:
+            ft.write("CAP: n/a")
+            ft.write('\n')
+        if "LOCATION" in ftype and loc!="":
+            ft.write("LOCATION: "+loc)
+            ft.write('\n')
+            ft.write('\n')
+        else:
+            ft.write("LOCATION: n/a")
+            ft.write('\n')
+            ft.write('\n')
+ft.close() 
+vt.close()  
